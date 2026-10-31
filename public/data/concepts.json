@@ -1,0 +1,1185 @@
+{
+ "cells": 808,
+ "keys": [
+  "jacobs",
+  "lynch",
+  "gehl",
+  "whyte",
+  "min15",
+  "tod",
+  "compact",
+  "complete",
+  "pedbike",
+  "universal",
+  "child",
+  "placemaking",
+  "cpted",
+  "healthy",
+  "visionzero",
+  "green",
+  "heat",
+  "resilience",
+  "score",
+  "demand"
+ ],
+ "matrix": [
+  [
+   1.0,
+   0.4,
+   0.26,
+   0.39,
+   0.58,
+   0.41,
+   0.9,
+   0.52,
+   0.24,
+   0.37,
+   0.3,
+   0.56,
+   0.5,
+   0.25,
+   0.1,
+   0.13,
+   0.07,
+   -0.01,
+   0.49,
+   0.49
+  ],
+  [
+   0.4,
+   1.0,
+   0.15,
+   0.28,
+   0.29,
+   0.25,
+   0.5,
+   0.46,
+   0.39,
+   0.29,
+   0.17,
+   0.54,
+   0.2,
+   0.43,
+   -0.2,
+   0.33,
+   0.09,
+   -0.19,
+   0.31,
+   0.18
+  ],
+  [
+   0.26,
+   0.15,
+   1.0,
+   0.13,
+   0.2,
+   0.15,
+   0.32,
+   0.51,
+   0.52,
+   0.22,
+   0.53,
+   0.29,
+   0.6,
+   0.16,
+   0.65,
+   0.06,
+   0.56,
+   0.62,
+   0.77,
+   0.21
+  ],
+  [
+   0.39,
+   0.28,
+   0.13,
+   1.0,
+   0.25,
+   0.93,
+   0.47,
+   0.2,
+   0.15,
+   0.25,
+   0.19,
+   0.33,
+   0.22,
+   0.19,
+   0.03,
+   0.11,
+   0.04,
+   -0.07,
+   0.53,
+   0.42
+  ],
+  [
+   0.58,
+   0.29,
+   0.2,
+   0.25,
+   1.0,
+   0.25,
+   0.56,
+   0.3,
+   0.18,
+   0.25,
+   0.26,
+   0.46,
+   0.34,
+   0.3,
+   0.13,
+   0.2,
+   0.18,
+   0.08,
+   0.37,
+   0.3
+  ],
+  [
+   0.41,
+   0.25,
+   0.15,
+   0.93,
+   0.25,
+   1.0,
+   0.48,
+   0.2,
+   0.15,
+   0.25,
+   0.19,
+   0.3,
+   0.25,
+   0.15,
+   0.05,
+   0.07,
+   0.04,
+   -0.05,
+   0.57,
+   0.41
+  ],
+  [
+   0.9,
+   0.5,
+   0.32,
+   0.47,
+   0.56,
+   0.48,
+   1.0,
+   0.55,
+   0.33,
+   0.45,
+   0.35,
+   0.68,
+   0.63,
+   0.33,
+   0.05,
+   0.18,
+   0.1,
+   -0.05,
+   0.55,
+   0.5
+  ],
+  [
+   0.52,
+   0.46,
+   0.51,
+   0.2,
+   0.3,
+   0.2,
+   0.55,
+   1.0,
+   0.52,
+   0.57,
+   0.53,
+   0.5,
+   0.52,
+   0.31,
+   0.66,
+   0.23,
+   0.19,
+   0.17,
+   0.57,
+   0.32
+  ],
+  [
+   0.24,
+   0.39,
+   0.52,
+   0.15,
+   0.18,
+   0.15,
+   0.33,
+   0.52,
+   1.0,
+   0.23,
+   0.44,
+   0.4,
+   0.43,
+   0.32,
+   0.35,
+   0.21,
+   0.41,
+   0.33,
+   0.47,
+   0.11
+  ],
+  [
+   0.37,
+   0.29,
+   0.22,
+   0.25,
+   0.25,
+   0.25,
+   0.45,
+   0.57,
+   0.23,
+   1.0,
+   0.49,
+   0.38,
+   0.32,
+   0.21,
+   0.07,
+   0.16,
+   0.05,
+   0.02,
+   0.38,
+   0.17
+  ],
+  [
+   0.3,
+   0.17,
+   0.53,
+   0.19,
+   0.26,
+   0.19,
+   0.35,
+   0.53,
+   0.44,
+   0.49,
+   1.0,
+   0.37,
+   0.43,
+   0.49,
+   0.49,
+   0.21,
+   0.43,
+   0.41,
+   0.52,
+   0.19
+  ],
+  [
+   0.56,
+   0.54,
+   0.29,
+   0.33,
+   0.46,
+   0.3,
+   0.68,
+   0.5,
+   0.4,
+   0.38,
+   0.37,
+   1.0,
+   0.48,
+   0.7,
+   0.0,
+   0.64,
+   0.4,
+   0.02,
+   0.52,
+   0.29
+  ],
+  [
+   0.5,
+   0.2,
+   0.6,
+   0.22,
+   0.34,
+   0.25,
+   0.63,
+   0.52,
+   0.43,
+   0.32,
+   0.43,
+   0.48,
+   1.0,
+   0.14,
+   0.5,
+   0.04,
+   0.35,
+   0.41,
+   0.59,
+   0.34
+  ],
+  [
+   0.25,
+   0.43,
+   0.16,
+   0.19,
+   0.3,
+   0.15,
+   0.33,
+   0.31,
+   0.32,
+   0.21,
+   0.49,
+   0.7,
+   0.14,
+   1.0,
+   -0.02,
+   0.77,
+   0.49,
+   0.06,
+   0.33,
+   0.07
+  ],
+  [
+   0.1,
+   -0.2,
+   0.65,
+   0.03,
+   0.13,
+   0.05,
+   0.05,
+   0.66,
+   0.35,
+   0.07,
+   0.49,
+   0.0,
+   0.5,
+   -0.02,
+   1.0,
+   -0.05,
+   0.57,
+   0.79,
+   0.45,
+   0.12
+  ],
+  [
+   0.13,
+   0.33,
+   0.06,
+   0.11,
+   0.2,
+   0.07,
+   0.18,
+   0.23,
+   0.21,
+   0.16,
+   0.21,
+   0.64,
+   0.04,
+   0.77,
+   -0.05,
+   1.0,
+   0.62,
+   0.09,
+   0.25,
+   -0.0
+  ],
+  [
+   0.07,
+   0.09,
+   0.56,
+   0.04,
+   0.18,
+   0.04,
+   0.1,
+   0.19,
+   0.41,
+   0.05,
+   0.43,
+   0.4,
+   0.35,
+   0.49,
+   0.57,
+   0.62,
+   1.0,
+   0.74,
+   0.46,
+   -0.02
+  ],
+  [
+   -0.01,
+   -0.19,
+   0.62,
+   -0.07,
+   0.08,
+   -0.05,
+   -0.05,
+   0.17,
+   0.33,
+   0.02,
+   0.41,
+   0.02,
+   0.41,
+   0.06,
+   0.79,
+   0.09,
+   0.74,
+   1.0,
+   0.38,
+   -0.04
+  ],
+  [
+   0.49,
+   0.31,
+   0.77,
+   0.53,
+   0.37,
+   0.57,
+   0.55,
+   0.57,
+   0.47,
+   0.38,
+   0.52,
+   0.52,
+   0.59,
+   0.33,
+   0.45,
+   0.25,
+   0.46,
+   0.38,
+   1.0,
+   0.48
+  ],
+  [
+   0.49,
+   0.18,
+   0.21,
+   0.42,
+   0.3,
+   0.41,
+   0.5,
+   0.32,
+   0.11,
+   0.17,
+   0.19,
+   0.29,
+   0.34,
+   0.07,
+   0.12,
+   -0.0,
+   -0.02,
+   -0.04,
+   0.48,
+   1.0
+  ]
+ ],
+ "stats": {
+  "jacobs": {
+   "mean": 48.6,
+   "n": 808
+  },
+  "lynch": {
+   "mean": 14.2,
+   "n": 808
+  },
+  "gehl": {
+   "mean": 39.1,
+   "n": 808
+  },
+  "whyte": {
+   "mean": 7.8,
+   "n": 808
+  },
+  "min15": {
+   "mean": 95.6,
+   "n": 808,
+   "full_share": 83.8
+  },
+  "tod": {
+   "mean": 17.1,
+   "n": 808
+  },
+  "compact": {
+   "mean": 32.0,
+   "n": 808
+  },
+  "complete": {
+   "mean": 35.2,
+   "n": 382
+  },
+  "pedbike": {
+   "mean": 35.3,
+   "n": 808
+  },
+  "universal": {
+   "mean": 28.0,
+   "n": 808
+  },
+  "child": {
+   "mean": 35.5,
+   "n": 808
+  },
+  "placemaking": {
+   "mean": 17.7,
+   "n": 808
+  },
+  "cpted": {
+   "mean": 46.4,
+   "n": 808
+  },
+  "healthy": {
+   "mean": 15.2,
+   "n": 808
+  },
+  "visionzero": {
+   "mean": 68.8,
+   "n": 808
+  },
+  "green": {
+   "mean": 17.5,
+   "n": 808,
+   "park300_share": 75.9
+  },
+  "heat": {
+   "mean": 38.3,
+   "n": 808
+  },
+  "resilience": {
+   "mean": 85.5,
+   "n": 808
+  },
+  "sdg_transit": {
+   "mean": 99.5,
+   "n": 808,
+   "share": 99.5
+  },
+  "equity": {
+   "mean": 36.0,
+   "n": 808,
+   "gini": 0.269,
+   "rings": [
+    {
+     "from_m": 0,
+     "to_m": 1500,
+     "cells": 87,
+     "mean": 49.0
+    },
+    {
+     "from_m": 1500,
+     "to_m": 3000,
+     "cells": 196,
+     "mean": 36.9
+    },
+    {
+     "from_m": 3000,
+     "to_m": 4500,
+     "cells": 245,
+     "mean": 33.1
+    },
+    {
+     "from_m": 4500,
+     "to_m": null,
+     "cells": 280,
+     "mean": 33.8
+    }
+   ]
+  }
+ },
+ "station_rows": [
+  {
+   "name": "Ulduz",
+   "ride": 7610,
+   "tod": 35,
+   "jacobs": 6,
+   "gehl": 36,
+   "min15": 76,
+   "universal": 17,
+   "visionzero": 86
+  },
+  {
+   "name": "Avtovağzal",
+   "ride": 10964,
+   "tod": 45,
+   "jacobs": 41,
+   "gehl": 31,
+   "min15": 100,
+   "universal": 15,
+   "visionzero": 69
+  },
+  {
+   "name": "Gənclik",
+   "ride": 39589,
+   "tod": 60,
+   "jacobs": 49,
+   "gehl": 28,
+   "min15": 100,
+   "universal": 32,
+   "visionzero": 60
+  },
+  {
+   "name": "8 Noyabr",
+   "ride": 4186,
+   "tod": 45,
+   "jacobs": 34,
+   "gehl": 36,
+   "min15": 100,
+   "universal": 33,
+   "visionzero": 62
+  },
+  {
+   "name": "Elmlər Akademiyası",
+   "ride": 29484,
+   "tod": 64,
+   "jacobs": 84,
+   "gehl": 39,
+   "min15": 100,
+   "universal": 38,
+   "visionzero": 75
+  },
+  {
+   "name": "İnşaatçılar",
+   "ride": 26428,
+   "tod": 54,
+   "jacobs": 74,
+   "gehl": 38,
+   "min15": 100,
+   "universal": 35,
+   "visionzero": 88
+  },
+  {
+   "name": "Nizami",
+   "ride": 16551,
+   "tod": 68,
+   "jacobs": 74,
+   "gehl": 39,
+   "min15": 100,
+   "universal": 40,
+   "visionzero": 57
+  },
+  {
+   "name": "Bakmil",
+   "ride": 1453,
+   "tod": 35,
+   "jacobs": 3,
+   "gehl": 45,
+   "min15": 89,
+   "universal": 20,
+   "visionzero": 100
+  },
+  {
+   "name": "20 Yanvar st.",
+   "ride": 41831,
+   "tod": 52,
+   "jacobs": 72,
+   "gehl": 33,
+   "min15": 100,
+   "universal": 32,
+   "visionzero": 61
+  },
+  {
+   "name": "Nəsimi",
+   "ride": 8423,
+   "tod": 47,
+   "jacobs": 46,
+   "gehl": 51,
+   "min15": 100,
+   "universal": 21,
+   "visionzero": 100
+  },
+  {
+   "name": "İçərişəhər",
+   "ride": 18057,
+   "tod": 56,
+   "jacobs": 80,
+   "gehl": 45,
+   "min15": 100,
+   "universal": 26,
+   "visionzero": 50
+  },
+  {
+   "name": "Nəriman Nərimanov",
+   "ride": 39657,
+   "tod": 66,
+   "jacobs": 81,
+   "gehl": 49,
+   "min15": 100,
+   "universal": 30,
+   "visionzero": 74
+  },
+  {
+   "name": "Memar Əcəmi",
+   "ride": 24221,
+   "tod": 62,
+   "jacobs": 80,
+   "gehl": 50,
+   "min15": 100,
+   "universal": 29,
+   "visionzero": 92
+  },
+  {
+   "name": "Sahil",
+   "ride": 26602,
+   "tod": 60,
+   "jacobs": 69,
+   "gehl": 55,
+   "min15": 100,
+   "universal": 50,
+   "visionzero": 47
+  },
+  {
+   "name": "Cəfər Cabbarlı",
+   "ride": 2373,
+   "tod": 61,
+   "jacobs": 71,
+   "gehl": 53,
+   "min15": 100,
+   "universal": 46,
+   "visionzero": 82
+  },
+  {
+   "name": "Şah İsmayıl Xətai",
+   "ride": 12138,
+   "tod": 49,
+   "jacobs": 80,
+   "gehl": 60,
+   "min15": 100,
+   "universal": 35,
+   "visionzero": 95
+  },
+  {
+   "name": "28 May",
+   "ride": 46930,
+   "tod": 64,
+   "jacobs": 71,
+   "gehl": 55,
+   "min15": 100,
+   "universal": 43,
+   "visionzero": 79
+  }
+ ],
+ "station_corr": {
+  "tod": 0.61,
+  "jacobs": 0.55,
+  "gehl": -0.02,
+  "min15": 0.48,
+  "universal": 0.33,
+  "visionzero": -0.4
+ },
+ "top_pairs": [
+  {
+   "a": "compact",
+   "b": "placemaking",
+   "rho": 0.68,
+   "n": 808,
+   "shared": false
+  },
+  {
+   "a": "compact",
+   "b": "cpted",
+   "rho": 0.63,
+   "n": 808,
+   "shared": false
+  },
+  {
+   "a": "gehl",
+   "b": "cpted",
+   "rho": 0.6,
+   "n": 808,
+   "shared": false
+  },
+  {
+   "a": "jacobs",
+   "b": "min15",
+   "rho": 0.58,
+   "n": 808,
+   "shared": false
+  },
+  {
+   "a": "jacobs",
+   "b": "placemaking",
+   "rho": 0.56,
+   "n": 808,
+   "shared": false
+  },
+  {
+   "a": "min15",
+   "b": "compact",
+   "rho": 0.56,
+   "n": 808,
+   "shared": false
+  },
+  {
+   "a": "compact",
+   "b": "complete",
+   "rho": 0.55,
+   "n": 382,
+   "shared": false
+  },
+  {
+   "a": "compact",
+   "b": "score",
+   "rho": 0.55,
+   "n": 808,
+   "shared": false
+  },
+  {
+   "a": "jacobs",
+   "b": "complete",
+   "rho": 0.52,
+   "n": 382,
+   "shared": false
+  },
+  {
+   "a": "complete",
+   "b": "cpted",
+   "rho": 0.52,
+   "n": 382,
+   "shared": false
+  },
+  {
+   "a": "jacobs",
+   "b": "cpted",
+   "rho": 0.5,
+   "n": 808,
+   "shared": false
+  },
+  {
+   "a": "lynch",
+   "b": "compact",
+   "rho": 0.5,
+   "n": 808,
+   "shared": false
+  }
+ ],
+ "weak_pairs": [
+  {
+   "a": "placemaking",
+   "b": "visionzero",
+   "rho": 0.0,
+   "n": 808,
+   "shared": false
+  },
+  {
+   "a": "green",
+   "b": "demand",
+   "rho": -0.0,
+   "n": 808,
+   "shared": false
+  },
+  {
+   "a": "jacobs",
+   "b": "resilience",
+   "rho": -0.01,
+   "n": 808,
+   "shared": false
+  },
+  {
+   "a": "healthy",
+   "b": "visionzero",
+   "rho": -0.02,
+   "n": 808,
+   "shared": false
+  },
+  {
+   "a": "heat",
+   "b": "demand",
+   "rho": -0.02,
+   "n": 808,
+   "shared": false
+  },
+  {
+   "a": "whyte",
+   "b": "visionzero",
+   "rho": 0.03,
+   "n": 808,
+   "shared": false
+  }
+ ],
+ "shared_pairs": [
+  [
+   "child",
+   "complete"
+  ],
+  [
+   "child",
+   "gehl"
+  ],
+  [
+   "child",
+   "healthy"
+  ],
+  [
+   "child",
+   "heat"
+  ],
+  [
+   "child",
+   "pedbike"
+  ],
+  [
+   "child",
+   "placemaking"
+  ],
+  [
+   "child",
+   "resilience"
+  ],
+  [
+   "child",
+   "score"
+  ],
+  [
+   "child",
+   "universal"
+  ],
+  [
+   "child",
+   "visionzero"
+  ],
+  [
+   "compact",
+   "jacobs"
+  ],
+  [
+   "compact",
+   "tod"
+  ],
+  [
+   "complete",
+   "gehl"
+  ],
+  [
+   "complete",
+   "pedbike"
+  ],
+  [
+   "complete",
+   "score"
+  ],
+  [
+   "complete",
+   "universal"
+  ],
+  [
+   "complete",
+   "visionzero"
+  ],
+  [
+   "cpted",
+   "placemaking"
+  ],
+  [
+   "cpted",
+   "resilience"
+  ],
+  [
+   "cpted",
+   "score"
+  ],
+  [
+   "cpted",
+   "universal"
+  ],
+  [
+   "demand",
+   "min15"
+  ],
+  [
+   "demand",
+   "score"
+  ],
+  [
+   "demand",
+   "tod"
+  ],
+  [
+   "demand",
+   "whyte"
+  ],
+  [
+   "gehl",
+   "healthy"
+  ],
+  [
+   "gehl",
+   "heat"
+  ],
+  [
+   "gehl",
+   "lynch"
+  ],
+  [
+   "gehl",
+   "pedbike"
+  ],
+  [
+   "gehl",
+   "placemaking"
+  ],
+  [
+   "gehl",
+   "resilience"
+  ],
+  [
+   "gehl",
+   "score"
+  ],
+  [
+   "gehl",
+   "visionzero"
+  ],
+  [
+   "green",
+   "healthy"
+  ],
+  [
+   "green",
+   "heat"
+  ],
+  [
+   "green",
+   "placemaking"
+  ],
+  [
+   "green",
+   "resilience"
+  ],
+  [
+   "healthy",
+   "heat"
+  ],
+  [
+   "healthy",
+   "lynch"
+  ],
+  [
+   "healthy",
+   "pedbike"
+  ],
+  [
+   "healthy",
+   "placemaking"
+  ],
+  [
+   "healthy",
+   "resilience"
+  ],
+  [
+   "healthy",
+   "score"
+  ],
+  [
+   "heat",
+   "pedbike"
+  ],
+  [
+   "heat",
+   "placemaking"
+  ],
+  [
+   "heat",
+   "resilience"
+  ],
+  [
+   "heat",
+   "score"
+  ],
+  [
+   "heat",
+   "visionzero"
+  ],
+  [
+   "jacobs",
+   "tod"
+  ],
+  [
+   "lynch",
+   "pedbike"
+  ],
+  [
+   "lynch",
+   "placemaking"
+  ],
+  [
+   "lynch",
+   "score"
+  ],
+  [
+   "min15",
+   "score"
+  ],
+  [
+   "min15",
+   "tod"
+  ],
+  [
+   "min15",
+   "whyte"
+  ],
+  [
+   "pedbike",
+   "placemaking"
+  ],
+  [
+   "pedbike",
+   "resilience"
+  ],
+  [
+   "pedbike",
+   "score"
+  ],
+  [
+   "pedbike",
+   "visionzero"
+  ],
+  [
+   "placemaking",
+   "resilience"
+  ],
+  [
+   "placemaking",
+   "score"
+  ],
+  [
+   "resilience",
+   "score"
+  ],
+  [
+   "resilience",
+   "universal"
+  ],
+  [
+   "resilience",
+   "visionzero"
+  ],
+  [
+   "score",
+   "tod"
+  ],
+  [
+   "score",
+   "universal"
+  ],
+  [
+   "score",
+   "visionzero"
+  ],
+  [
+   "score",
+   "whyte"
+  ],
+  [
+   "tod",
+   "whyte"
+  ],
+  [
+   "universal",
+   "visionzero"
+  ]
+ ],
+ "poi_counts": {
+  "education": 331,
+  "food": 1420,
+  "pharmacy": 188,
+  "grocery": 693,
+  "landmark": 222,
+  "finance": 609,
+  "retail": 1649,
+  "worship": 42,
+  "play": 73,
+  "health": 460,
+  "culture": 158
+ },
+ "wheelchair_tagged": 61
+}

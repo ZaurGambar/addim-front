@@ -1,0 +1,47 @@
+{
+ "genclik": {
+  "name": "Gənclik",
+  "lat": 40.39988,
+  "lon": 49.85096,
+  "gis_cafe": 18,
+  "gis_shop": 18,
+  "osm_food": null,
+  "osm_shop": null,
+  "note": "Gənclik Mall ətrafında zəncir mağazalar sıxdır. Kafelər əsasən Atatürk prospekti və FXX boyundadır.",
+  "screens": [
+   "2gis_business/genclik_kafe.jpg",
+   "2gis_business/genclik_magaza.jpg"
+  ],
+  "method": "2GIS: zoom 17-də görünən pin sayı (təxmini, ±3, aşağı hədd). OSM: 500 m radius, Overpass."
+ },
+ "20yanvar": {
+  "name": "20 Yanvar",
+  "lat": 40.40414,
+  "lon": 49.8077,
+  "gis_cafe": 22,
+  "gis_shop": 24,
+  "osm_food": 16,
+  "osm_shop": 25,
+  "note": "Kiçik yerli biznes çoxdur: dönər, ərzaq, telefon mağazaları. Piyadalaşma onlara birbaşa təsir edər.",
+  "screens": [
+   "2gis_business/20yanvar_kafe.jpg",
+   "2gis_business/20yanvar_magaza.jpg"
+  ],
+  "method": "2GIS: zoom 17-də görünən pin sayı (təxmini, ±3, aşağı hədd). OSM: 500 m radius, Overpass."
+ },
+ "insaatcilar": {
+  "name": "İnşaatçılar pr.",
+  "lat": 40.37958,
+  "lon": 49.82098,
+  "gis_cafe": 24,
+  "gis_shop": 22,
+  "osm_food": 17,
+  "osm_shop": 39,
+  "note": "Yaşayış məhəlləsi: market, kafe, ərzaq. Məktəb küçəsi pilotu yerli ticarətə müsbət ola bilər.",
+  "screens": [
+   "2gis_business/insaatcilar_kafe.jpg",
+   "2gis_business/insaatcilar_magaza.jpg"
+  ],
+  "method": "2GIS: zoom 17-də görünən pin sayı (təxmini, ±3, aşağı hədd). OSM: 500 m radius, Overpass."
+ }
+}

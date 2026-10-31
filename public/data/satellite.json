@@ -1,0 +1,152 @@
+[
+ {
+  "rank": 1,
+  "lon": 49.80788,
+  "lat": 40.40481,
+  "status": "no_zebra",
+  "note": "Moskva pr. çıxış yolu, çoxzolaqlı. 30 m radiusda yerüstü zebra görünmür.",
+  "image": "satellite/01.jpg",
+  "source": "Esri World Imagery (Esri, Maxar, Earthstar Geographics), z19, çəkiliş tarixi məlum deyil",
+  "checked": "2026-10-31"
+ },
+ {
+  "rank": 2,
+  "lon": 49.8085,
+  "lat": 40.40365,
+  "status": "no_zebra",
+  "note": "20 Yanvar, magistral boyu parkinq. Magistralı keçən zebra yoxdur, piyada yalnız yeraltı keçidlə keçir.",
+  "image": "satellite/02.jpg",
+  "source": "Esri World Imagery (Esri, Maxar, Earthstar Geographics), z19, çəkiliş tarixi məlum deyil",
+  "checked": "2026-10-31"
+ },
+ {
+  "rank": 3,
+  "lon": 49.85266,
+  "lat": 40.40054,
+  "status": "unclear",
+  "note": "Dairənin içi tünd damla örtülüdür. Keçid nöqtəsi aydın görünmür.",
+  "image": "satellite/03.jpg",
+  "source": "Esri World Imagery (Esri, Maxar, Earthstar Geographics), z19, çəkiliş tarixi məlum deyil",
+  "checked": "2026-10-31"
+ },
+ {
+  "rank": 4,
+  "lon": 49.85059,
+  "lat": 40.3999,
+  "status": "zebra_nearby",
+  "note": "FXX pr. qovşağı. Təxminən 25 m sağda çıxış yolunda zebra xətləri görünür.",
+  "image": "satellite/04.jpg",
+  "source": "Esri World Imagery (Esri, Maxar, Earthstar Geographics), z19, çəkiliş tarixi məlum deyil",
+  "checked": "2026-10-31"
+ },
+ {
+  "rank": 5,
+  "lon": 49.85226,
+  "lat": 40.40112,
+  "status": "no_zebra",
+  "note": "FXX pr., parkinq və yeraltı keçid girişi. Dairədə zebra yoxdur.",
+  "image": "satellite/05.jpg",
+  "source": "Esri World Imagery (Esri, Maxar, Earthstar Geographics), z19, çəkiliş tarixi məlum deyil",
+  "checked": "2026-10-31"
+ },
+ {
+  "rank": 6,
+  "lon": 49.82098,
+  "lat": 40.37958,
+  "status": "zebra_nearby",
+  "note": "İnşaatçılar pr. qovşağı. Kəsişmədə keçid xətlərinə bənzər işarələr görünür.",
+  "image": "satellite/06.jpg",
+  "source": "Esri World Imagery (Esri, Maxar, Earthstar Geographics), z19, çəkiliş tarixi məlum deyil",
+  "checked": "2026-10-31"
+ },
+ {
+  "rank": 7,
+  "lon": 49.81983,
+  "lat": 40.40257,
+  "status": "no_zebra",
+  "note": "Salamzadə küç., magistral yanında şüşə örtüklü yeraltı keçid girişi. Magistralda zebra yoxdur.",
+  "image": "satellite/07.jpg",
+  "source": "Esri World Imagery (Esri, Maxar, Earthstar Geographics), z19, çəkiliş tarixi məlum deyil",
+  "checked": "2026-10-31"
+ },
+ {
+  "rank": 8,
+  "lon": 49.86897,
+  "lat": 40.40247,
+  "status": "zebra_nearby",
+  "note": "Nərimanov yaxınlığı, parkinq. Təxminən 40 m-də kəsişmədə zebra var.",
+  "image": "satellite/08.jpg",
+  "source": "Esri World Imagery (Esri, Maxar, Earthstar Geographics), z19, çəkiliş tarixi məlum deyil",
+  "checked": "2026-10-31"
+ },
+ {
+  "rank": 9,
+  "lon": 49.83332,
+  "lat": 40.3757,
+  "status": "no_zebra",
+  "note": "Füzuli küç., parkda yeraltı keçid pilləkəni. Yolda zebra görünmür.",
+  "image": "satellite/09.jpg",
+  "source": "Esri World Imagery (Esri, Maxar, Earthstar Geographics), z19, çəkiliş tarixi məlum deyil",
+  "checked": "2026-10-31"
+ },
+ {
+  "rank": 10,
+  "lon": 49.84982,
+  "lat": 40.37927,
+  "status": "zebra_nearby",
+  "note": "Azadlıq pr. Hündür binanın kölgəsi var, təxminən 25 m-də avtobus zolağı yanında zebra görünür.",
+  "image": "satellite/10.jpg",
+  "source": "Esri World Imagery (Esri, Maxar, Earthstar Geographics), z19, çəkiliş tarixi məlum deyil",
+  "checked": "2026-10-31"
+ },
+ {
+  "rank": 11,
+  "lon": 49.87111,
+  "lat": 40.40349,
+  "status": "zebra_nearby",
+  "note": "FXX pr., yeraltı keçid girişi olan meydan. Təxminən 45 m-də kəsişmədə zebra var.",
+  "image": "satellite/11.jpg",
+  "source": "Esri World Imagery (Esri, Maxar, Earthstar Geographics), z19, çəkiliş tarixi məlum deyil",
+  "checked": "2026-10-31"
+ },
+ {
+  "rank": 12,
+  "lon": 49.83228,
+  "lat": 40.37594,
+  "status": "no_zebra",
+  "note": "Şıxəli Qurbanov küç., geniş yol. Dairədə zebra yoxdur.",
+  "image": "satellite/12.jpg",
+  "source": "Esri World Imagery (Esri, Maxar, Earthstar Geographics), z19, çəkiliş tarixi məlum deyil",
+  "checked": "2026-10-31"
+ },
+ {
+  "rank": 13,
+  "lon": 49.83086,
+  "lat": 40.3662,
+  "status": "unclear",
+  "note": "Şeyx Şamil küç., əyri kəsişmə. Zəif xətlər var, zebra olub-olmadığı aydın deyil.",
+  "image": "satellite/13.jpg",
+  "source": "Esri World Imagery (Esri, Maxar, Earthstar Geographics), z19, çəkiliş tarixi məlum deyil",
+  "checked": "2026-10-31"
+ },
+ {
+  "rank": 14,
+  "lon": 49.81919,
+  "lat": 40.40705,
+  "status": "no_zebra",
+  "note": "Alı Mustafayev küç., 6 zolaqlı prospekt. Zebra görünmür.",
+  "image": "satellite/14.jpg",
+  "source": "Esri World Imagery (Esri, Maxar, Earthstar Geographics), z19, çəkiliş tarixi məlum deyil",
+  "checked": "2026-10-31"
+ },
+ {
+  "rank": 15,
+  "lon": 49.84894,
+  "lat": 40.37957,
+  "status": "unclear",
+  "note": "Azadlıq pr., 28 May yanında avtobus meydançası. Nöqtə yolun üstündə deyil, meydandadır.",
+  "image": "satellite/15.jpg",
+  "source": "Esri World Imagery (Esri, Maxar, Earthstar Geographics), z19, çəkiliş tarixi məlum deyil",
+  "checked": "2026-10-31"
+ }
+]

@@ -1,0 +1,150 @@
+@import "./styles/Reset.css";
+@import "./styles/Fonts.css";
+@import "leaflet/dist/leaflet.css";
+@import "react-loading-skeleton/dist/skeleton.css";
+
+:root {
+  --primary: #165a7a;
+  --primary-hover: #0f4560;
+  --accent: #a8352b;
+  --accent-soft: #f6e1dd;
+  --primary-soft: #d6e7ef;
+  --text: #1c1b1f;
+  --text-2: #44565e;
+  --text-3: #6c7d84;
+  --bg: #f3f6f5;
+  --bg-secondary: #eff1f5;
+  --panel: #ffffff;
+  --panel-2: #e8eeec;
+  --line: #cdd8d5;
+  --line-soft: #dfe7e4;
+  --land: #eef2f0;
+  --sea: #cfe0e8;
+  --road: #b9c5c2;
+  --road-major: #7f8f8c;
+  --park: #b7d8b4;
+  --coast: #6f9db3;
+  --good: #0ca30c;
+  --warn: #fab219;
+  --serious: #ec835a;
+  --critical: #d03b3b;
+  --s1: #cde2fb;
+  --s2: #9ec5f4;
+  --s3: #6da7ec;
+  --s4: #3987e5;
+  --s5: #256abf;
+  --s6: #184f95;
+  --s7: #0d366b;
+  --g1: #fde3d6;
+  --g2: #f6b394;
+  --g3: #eb6834;
+  --g4: #b9471b;
+  --d-neg: #d03b3b;
+  --d-mid: #f0efec;
+  --d-pos: #2a78d6;
+  --t0: #2a78d6;
+  --t1: #eb6834;
+  --t2: #1baf7a;
+  --t3: #4a3aa7;
+  --radius: 12px;
+  --radius-modal: 32px;
+  --font: "Inter-Regular400", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-medium: "Inter-Medium500", system-ui, sans-serif;
+  --font-semibold: "Inter-SemiBold600", system-ui, sans-serif;
+  --font-bold: "Inter-Bold700", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --header-h: 64px;
+  --tab-h: 64px;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --primary: #6fb6d6;
+    --primary-hover: #8fc8e1;
+    --accent: #e8786b;
+    --accent-soft: #3a1f1c;
+    --primary-soft: #173847;
+    --text: #e8f0f2;
+    --text-2: #b2c3c8;
+    --text-3: #8399a0;
+    --bg: #0f1a1f;
+    --bg-secondary: #15232a;
+    --panel: #15232a;
+    --panel-2: #1b2c34;
+    --line: #2c4049;
+    --line-soft: #22353d;
+    --land: #16242b;
+    --sea: #0d2a38;
+    --road: #2e434b;
+    --road-major: #5a7179;
+    --park: #24452c;
+    --coast: #3f7f9b;
+    --s1: #16304d;
+    --s2: #184f95;
+    --s3: #1c5cab;
+    --s4: #2a78d6;
+    --s5: #3987e5;
+    --s6: #6da7ec;
+    --s7: #b7d3f6;
+    --g1: #3b2117;
+    --g2: #7a3416;
+    --g3: #d95926;
+    --g4: #f6a582;
+    --d-neg: #e66767;
+    --d-mid: #383835;
+    --d-pos: #3987e5;
+    --t0: #3987e5;
+    --t1: #d95926;
+    --t2: #199e70;
+    --t3: #9085e9;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+body {
+  font-family: var(--font);
+  font-size: 16px;
+  color: var(--text);
+  background: var(--bg);
+}
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.leaflet-container {
+  font-family: var(--font);
+  background: var(--land);
+}
+/* Reset.css-dəki max-width Leaflet-in canvas və kafellərini sıxmasın */
+.leaflet-container canvas,
+.leaflet-container img,
+.leaflet-container svg {
+  max-width: none !important;
+  max-height: none !important;
+}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: var(--panel);
+  color: var(--text);
+  border-radius: 10px;
+}
+.leaflet-tooltip {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+.leaflet-bar a {
+  background: var(--panel);
+  color: var(--text);
+  border-color: var(--line);
+}
