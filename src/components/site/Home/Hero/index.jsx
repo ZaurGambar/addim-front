@@ -6,7 +6,7 @@ import { fmt } from "@/utils/helpers/format";
 
 const Hero = ({ city, synth, onHelp }) => {
   const facts = [
-    [fmt(city.pop), "Bakı əhalisi (WorldPop 2020)"],
+    [fmt(city.pop), "Bakı əhalisi (DSK, 2024)"],
     [fmt(synth.hot_pop), "nəfər statistik qaynar nöqtələrdə"],
     [`${city.transit500_pct}%`, "əhali dayanacağa 500 m-də"],
     [`${city.lst_popw}°C`, "yay günü səth temperaturu"],

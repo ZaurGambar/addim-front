@@ -6,11 +6,11 @@ import { fmt, fmtN } from "@/utils/helpers/format";
 const buildThemes = (R, C) => {
   const r = (n) => R.find((x) => x.rayon === n) || {};
   return [
-    { t: "Demoqrafiya", src: "WorldPop 2020 · DSK 2026", m: ["density", "disabled_per1000", "g:pop"],
+    { t: "Demoqrafiya", src: "DSK 2024 · WorldPop 2020 · DSK 2026", m: ["density", "disabled_per1000", "g:pop"],
       var: `Mərkəz çox sıxdır: Nəsimidə ${fmt(r("Nəsimi").density)}, Yasamalda ${fmt(r("Yasamal").density)} nəfər/km². Bu, piyada şəhəri üçün kifayət qədər kritik kütlədir.`,
       yox: `Yaş strukturu rayonlar üzrə açıq data kimi yoxdur. WorldPop bütün rayonlara eyni payı verir: uşaqlar ${C.child_pct_city}%, 65+ ${C.old_pct_city}%.`,
       dq: `Əhalinin üçdə biri periferiyadadır: Sabunçu (${fmt(r("Sabunçu").pop)}), Binəqədi (${fmt(r("Binəqədi").pop)}). Əlillik ən yüksək Suraxanıda (${r("Suraxanı").disabled_per1000}/1000) və Xəzərdədir (${r("Xəzər").disabled_per1000}/1000). Bu rayonlar həm də ən zəif nəqliyyatlı rayonlardır.` },
-    { t: "Sosial-iqtisadi", src: "OSM · WorldPop", m: ["poi_km2", "office_per1000", "mix_index"],
+    { t: "Sosial-iqtisadi", src: "OSM · DSK 2024", m: ["poi_km2", "office_per1000", "mix_index"],
       var: `Mərkəzi rayonlarda qarışıq istifadə yüksəkdir: Nəsimi, Yasamal, Nərimanov və Nizamidə indeks ${r("Nəsimi").mix_index}-dir.`,
       yox: "Rayonlar üzrə gəlir, əmək haqqı və mənzil qiyməti açıq data kimi yoxdur. DSK bunları yalnız “Bakı şəhəri – cəmi” üzrə verir.",
       dq: `Ofislər Nərimanovda (${r("Nərimanov").office_per1000}/1000), turizm Səbaildə (${r("Səbail").tourism_beds} mehmanxana) toplanıb. Obyekt sıxlığı Nəsimidə ${fmtN(r("Nəsimi").poi_km2)}/km², Qaradağda ${fmtN(r("Qaradağ").poi_km2)}/km².` },

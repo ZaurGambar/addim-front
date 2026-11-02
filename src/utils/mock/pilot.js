@@ -16,10 +16,10 @@ export const TIMELINE = [
 
 export const PITCH = `ADDIM — Bakı üçün süni intellekt əsaslı piyada platforması.
 
-Problem: Bakının mərkəzində piyada yeraltı keçidlər, geniş magistrallar və kölgəsiz səkilər arasında qalır. Bütün şəhər üzrə analizimiz göstərir ki, 376 min nəfər statistik “qaynar nöqtələrdə” yaşayır, 5 rayonda (733 min nəfər) metro yoxdur, yay günü səth temperaturu 42°C-yə çatır.
+Problem: Bakının mərkəzində piyada yeraltı keçidlər, geniş magistrallar və kölgəsiz səkilər arasında qalır. Bütün şəhər üzrə analizimiz göstərir ki, 350 min nəfər statistik “qaynar nöqtələrdə” yaşayır, 5 rayonda (880 min nəfər) metro yoxdur, yay günü səth temperaturu 42°C-yə çatır.
 
 Həll: Seul, Amsterdam, Barselona, Paris, Kopenhagen və Sinqapurun modellərini Bakının şərtlərinə uyğunlaşdırırıq. 9 mövzu üzrə analiz, sintez və 4 məhəllə tipi ilə hər yerə uyğun müdaxilə seçilir. Platforma 8 AI modulundan ibarətdir. AI təklif edir, operator təsdiq edir.
 
-Prototip: OpenStreetMap, opendata.az, WorldPop və Landsat datası üzərində interaktiv xəritələr, piyada indeksi, sintez və sahə yoxlaması forması işləyir.
+Prototip: OpenStreetMap, opendata.az, DSK 2024, WorldPop və Landsat datası üzərində interaktiv xəritələr, piyada indeksi, sintez və sahə yoxlaması forması işləyir.
 
 Startap modeli: dövlət qurumları üçün SaaS və developerlər üçün “piyada balı” API-si. Layihə 2025–2028 AI Strategiyasının prioritetlərinə uyğundur.`;

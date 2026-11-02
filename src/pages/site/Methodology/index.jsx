@@ -24,7 +24,7 @@ const INDEX_ROWS = [
 ];
 
 const QA = [
-  ["Data haradandır?", "OpenStreetMap, opendata.az (metro, BakuBus, velosiped, DSK), WorldPop, Landsat və SRTM. Hamısı açıq və yoxlanıla biləndir."],
+  ["Data haradandır?", "OpenStreetMap, opendata.az (metro, BakuBus, velosiped, DSK 2024 əhalisi), WorldPop, Landsat və SRTM. Hamısı açıq və yoxlanıla biləndir."],
   ["Bu, sadəcə xəritə deyilmi?", "Xəritə interfeysdir. Dəyər qərar mexanizmindədir: hansı keçid, hansı küçə, hansı ardıcıllıqla, hər qərarın təsiri əvvəlcədən hesablanır."],
   ["Niyə məhz Bakı?", "İqlim, relyef və sovet şəhərsalması Avropa modellərini birbaşa köçürməyə imkan vermir. Biz uyğunlaşdırma qatını qururuq."],
   ["Necə böyüyəcək?", "Model şəhərdən asılı deyil. Gəncə, Sumqayıt və region şəhərləri üçün eyni metod yalnız data ilə işləyir."],

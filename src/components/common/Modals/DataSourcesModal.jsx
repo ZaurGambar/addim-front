@@ -5,8 +5,8 @@ const SOURCES = [
   ["OpenStreetMap", "Yollar, keçidlər, obyektlər, rayon sərhədləri", "ODbL"],
   ["opendata.az · Bakı Metropoliteni", "Metro sərnişin sayı, çıxışlar, BakuBus dayanacaqları və marşrut yükü", "Açıq lisenziya"],
   ["opendata.az · Yerüstü Nəqliyyat Agentliyi", "Velosiped zolaqları, parkinqlər, avtobus trayektoriyaları", "Açıq lisenziya"],
-  ["opendata.az · DSK", "Rayonlar üzrə əlilliyi olan şəxslər, 2026", "Açıq lisenziya"],
-  ["WorldPop", "Əhali və yaş strukturu, 100 m, 2020", "CC BY 4.0"],
+  ["opendata.az · DSK", "Rayonlar üzrə əhali (2024-cü ilin əvvəlinə) və əlilliyi olan şəxslər (2026)", "CC0"],
+  ["WorldPop", "Rayon daxilində əhali paylanması və yaş strukturu, 100 m, 2020 (DSK 2024-ə kalibrlənib)", "CC BY 4.0"],
   ["Landsat 8 · Planetary Computer", "Yer səthinin temperaturu və NDVI, 30.08.2025", "Açıq"],
   ["SRTM · AWS Terrain Tiles", "Hündürlük və meyl", "Açıq"],
 ];

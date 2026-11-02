@@ -42,9 +42,17 @@ npm run build      # dist/
 
 - OpenStreetMap iştirakçıları: ODbL
 - opendata.az: Bakı Metropoliteni, Yerüstü Nəqliyyat Agentliyi, Dövlət Statistika Komitəsi
-- WorldPop 2020: CC BY 4.0
+- Dövlət Statistika Komitəsi, rayonlar üzrə əhali, 2024-cü ilin əvvəlinə: CC0
+- WorldPop 2020: CC BY 4.0 (yalnız rayon daxilində paylanma üçün)
 - Landsat 8 C2 L2 (Microsoft Planetary Computer), SRTM (AWS Terrain Tiles)
 
 Peyk və 2GIS ekran görüntüləri lisenziya səbəbindən repoya daxil edilməyib. Saytda yalnız onlardan çıxan nəticələr göstərilir.
 
 Data hazırlama skriptləri (Python) ayrıca `pedastrainized/data` qovluğundadır: `collect_opendata.py`, `build_geojson.py`, `concepts.py`, `baku/analysis.py`, `baku/synthesis.py`.
+
+### Əhali kalibrləməsi (DSK 2024)
+
+`baku_*` faylları əvvəlcə WorldPop 2020 əhalisi ilə hazırlanıb. `scripts/calibrate_population.py` hər rayonun 1 km hücrələrini bir əmsalla vurur ki, rayonun cəmi DSK 2024 rəqəminə bərabər olsun (məs. Xəzər ×1.84, Səbail ×0.70). Sonra əhaliyə bağlı bütün göstəriciləri yenidən hesablayır: sıxlıq, 1000 nəfərə göstəricilər, qaynar/soyuq nöqtələrin əhalisi, problem kombinasiyaları, prioritet zonalar (sıra: əhali × ehtiyac) və şəhər cəmləri. Klasterlər, Gi* sinifləri, problem qatları və hücrə seçimi (`min_pop` = 300) dəyişmir.
+
+- `python3 scripts/calibrate_population.py --check`: əmsal 1 ilə köhnə faylları dəqiq təkrar edir (düsturların yoxlanışı).
+- Skript artıq kalibrlənmiş data üzərində işləmir. `baku/analysis.py` və `baku/synthesis.py` yenidən işlədiləndə skripti onlardan sonra bir dəfə işlədin, və ya DSK rəqəmlərini birbaşa həmin skriptlərə əlavə edin.

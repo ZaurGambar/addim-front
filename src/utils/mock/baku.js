@@ -15,8 +15,8 @@ export const BAKU_META = {};
 BAKU_METRICS.forEach(([theme, ms]) => ms.forEach(([key, label, unit, level]) => (BAKU_META[key] = { theme, label, unit, level })));
 
 export const BAKU_SOURCES = {
-  pop: "WorldPop 2020, 100 m", density: "WorldPop 2020", disabled_per1000: "DSK 2026 / WorldPop 2020", poi_km2: "OSM", commerce_per1000: "OSM / WorldPop",
-  office_per1000: "OSM / WorldPop", mix_index: "OSM, 8 kateqoriya", tourism_beds: "OSM", elev_mean: "SRTM", slope_mean: "SRTM", steep_pct: "SRTM",
+  pop: "DSK 2024; hücrələrdə WorldPop 2020 paylanması", density: "DSK 2024", disabled_per1000: "DSK 2026 / DSK 2024", poi_km2: "OSM", commerce_per1000: "OSM / DSK 2024",
+  office_per1000: "OSM / DSK 2024", mix_index: "OSM, 8 kateqoriya", tourism_beds: "OSM", elev_mean: "SRTM", slope_mean: "SRTM", steep_pct: "SRTM",
   road_km_km2: "OSM", intersections_km2: "OSM", deadend_pct: "OSM", major_share: "OSM", ped_km_km2: "OSM", transit500_pct: "BakuBus, metro / WorldPop",
   metro_ride: "Bakı Metropoliteni 2026", bus_stops_km2: "BakuBus", lst_mean: "Landsat 8, 30.08.2025", uhi: "Landsat 8", green_pct: "Landsat 8 NDVI",
   below_m20_pct: "SRTM", heritage: "OSM", culture: "OSM", walk_score: "ADDIM indeksi, yalnız mərkəzi zona",
@@ -26,7 +26,7 @@ export const DATA_GAPS = [
   "Yaş strukturu: WorldPop rayonlar üzrə fərq vermir, yalnız şəhər üzrə istifadə olunub.",
   "Binalar: OSM-də Bakının binaları çox natamamdır (məs. Səbaildə 0). Bina sıxlığı ölçülməyib.",
   "Gəlir və mənzil: DSK yalnız “Bakı şəhəri – cəmi” verir.",
-  "Əhali WorldPop 2020-dir, əlillik DSK 2026. İl fərqi nisbətləri bir qədər təhrif edə bilər.",
+  "Rayon əhalisi DSK 2024 rəsmi rəqəmidir. Rayon daxilində paylanma WorldPop 2020-dən götürülüb, yeni tikililər tam əks olunmaya bilər.",
   "Səth temperaturu bir yay gününə aiddir (30.08.2025). Çoxillik ortalama deyil.",
   "Seysmik, daşqın və qəza datası açıq deyil. Risk proksilərlə qiymətləndirilib.",
 ];
