@@ -30,7 +30,7 @@ const SynthMap = ({ synth, summary, rayons, focus }) => {
     };
     const outline = L.geoJSON(rayons, { style: () => ({ renderer, color: cssVar("--text-3"), weight: 1, fill: false, opacity: 0.6 }), interactive: false });
     const cells = L.geoJSON(synth, {
-      style: (f) => ({ renderer, stroke: false, fillColor: style(f.properties), fillOpacity: 0.85 }),
+      style: (f) => ({ renderer, stroke: false, fillColor: style(f.properties), fillOpacity: 0.7 }),
       onEachFeature: (f, l) => l.on("click", () => setInfo(f.properties)),
     });
     outline.addTo(map);

@@ -30,7 +30,7 @@ const BakuMap = ({ rayons, grid, metric, onMetricChange }) => {
     if (isGrid) {
       layers.push(
         L.geoJSON(grid, {
-          style: (f) => ({ renderer, stroke: false, fillColor: binColor(f.properties[key], breaks), fillOpacity: f.properties[key] == null ? 0 : 0.78 }),
+          style: (f) => ({ renderer, stroke: false, fillColor: binColor(f.properties[key], breaks), fillOpacity: f.properties[key] == null ? 0 : 0.64 }),
           onEachFeature: (f, l) => l.on("click", () => setInfo({ kind: "cell", p: f.properties })),
         }),
         L.geoJSON(rayons, { style: () => ({ renderer, color: cssVar("--text"), weight: 1.2, fill: false, opacity: 0.7 }), interactive: false }),
@@ -38,7 +38,7 @@ const BakuMap = ({ rayons, grid, metric, onMetricChange }) => {
     } else {
       layers.push(
         L.geoJSON(rayons, {
-          style: (f) => ({ renderer, color: cssVar("--panel"), weight: 1.5, fillColor: binColor(f.properties[key], breaks), fillOpacity: f.properties[key] == null ? 0.05 : 0.85 }),
+          style: (f) => ({ renderer, color: cssVar("--panel"), weight: 1.5, fillColor: binColor(f.properties[key], breaks), fillOpacity: f.properties[key] == null ? 0.05 : 0.7 }),
           onEachFeature: (f, l) => {
             l.bindTooltip(`${f.properties.rayon}: ${fmtN(f.properties[key])} ${meta.unit}`, { sticky: true });
             l.on("click", () => setInfo({ kind: "rayon", p: f.properties }));

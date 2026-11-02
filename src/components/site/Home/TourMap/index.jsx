@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import L from "leaflet";
 import styled, { keyframes } from "styled-components";
-import { ChevronLeft, ChevronRight, Compass, Construction, Flame, Footprints, Map as MapIcon, MousePointerClick, Pause, Play, RotateCcw, Route, Thermometer, TrainFront, Users, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Compass, Construction, Flame, Footprints, Gauge, Map as MapIcon, MousePointerClick, Pause, Play, RotateCcw, Route, Thermometer, TrainFront, Users, X } from "lucide-react";
 import { useInView } from "@/components/common/Motion";
 import { glass } from "@/styles/common/mixins";
 import { useGet } from "@/utils/hooks/useCustomQuery";
@@ -14,6 +14,7 @@ import { GAP_RAMP, RAMP, cssVar, fmt, quantileBreaks } from "@/utils/helpers/for
 const CITY = [[40.18, 49.45], [40.62, 50.45]];
 const CENTER = [[40.355, 49.8], [40.425, 49.905]];
 const AUTOPLAY_MS = 9000;
+const QUESTION_MS = 1800;
 const still = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const TourMap = () => {
@@ -27,8 +28,7 @@ const TourMap = () => {
   const metro = useGet("metro", ENDPOINTS.METRO, undefined, opts);
   const barriers = useGet("barriers", ENDPOINTS.BARRIERS, undefined, opts);
   const underpasses = useGet("central-underpasses", ENDPOINTS.UNDERPASSES, undefined, opts);
-  const coast = useGet("coast", ENDPOINTS.COAST, undefined, opts);
-  const all = [rayons, grid, synthGeo, synth, analysis, metro, barriers, underpasses, coast];
+  const all = [rayons, grid, synthGeo, synth, analysis, metro, barriers, underpasses];
   const ready = all.every((q) => q.data);
   const failed = all.some((q) => q.isError);
 
@@ -40,7 +40,7 @@ const TourMap = () => {
         <Tour
           d={{
             rayons: rayons.data, grid: grid.data, synthGeo: synthGeo.data, synth: synth.data, city: analysis.data.city,
-            metro: metro.data, barriers: barriers.data, underpasses: underpasses.data, coast: coast.data,
+            metro: metro.data, barriers: barriers.data, underpasses: underpasses.data,
           }}
         />
       )}
@@ -60,6 +60,9 @@ const Tour = ({ d }) => {
 
   const popBreaks = useMemo(() => quantileBreaks(d.grid.features.map((f) => (f.properties.pop > 0 ? f.properties.pop : null))), [d.grid]);
   const lstBreaks = useMemo(() => quantileBreaks(d.grid.features.map((f) => f.properties.lst), 4), [d.grid]);
+  const needBreaks = useMemo(() => quantileBreaks(d.synthGeo.features.map((f) => f.properties.need)), [d.synthGeo]);
+  const qKeys = useMemo(() => Object.keys(d.synth.layers), [d.synth]);
+  const nCells = d.synthGeo.features.length;
   const pilotStations = useMemo(
     () => PILOTS.map((p) => ({ p, f: d.metro.features.find((m) => m.properties.name === p.station) })).filter((x) => x.f),
     [d.metro]
@@ -69,90 +72,150 @@ const Tour = ({ d }) => {
     () => [
       {
         title: "Bu, Bakıdır",
-        text: `Bakı 12 rayondan ibarətdir. Burada ${fmt(C.pop)} insan yaşayır. Turda şəhəri addım-addım gəzəcəyik.`,
+        text: `Altda şəhərin adi xəritəsidir: küçələr, məhəllələr, dəniz. Bakı 12 rayondan ibarətdir, burada ${fmt(C.pop)} insan yaşayır. Əvvəl şəhəri ölçəcəyik, sonra sistemin necə işlədiyini görəcəksiniz.`,
         view: CITY,
-        legend: null,
+        kinds: ["rayons"],
       },
       {
         title: "İnsanlar harada yaşayır?",
         text: "Hər kvadrat 1 km × 1 km-dir. Rəng tündləşdikcə orada daha çox insan yaşayır. Ən sıx yerlər mərkəz və onun ətrafıdır.",
         view: CITY,
+        kinds: ["pop"],
         legend: ["az insan", "çox insan", RAMP],
+        flow: 0,
       },
       {
         title: "Harada istidir?",
-        text: "Yay günü yerin səthi belə qızır. Qırmızı yerlər ən istidir: ağacı az olan kənar qəsəbələr. Mərkəzdəki parklar havanı sərinləşdirir.",
+        text: "Peykdən çəkilmiş yay şəkli: yerin səthi belə qızır. Qırmızı yerlər ən istidir: ağacı az olan kənar qəsəbələr. Parklar havanı sərinləşdirir.",
         view: CITY,
+        kinds: ["heat"],
         legend: ["sərin", "isti", GAP_RAMP],
+        flow: 0,
       },
       {
         title: "Metro hər yerdə yoxdur",
         text: `Mavi dairələr metroya 10 dəqiqəlik piyada yoludur (800 m). ${C.no_metro_rayons.length} rayonda metro ümumiyyətlə yoxdur. Orada ${fmt(C.pop_no_metro)} insan yaşayır.`,
         view: [[40.3, 49.7], [40.5, 50.05]],
-        legend: null,
+        kinds: ["metro"],
+        flow: 0,
       },
       {
         title: "Mərkəzdə yolu keçmək çətindir",
         text: "Qırmızı xətlər uzun məsafədə keçidi olmayan geniş yollardır. Narıncı nöqtələr yeraltı keçidlərdir: yolu keçmək üçün pilləkənlə aşağı enmək lazımdır.",
         view: CENTER,
-        legend: null,
+        kinds: ["barriers"],
+        flow: 0,
       },
       {
-        title: "Problemlər harada toplanır?",
-        text: `8 problemi bir xəritəyə yığdıq: isti, yaşıllıq azlığı, uzaq avtobus və s. Qırmızı kvadratlarda problemlər çoxdur, göy kvadratlarda azdır. Qırmızı yerlərdə ${fmt(d.synth.hot_pop)} insan yaşayır.`,
+        title: "Sistem işə düşür: hər yerə 8 sual",
+        text: `İndi bütün ölçüləri sistem birləşdirir. Şəhəri ${nCells} kvadrata bölür və hər kvadrata eyni 8 sualı verir. Hər sualda ən pis üçdə bir kvadrat qırmızı olur.`,
         view: CITY,
-        legend: null,
+        cycle: true,
+        flow: 1,
+      },
+      {
+        title: "Hər yer bal alır",
+        text: "Cavablar toplanır: hər kvadrat 0–100 bal alır. Çox insan yaşayan yerdə bal artır, çünki problem daha çox adama toxunur. Tünd rəng: kömək daha çox lazımdır.",
+        view: CITY,
+        kinds: ["need"],
+        legend: ["az ehtiyac", "çox ehtiyac", RAMP],
+        flow: 2,
+      },
+      {
+        title: "Qonşulara baxır: problem ocaqları",
+        text: `Tək pis kvadrat təsadüf ola bilər. Sistem hər kvadratın qonşularına da baxır. Ətrafı da pisdirsə, bu, problem ocağıdır (qırmızı). Qırmızı yerlərdə ${fmt(d.synth.hot_pop)} insan yaşayır.`,
+        view: CITY,
+        kinds: ["problems"],
+        legend: PROBLEM_LEGEND,
+        flow: 3,
       },
       {
         title: `Ən çətin yer: ${top.place}`,
-        text: `Burada ${fmt(top.pop)} insan yaşayır. Əsas problemlər: ${top.top_layers.map((l) => l[0].toLowerCase()).join(", ")}. Kömək ilk növbədə bura lazımdır.`,
+        text: `Ocaqları "insan sayı × bal" ilə sıralayırıq. Birinci yer: ${top.place}. Burada ${fmt(top.pop)} insan yaşayır. Əsas problemlər: ${top.top_layers.map((l) => l[0].toLowerCase()).join(", ")}.`,
         center: [top.lat, top.lon],
         zoom: 13,
-        legend: null,
+        kinds: ["problems", "top"],
+        flow: 3,
       },
       {
         title: "Həlli burada sınayırıq",
-        text: `${pilotStations.length} sınaq yeri seçdik: ${pilotStations.map((x) => x.p.station).join(", ")}. Yeraltı keçidin yanına adi zebra, kölgə və oturacaq. Nəticə yaxşı olsa, şəhərə yayılacaq.`,
+        text: `${pilotStations.length} sınaq yeri seçdik: ${pilotStations.map((x) => x.p.station).join(", ")}. Yeraltı keçidin yanına adi zebra, kölgə və oturacaq. Sonra yenidən ölçürük: nəticə yaxşı olsa, həll şəhərə yayılacaq.`,
         view: CENTER,
-        legend: null,
+        kinds: ["barriers", "pilots"],
+        flow: 4,
       },
     ],
-    [C, d.synth, top, pilotStations]
+    [C, d.synth, top, pilotStations, nCells]
   );
   const S = steps[step];
   const last = steps.length - 1;
 
-  // daimi qatlar: sahil və rayon sərhədləri
+  // daimi qat: rayon sərhədləri (şəhər xəritəsi altda görünür)
   useEffect(() => {
     if (!map) return undefined;
-    const base = [
-      L.geoJSON(d.rayons, { style: () => ({ renderer, color: cssVar("--text-3"), weight: 1, fillColor: cssVar("--land"), fillOpacity: 0.6 }), interactive: false }),
-      L.geoJSON(d.coast, { style: () => ({ renderer, color: cssVar("--coast"), weight: 2, interactive: false }) }),
-    ];
-    base.forEach((l) => l.addTo(map));
-    return () => base.forEach((l) => map.removeLayer(l));
-  }, [map, renderer, d.rayons, d.coast, dark]);
+    const base = L.geoJSON(d.rayons, { style: () => ({ renderer, color: cssVar("--text-3"), weight: 1, opacity: 0.6, dashArray: "4 4", fill: false }), interactive: false });
+    base.addTo(map);
+    return () => map.removeLayer(base);
+  }, [map, renderer, d.rayons, dark]);
 
   // ---- qat növləri: hər biri bir dəfə qurulur (tema ilə), canlıdır: üstünə gələndə işıqlanır və izah verir ----
   const cache = useRef(new Map());
   const [place, setPlace] = useState(null);
   const build = useCallback(
-    (kind) => buildKind(kind, { renderer, d, popBreaks, lstBreaks, top, pilotStations, setPlace }),
-    [renderer, d, popBreaks, lstBreaks, top, pilotStations]
+    (kind) => buildKind(kind, { renderer, d, popBreaks, lstBreaks, needBreaks, top, pilotStations, setPlace }),
+    [renderer, d, popBreaks, lstBreaks, needBreaks, top, pilotStations]
   );
 
   // ---- rejim: tur və ya kəşf ----
   const [mode, setMode] = useState("tour");
   const [kind, setKind] = useState("problems");
-  const kinds = mode === "tour" ? STEP_KINDS[step] : [kind];
+  // "8 sual" addımı: suallar özü növbə ilə dəyişir (q = sual nömrəsi)
+  const [q, setQ] = useState(0);
+  const [qAuto, setQAuto] = useState(true);
+  const kinds = mode === "tour" ? (S.cycle ? [`q:${qKeys[q]}`] : S.kinds) : [kind];
   const kindsKey = kinds.join(",");
+
+  useEffect(() => {
+    if (mode !== "tour" || !S.cycle || !qAuto) return undefined;
+    const t = setInterval(() => setQ((v) => (v + 1) % qKeys.length), QUESTION_MS);
+    return () => clearInterval(t);
+  }, [mode, S, qAuto, qKeys.length]);
 
   // kamera: turda hər addımda uçur; kəşfə keçəndə bir dəfə bütün şəhərə qayıdır
   const lastMode = useRef(mode);
+  const flying = useRef(false);
   useEffect(() => {
     if (!map) return undefined;
-    const want = kindsKey.split(",");
-    const layers = want.flatMap((k) => {
+    const animate = !still();
+    const opts = { animate, duration: 1.4, easeLinearity: 0.2 };
+    let fly = false;
+    if (mode === "tour") {
+      fly = true;
+      map.stop();
+      if (S.center) map.flyTo(S.center, S.zoom, opts);
+      else map.flyToBounds(S.view, { ...opts, padding: [16, 16] });
+    } else if (lastMode.current !== "explore") {
+      fly = true;
+      map.stop();
+      map.flyToBounds(CITY, { ...opts, padding: [16, 16] });
+    }
+    lastMode.current = mode;
+    if (!fly || !animate) return undefined;
+    flying.current = true;
+    const done = () => (flying.current = false);
+    map.once("moveend", done);
+    const t = setTimeout(done, 1700);
+    return () => {
+      clearTimeout(t);
+      map.off("moveend", done);
+      flying.current = false;
+    };
+  }, [map, mode, S]);
+
+  // qatlar: uçuş bitəndən sonra çəkilir (uçuş zamanı ağır qat kadrları ləngidir)
+  useEffect(() => {
+    if (!map) return undefined;
+    const layers = kindsKey.split(",").flatMap((k) => {
       const key = `${k}-${dark}`;
       if (!cache.current.has(key)) cache.current.set(key, build(k));
       return cache.current.get(key);
@@ -163,22 +226,8 @@ const Tour = ({ d }) => {
       shown = true;
       layers.forEach((l) => l.addTo(map));
     };
-    const animate = !still();
-    const opts = { animate, duration: 1.4, easeLinearity: 0.2 };
-    let moving = false;
-    if (mode === "tour") {
-      moving = true;
-      map.stop();
-      if (S.center) map.flyTo(S.center, S.zoom, opts);
-      else map.flyToBounds(S.view, { ...opts, padding: [16, 16] });
-    } else if (lastMode.current !== "explore") {
-      moving = true;
-      map.stop();
-      map.flyToBounds(CITY, { ...opts, padding: [16, 16] });
-    }
-    lastMode.current = mode;
     let fallback;
-    if (moving && animate) {
+    if (flying.current) {
       map.once("moveend", show);
       fallback = setTimeout(show, 1700);
     } else show();
@@ -187,7 +236,7 @@ const Tour = ({ d }) => {
       map.off("moveend", show);
       layers.forEach((l) => map.removeLayer(l));
     };
-  }, [map, mode, step, kindsKey, S, dark, build]);
+  }, [map, kindsKey, dark, build]);
 
   // ---- "Bu yer haqqında": xəritəyə klik ----
   const index = useMemo(
@@ -229,15 +278,24 @@ const Tour = ({ d }) => {
     if (clickPin.current) map?.removeLayer(clickPin.current);
   };
 
-  const go = useCallback((n) => setStep(Math.max(0, Math.min(last, n))), [last]);
+  const go = useCallback(
+    (n) => {
+      setStep(Math.max(0, Math.min(last, n)));
+      setQ(0);
+      setQAuto(true);
+    },
+    [last]
+  );
 
   // avtomatik oynatma
   const timer = useRef(null);
   useEffect(() => {
     if (!playing || mode !== "tour") return undefined;
-    timer.current = setTimeout(() => (step < last ? setStep(step + 1) : setPlaying(false)), AUTOPLAY_MS);
+    // "8 sual" addımında bütün suallar göstərilənə qədər gözləyir
+    const ms = S.cycle ? Math.max(AUTOPLAY_MS, QUESTION_MS * qKeys.length + 1200) : AUTOPLAY_MS;
+    timer.current = setTimeout(() => (step < last ? go(step + 1) : setPlaying(false)), ms);
     return () => clearTimeout(timer.current);
-  }, [playing, step, last, mode]);
+  }, [playing, step, last, mode, S, qKeys.length, go]);
 
   const onKey = (e) => {
     if (mode !== "tour") return;
@@ -290,12 +348,26 @@ const Tour = ({ d }) => {
           <Count>
             Addım {step + 1} / {steps.length}
           </Count>
+          {S.flow != null && <Flow at={S.flow} />}
           <h3>{S.title}</h3>
           <p>{S.text}</p>
+          {S.cycle && (
+            <Questions
+              keys={qKeys}
+              at={q}
+              onPick={(i) => {
+                setQ(i);
+                setQAuto(false);
+              }}
+            />
+          )}
+          {S.cycle && <LegendBar legend={Q_LEGEND} />}
           {S.legend && <LegendBar legend={S.legend} />}
-          <Hint>
-            <MousePointerClick size={14} /> Xəritədə istənilən yerə klikləyin: o yer haqqında məlumat açılacaq.
-          </Hint>
+          {!S.cycle && (
+            <Hint>
+              <MousePointerClick size={14} /> Xəritədə istənilən yerə klikləyin: o yer haqqında məlumat açılacaq.
+            </Hint>
+          )}
           <Controls>
             <Btn type="button" onClick={() => go(step - 1)} disabled={step === 0} aria-label="Geri">
               <ChevronLeft size={18} />
@@ -318,7 +390,7 @@ const Tour = ({ d }) => {
               {playing ? <Pause size={16} /> : <Play size={16} />}
             </Btn>
           </Controls>
-          {playing && <Progress key={`p${step}`} style={{ animationDuration: `${AUTOPLAY_MS}ms` }} />}
+          {playing && <Progress key={`p${step}`} style={{ animationDuration: `${S.cycle ? Math.max(AUTOPLAY_MS, QUESTION_MS * qKeys.length + 1200) : AUTOPLAY_MS}ms` }} />}
         </Caption>
       ) : (
         <Caption key={`e${kind}`} aria-live="polite" $hide={!!place}>
@@ -347,7 +419,7 @@ const Tour = ({ d }) => {
 };
 
 // Qat növünü qurur (komponentdən kənarda: React kompilyatoru üçün sadə, təmiz funksiya)
-function buildKind(kind, { renderer, d, popBreaks, lstBreaks, top, pilotStations, setPlace }) {
+function buildKind(kind, { renderer, d, popBreaks, lstBreaks, needBreaks, top, pilotStations, setPlace }) {
   const red = cssVar("--critical");
   const blue = cssVar("--accent");
   const grey = cssVar("--text-3");
@@ -388,10 +460,29 @@ function buildKind(kind, { renderer, d, popBreaks, lstBreaks, top, pilotStations
     });
     return [g];
   }
+  if (kind.startsWith("q:")) {
+    const k = kind.slice(2);
+    const name = d.synth.layers[k];
+    return [
+      polys(
+        d.synthGeo,
+        (f) => (f.properties["p_" + k] >= 67 ? cell(red, 0.7) : cell(grey, 0.12)),
+        (p) => `<b>${QUESTIONS[k] || name}</b><br>${p["p_" + k] >= 67 ? "Bəli: bu yer şəhərin ən pis üçdə birindədir" : "Xeyr, burada bu problem ciddi deyil"}`
+      ),
+    ];
+  }
+  if (kind === "need")
+    return [
+      polys(
+        d.synthGeo,
+        (f) => cell(pick(f.properties.need, needBreaks, popCols), 0.68),
+        (p) => `<b>${p.place || p.rayon}</b><br>Bal: <b>${Math.round(p.need)}</b> / 100 · ${p.overlap} problem eyni yerdə`
+      ),
+    ];
   if (kind === "pop")
-    return [polys(d.grid, (f) => cell(f.properties.pop > 0 ? pick(f.properties.pop, popBreaks, popCols) : null, 0.8), (p) => `Bu kvadratda təxminən <b>${fmt(p.pop)}</b> insan yaşayır`)];
+    return [polys(d.grid, (f) => cell(f.properties.pop > 0 ? pick(f.properties.pop, popBreaks, popCols) : null, 0.62), (p) => `Bu kvadratda təxminən <b>${fmt(p.pop)}</b> insan yaşayır`)];
   if (kind === "heat")
-    return [polys(d.grid, (f) => cell(f.properties.lst == null ? null : pick(f.properties.lst, lstBreaks, lstCols), 0.75), (p) => (p.lst == null ? null : `Yay günü yer səthi: <b>${p.lst}°C</b>`))];
+    return [polys(d.grid, (f) => cell(f.properties.lst == null ? null : pick(f.properties.lst, lstBreaks, lstCols), 0.6), (p) => (p.lst == null ? null : `Yay günü yer səthi: <b>${p.lst}°C</b>`))];
   if (kind === "metro") {
     const out = [];
     d.metro.features
@@ -433,7 +524,7 @@ function buildKind(kind, { renderer, d, popBreaks, lstBreaks, top, pilotStations
         d.synthGeo,
         (f) => {
           const g = f.properties.gi_cls;
-          return cell(g >= 2 ? red : g <= -2 ? blue : grey, g >= 2 || g <= -2 ? 0.75 : 0.14);
+          return cell(g >= 2 ? red : g <= -2 ? blue : grey, g >= 2 || g <= -2 ? 0.66 : 0.12);
         },
         (p) => {
           const probs = Object.keys(layer).filter((k) => p["p_" + k] >= 67).map((k) => layer[k].toLowerCase());
@@ -454,7 +545,19 @@ function buildKind(kind, { renderer, d, popBreaks, lstBreaks, top, pilotStations
   return [];
 }
 
-const STEP_KINDS = [["rayons"], ["pop"], ["heat"], ["metro"], ["barriers"], ["problems"], ["problems", "top"], ["barriers", "pilots"]];
+// sadə dildə 8 sual (sintezin 8 qatı)
+const QUESTIONS = {
+  heat: "Burada çox istidirmi?",
+  green_gap: "Ağac, park azdırmı?",
+  transit_gap: "Avtobus, metro uzaqdırmı?",
+  fragment: "Küçələr qırıqdır, dalan çoxdur?",
+  car: "Böyük maşın yolu yaxındırmı?",
+  slope: "Yol dikdirmi?",
+  lowland: "Yer alçaqdır, su basa bilər?",
+  service_gap: "Mağaza, xidmət uzaqdırmı?",
+};
+const Q_LEGEND = { swatches: [["--critical", "bəli, problem var"], ["--text-3", "xeyr"]] };
+const FLOW = ["Ölçürük", "8 sual", "Bal", "Ocaq", "Sınaq"];
 
 const PROBLEM_LEGEND = { swatches: [["--accent", "yaxşı"], ["--text-3", "orta"], ["--critical", "problem çox"]] };
 const EXPLORE = [
@@ -463,9 +566,35 @@ const EXPLORE = [
   { key: "heat", label: "İstilik", icon: Thermometer, text: "Yay günü yer səthinin temperaturu. Qırmızı: ən isti yerlər.", legend: ["sərin", "isti", GAP_RAMP] },
   { key: "metro", label: "Metro", icon: TrainFront, text: "Dairənin içindən metroya 10 dəqiqəyə (800 m) piyada çatmaq olar. Dairədən kənarda metro uzaqdır." },
   { key: "barriers", label: "Maneələr", icon: Construction, text: "Qırmızı: uzun məsafədə keçidi olmayan geniş yollar. Narıncı nöqtə: yeraltı keçid." },
+  { key: "need", label: "Bal", icon: Gauge, text: "Hər kvadratın balı (0–100): 8 sualın cavabı və orada yaşayan insan sayı. Tünd: kömək daha çox lazımdır.", legend: ["az ehtiyac", "çox ehtiyac", RAMP] },
   { key: "problems", label: "Problemlər", icon: Flame, text: "8 problem bir xəritədə. Qırmızı kvadratlarda problemlər toplanıb, göy kvadratlarda vəziyyət yaxşıdır.", legend: PROBLEM_LEGEND },
   { key: "pilots", label: "Pilotlar", icon: Footprints, text: "Həllin sınanacağı 3 yer. Nöqtəyə klikləyin: orada nə ediləcəyini oxuyun." },
 ];
+
+// Sistemin axını: hansı mərhələdəyik
+const Flow = ({ at }) => (
+  <FlowRow aria-label={`Sistem: ${FLOW[at]} mərhələsi`}>
+    {FLOW.map((t, i) => (
+      <li key={t} className={i === at ? "on" : i < at ? "done" : ""}>
+        <span>{i + 1}</span>
+        {t}
+      </li>
+    ))}
+  </FlowRow>
+);
+
+const Questions = ({ keys, at, onPick }) => (
+  <QBox>
+    <strong key={at}>
+      Sual {at + 1}/{keys.length}: {QUESTIONS[keys[at]]}
+    </strong>
+    <div>
+      {keys.map((k, i) => (
+        <button key={k} type="button" className={i === at ? "on" : i < at ? "done" : ""} onClick={() => onPick(i)} aria-label={QUESTIONS[k]} />
+      ))}
+    </div>
+  </QBox>
+);
 
 const LegendBar = ({ legend }) =>
   legend.swatches ? (
@@ -910,6 +1039,96 @@ const Caption = styled.div`
   }
   @media (prefers-reduced-motion: reduce) {
     animation: none;
+  }
+`;
+
+const FlowRow = styled.ol`
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  li {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 24px;
+    padding: 0 9px 0 4px;
+    border-radius: 12px;
+    font-family: var(--font-semibold);
+    font-size: 11.5px;
+    color: var(--text-3);
+    background: var(--bg-secondary);
+    transition: background 0.3s, color 0.3s;
+  }
+  li span {
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 10px;
+    background: var(--line);
+    color: var(--text-2);
+  }
+  li.done {
+    color: var(--accent);
+  }
+  li.done span {
+    background: color-mix(in srgb, var(--accent) 25%, transparent);
+    color: var(--accent);
+  }
+  li.on {
+    color: #fff;
+    background: var(--grad);
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+  li.on span {
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+  }
+`;
+
+const qIn = keyframes`
+  from {
+    opacity: 0;
+    translate: 0 6px;
+  }
+`;
+const QBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--critical) 10%, var(--bg-secondary));
+  border: 1px solid color-mix(in srgb, var(--critical) 30%, transparent);
+  strong {
+    font-family: var(--font-bold);
+    font-size: 15px;
+    color: var(--text);
+    animation: ${qIn} 0.35s ease-out both;
+  }
+  div {
+    display: flex;
+    gap: 5px;
+  }
+  button {
+    flex: 1;
+    height: 6px;
+    border-radius: 99px;
+    background: var(--line);
+    transition: background 0.3s;
+  }
+  button.done {
+    background: color-mix(in srgb, var(--critical) 45%, transparent);
+  }
+  button.on {
+    background: var(--critical);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    strong {
+      animation: none;
+    }
   }
 `;
 
