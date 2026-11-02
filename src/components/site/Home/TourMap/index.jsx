@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import L from "leaflet";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
-import { ChevronLeft, ChevronRight, Compass, Construction, Flame, Footprints, Gauge, Map as MapIcon, MousePointerClick, Pause, Play, RotateCcw, Route, Thermometer, TrainFront, Users, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Compass, Construction, Flame, Footprints, Gauge, Map as MapIcon, MousePointerClick, Pause, Play, RotateCcw, Route, Scale, Thermometer, TrainFront, Users, X } from "lucide-react";
 import { useInView } from "@/components/common/Motion";
 import { glass } from "@/styles/common/mixins";
 import { useGet } from "@/utils/hooks/useCustomQuery";
@@ -186,7 +186,9 @@ const Tour = ({ d }) => {
   const [q, setQ] = useState(0);
   const [qAuto, setQAuto] = useState(true);
   const item = S.cycle ? S.cycle[q % S.cycle.length] : null;
-  const kinds = mode === "tour" ? (item ? item.kinds : S.kinds) : [kind];
+  // kəşf rejimində qaydalar: istifadəçi özü seçir
+  const [rule, setRule] = useState(0);
+  const kinds = mode === "tour" ? (item ? item.kinds : S.kinds) : kind === "rules" ? RULES[rule].kinds : [kind];
   const cycleMs = S.cycleMs || QUESTION_MS;
   const stepMs = S.cycle ? Math.max(AUTOPLAY_MS, cycleMs * S.cycle.length + 1200) : AUTOPLAY_MS;
   const kindsKey = kinds.join(",");
@@ -419,6 +421,23 @@ const Tour = ({ d }) => {
           <Count>Kəşf et</Count>
           <h3>{K.label}</h3>
           <p>{K.text}</p>
+          {kind === "rules" && (
+            <>
+              <Questions items={RULES} prefix="Qayda" tone="rule" at={rule} onPick={setRule} />
+              {RULES[rule].legend && <LegendBar legend={RULES[rule].legend} />}
+              <Controls>
+                <Btn type="button" onClick={() => setRule((rule + RULES.length - 1) % RULES.length)} aria-label="Əvvəlki qayda">
+                  <ChevronLeft size={18} />
+                </Btn>
+                <Btn type="button" $primary onClick={() => setRule((rule + 1) % RULES.length)}>
+                  Növbəti qayda <ChevronRight size={18} />
+                </Btn>
+                <TourLink to="/qaydalar">
+                  Bütün qaydalar <ChevronRight size={15} />
+                </TourLink>
+              </Controls>
+            </>
+          )}
           {K.legend && <LegendBar legend={K.legend} />}
           <Hint>
             <MousePointerClick size={14} /> Üstünə gəlin və ya klikləyin. Siçan təkəri ilə yaxınlaşdırmaq üçün əvvəl xəritəyə klikləyin.
@@ -607,6 +626,7 @@ const EXPLORE = [
   { key: "need", label: "Bal", icon: Gauge, text: "Hər kvadratın balı (0–100): 8 sualın cavabı və orada yaşayan insan sayı. Tünd: kömək daha çox lazımdır.", legend: ["az ehtiyac", "çox ehtiyac", RAMP] },
   { key: "problems", label: "Problemlər", icon: Flame, text: "8 problem bir xəritədə. Qırmızı kvadratlarda problemlər toplanıb, göy kvadratlarda vəziyyət yaxşıdır.", legend: PROBLEM_LEGEND },
   { key: "pilots", label: "Pilotlar", icon: Footprints, text: "Həllin sınanacağı 3 yer. Nöqtəyə klikləyin: orada nə ediləcəyini oxuyun." },
+  { key: "rules", label: "Qaydalar", icon: Scale, text: "10 qayda təklifi. Birini seçin: xəritə qaydanın harada kömək edəcəyini göstərəcək." },
 ];
 
 // Sistemin axını: hansı mərhələdəyik
