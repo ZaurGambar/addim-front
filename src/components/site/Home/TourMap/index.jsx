@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import L from "leaflet";
+import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { ChevronLeft, ChevronRight, Compass, Construction, Flame, Footprints, Gauge, Map as MapIcon, MousePointerClick, Pause, Play, RotateCcw, Route, Thermometer, TrainFront, Users, X } from "lucide-react";
 import { useInView } from "@/components/common/Motion";
@@ -110,7 +111,8 @@ const Tour = ({ d }) => {
         title: "Sistem işə düşür: hər yerə 8 sual",
         text: `İndi bütün ölçüləri sistem birləşdirir. Şəhəri ${nCells} kvadrata bölür və hər kvadrata eyni 8 sualı verir. Hər sualda ən pis üçdə bir kvadrat qırmızı olur.`,
         view: CITY,
-        cycle: true,
+        cycle: qKeys.map((k) => ({ label: QUESTIONS[k], kinds: [`q:${k}`], legend: Q_LEGEND })),
+        prefix: "Sual",
         flow: 1,
       },
       {
@@ -144,8 +146,19 @@ const Tour = ({ d }) => {
         kinds: ["barriers", "pilots"],
         flow: 4,
       },
+      {
+        title: "Sınaq işləsə, qayda olur",
+        text: "Həllin bütün şəhərə yayılması üçün qayda lazımdır. Hər qayda bir problemi həll edir. Xəritə qaydanın harada kömək edəcəyini göstərir.",
+        view: CITY,
+        cycle: RULES,
+        cycleMs: RULE_MS,
+        prefix: "Qayda",
+        tone: "rule",
+        link: ["/qaydalar", "Bütün qaydalar"],
+        flow: 5,
+      },
     ],
-    [C, d.synth, top, pilotStations, nCells]
+    [C, d.synth, top, pilotStations, nCells, qKeys]
   );
   const S = steps[step];
   const last = steps.length - 1;
@@ -172,14 +185,17 @@ const Tour = ({ d }) => {
   // "8 sual" addımı: suallar özü növbə ilə dəyişir (q = sual nömrəsi)
   const [q, setQ] = useState(0);
   const [qAuto, setQAuto] = useState(true);
-  const kinds = mode === "tour" ? (S.cycle ? [`q:${qKeys[q]}`] : S.kinds) : [kind];
+  const item = S.cycle ? S.cycle[q % S.cycle.length] : null;
+  const kinds = mode === "tour" ? (item ? item.kinds : S.kinds) : [kind];
+  const cycleMs = S.cycleMs || QUESTION_MS;
+  const stepMs = S.cycle ? Math.max(AUTOPLAY_MS, cycleMs * S.cycle.length + 1200) : AUTOPLAY_MS;
   const kindsKey = kinds.join(",");
 
   useEffect(() => {
     if (mode !== "tour" || !S.cycle || !qAuto) return undefined;
-    const t = setInterval(() => setQ((v) => (v + 1) % qKeys.length), QUESTION_MS);
+    const t = setInterval(() => setQ((v) => (v + 1) % S.cycle.length), cycleMs);
     return () => clearInterval(t);
-  }, [mode, S, qAuto, qKeys.length]);
+  }, [mode, S, qAuto, cycleMs]);
 
   // kamera: turda hər addımda uçur; kəşfə keçəndə bir dəfə bütün şəhərə qayıdır
   const lastMode = useRef(mode);
@@ -292,10 +308,9 @@ const Tour = ({ d }) => {
   useEffect(() => {
     if (!playing || mode !== "tour") return undefined;
     // "8 sual" addımında bütün suallar göstərilənə qədər gözləyir
-    const ms = S.cycle ? Math.max(AUTOPLAY_MS, QUESTION_MS * qKeys.length + 1200) : AUTOPLAY_MS;
-    timer.current = setTimeout(() => (step < last ? go(step + 1) : setPlaying(false)), ms);
+    timer.current = setTimeout(() => (step < last ? go(step + 1) : setPlaying(false)), stepMs);
     return () => clearTimeout(timer.current);
-  }, [playing, step, last, mode, S, qKeys.length, go]);
+  }, [playing, step, last, mode, stepMs, go]);
 
   const onKey = (e) => {
     if (mode !== "tour") return;
@@ -353,15 +368,22 @@ const Tour = ({ d }) => {
           <p>{S.text}</p>
           {S.cycle && (
             <Questions
-              keys={qKeys}
-              at={q}
+              items={S.cycle}
+              prefix={S.prefix}
+              tone={S.tone}
+              at={q % S.cycle.length}
               onPick={(i) => {
                 setQ(i);
                 setQAuto(false);
               }}
             />
           )}
-          {S.cycle && <LegendBar legend={Q_LEGEND} />}
+          {item?.legend && <LegendBar legend={item.legend} />}
+          {S.link && (
+            <TourLink to={S.link[0]}>
+              {S.link[1]} <ChevronRight size={15} />
+            </TourLink>
+          )}
           {S.legend && <LegendBar legend={S.legend} />}
           {!S.cycle && (
             <Hint>
@@ -390,7 +412,7 @@ const Tour = ({ d }) => {
               {playing ? <Pause size={16} /> : <Play size={16} />}
             </Btn>
           </Controls>
-          {playing && <Progress key={`p${step}`} style={{ animationDuration: `${S.cycle ? Math.max(AUTOPLAY_MS, QUESTION_MS * qKeys.length + 1200) : AUTOPLAY_MS}ms` }} />}
+          {playing && <Progress key={`p${step}`} style={{ animationDuration: `${stepMs}ms` }} />}
         </Caption>
       ) : (
         <Caption key={`e${kind}`} aria-live="polite" $hide={!!place}>
@@ -557,7 +579,23 @@ const QUESTIONS = {
   service_gap: "Mağaza, xidmət uzaqdırmı?",
 };
 const Q_LEGEND = { swatches: [["--critical", "bəli, problem var"], ["--text-3", "xeyr"]] };
-const FLOW = ["Ölçürük", "8 sual", "Bal", "Ocaq", "Sınaq"];
+const FLOW = ["Ölçürük", "8 sual", "Bal", "Ocaq", "Sınaq", "Qayda"];
+
+// Qayda təklifləri (/qaydalar səhifəsi ilə eyni sıra) və xəritədə harada kömək etdikləri
+const RULE_MS = 3200;
+const RULE_HELP = { swatches: [["--critical", "qayda burada kömək edər"], ["--text-3", "az lazımdır"]] };
+const RULES = [
+  { label: "Piyada keçidi standartı", note: "Keçidlər arası məsafə həddi, yeraltı keçidin yanında zebra. Qırmızı xətlər: keçidsiz geniş yollar.", kinds: ["barriers"] },
+  { label: "Məhəllədə 30 km/saat", note: "Böyük maşın yollarının yanındakı məhəllələrdə sürət azalır.", kinds: ["q:car"], legend: RULE_HELP },
+  { label: "Pilot (sınaq) rejimi", note: "Müvəqqəti zebra, kölgə, oturacaq: 6–12 ay sadə icazə ilə.", kinds: ["barriers", "pilots"] },
+  { label: "Kölgə və yaşıllıq norması", note: "Küçədə minimum ağac, dayanacaqda kölgə, sərin dam.", kinds: ["q:heat"], legend: RULE_HELP },
+  { label: "Parkinq qaydaları", note: "Səkidə parkinqə nəzarət, mərkəzdə pullu parkinq.", kinds: ["q:car"], legend: RULE_HELP },
+  { label: "Nəqliyyat standartı", note: "Hər evdən dayanacağa ən çox 500 m, avtobus zolağı.", kinds: ["q:transit_gap"], legend: RULE_HELP },
+  { label: "“15 dəqiqəlik məhəllə”", note: "Yeni tikinti üçün piyada əlçatanlıq analizi: məktəb, mağaza, dayanacaq.", kinds: ["q:service_gap"], legend: RULE_HELP },
+  { label: "Sahil və alçaq ərazilər", note: "Su basa bilən yerlərdə tikinti şərtləri.", kinds: ["q:lowland"], legend: RULE_HELP },
+  { label: "Büdcə ehtiyaca görə", note: "İlk pul “insan sayı × bal” ilə ən çətin yerlərə gedir.", kinds: ["need"], legend: ["az ehtiyac", "çox ehtiyac", RAMP] },
+  { label: "Açıq məlumat, əvvəl/sonra ölçmə", note: "Hər layihədən əvvəl və sonra ölçülür: sistem hər il yenilənir.", kinds: ["problems"], legend: PROBLEM_LEGEND },
+];
 
 const PROBLEM_LEGEND = { swatches: [["--accent", "yaxşı"], ["--text-3", "orta"], ["--critical", "problem çox"]] };
 const EXPLORE = [
@@ -583,14 +621,15 @@ const Flow = ({ at }) => (
   </FlowRow>
 );
 
-const Questions = ({ keys, at, onPick }) => (
-  <QBox>
+const Questions = ({ items, prefix, tone, at, onPick }) => (
+  <QBox className={tone}>
     <strong key={at}>
-      Sual {at + 1}/{keys.length}: {QUESTIONS[keys[at]]}
+      {prefix} {at + 1}/{items.length}: {items[at].label}
+      {items[at].note && <em>{items[at].note}</em>}
     </strong>
     <div>
-      {keys.map((k, i) => (
-        <button key={k} type="button" className={i === at ? "on" : i < at ? "done" : ""} onClick={() => onPick(i)} aria-label={QUESTIONS[k]} />
+      {items.map((it, i) => (
+        <button key={it.label} type="button" className={i === at ? "on" : i < at ? "done" : ""} onClick={() => onPick(i)} aria-label={it.label} />
       ))}
     </div>
   </QBox>
@@ -1100,13 +1139,27 @@ const QBox = styled.div`
   gap: 8px;
   padding: 10px 12px;
   border-radius: 14px;
-  background: color-mix(in srgb, var(--critical) 10%, var(--bg-secondary));
-  border: 1px solid color-mix(in srgb, var(--critical) 30%, transparent);
+  --q: var(--critical);
+  background: color-mix(in srgb, var(--q) 10%, var(--bg-secondary));
+  border: 1px solid color-mix(in srgb, var(--q) 30%, transparent);
   strong {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
     font-family: var(--font-bold);
     font-size: 15px;
     color: var(--text);
     animation: ${qIn} 0.35s ease-out both;
+  }
+  em {
+    font-style: normal;
+    font-family: var(--font);
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--text-2);
+  }
+  &.rule {
+    --q: var(--good);
   }
   div {
     display: flex;
@@ -1120,16 +1173,26 @@ const QBox = styled.div`
     transition: background 0.3s;
   }
   button.done {
-    background: color-mix(in srgb, var(--critical) 45%, transparent);
+    background: color-mix(in srgb, var(--q) 45%, transparent);
   }
   button.on {
-    background: var(--critical);
+    background: var(--q);
   }
   @media (prefers-reduced-motion: reduce) {
     strong {
       animation: none;
     }
   }
+`;
+
+const TourLink = styled(Link)`
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-semibold);
+  font-size: 13.5px;
+  color: var(--accent);
 `;
 
 const Count = styled.span`
