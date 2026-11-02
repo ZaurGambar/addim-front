@@ -2,12 +2,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import L from "leaflet";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
-import { ChevronLeft, ChevronRight, Compass, Construction, Flame, Footprints, Gauge, Map as MapIcon, MousePointerClick, Pause, Play, RotateCcw, Route, Scale, Thermometer, TrainFront, Users, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Compass, Construction, Flame, Footprints, Gauge, Map as MapIcon, MousePointerClick, Pause, Play, RotateCcw, Loader2, Route, Scale, Search, Thermometer, TrainFront, Users, X } from "lucide-react";
 import { useInView } from "@/components/common/Motion";
 import { glass } from "@/styles/common/mixins";
 import { useGet } from "@/utils/hooks/useCustomQuery";
 import { useColorScheme, useLeafletMap } from "@/utils/hooks/useLeafletMap";
 import { ENDPOINTS } from "@/utils/constants/Endpoints";
+import { SERVICES, countPlaces, geocode, walkRoute } from "@/utils/api/twogis";
 import { PILOTS } from "@/utils/mock/pilot";
 import { GAP_RAMP, RAMP, cssVar, fmt, quantileBreaks } from "@/utils/helpers/format";
 
@@ -269,31 +270,96 @@ const Tour = ({ d }) => {
   const synthById = useMemo(() => new Map(d.synthGeo.features.map((f) => [f.properties.id, f.properties])), [d.synthGeo]);
   const stations = useMemo(() => d.metro.features.filter((f) => f.properties.status === "işləyir"), [d.metro]);
   const clickPin = useRef(null);
-  useEffect(() => {
-    if (!map) return undefined;
-    const onClick = (e) => {
-      const { lat, lng } = e.latlng;
+  const routeLine = useRef(null);
+  const clearMarks = useCallback(() => {
+    [clickPin, routeLine].forEach((r) => {
+      if (r.current) map?.removeLayer(r.current);
+      r.current = null;
+    });
+  }, [map]);
+  // bir nöqtəni yoxlayır: klik və ya axtarış nəticəsi
+  const inspect = useCallback(
+    (latlng, label) => {
+      if (!map) return;
+      const { lat, lng } = latlng;
       const hit = index.find(([x0, x1, y0, y1]) => lng >= x0 && lng <= x1 && lat >= y0 && lat <= y1);
       let near = null;
       stations.forEach((f) => {
         const [lon, la] = f.geometry.coordinates;
         const dist = map.distance([lat, lng], [la, lon]);
-        if (!near || dist < near.dist) near = { name: f.properties.name, dist };
+        if (!near || dist < near.dist) near = { name: f.properties.name, dist, at: [la, lon] };
       });
       const cellP = hit ? hit[4] : null;
-      setPlace({ cell: cellP, synth: cellP ? synthById.get(cellP.id) : null, near });
-      if (clickPin.current) map.removeLayer(clickPin.current);
-      clickPin.current = L.circleMarker(e.latlng, { radius: 7, color: "#fff", weight: 3, fillColor: cssVar("--accent"), fillOpacity: 1, interactive: false }).addTo(map);
-    };
+      setPlace({ cell: cellP, synth: cellP ? synthById.get(cellP.id) : null, near, at: [lat, lng], label });
+      clearMarks();
+      clickPin.current = L.circleMarker(latlng, { radius: 7, color: "#fff", weight: 3, fillColor: cssVar("--accent"), fillOpacity: 1, interactive: false }).addTo(map);
+    },
+    [map, index, synthById, stations, clearMarks]
+  );
+  useEffect(() => {
+    if (!map) return undefined;
+    const onClick = (e) => inspect(e.latlng);
     map.on("click", onClick);
     return () => {
       map.off("click", onClick);
-      if (clickPin.current) map.removeLayer(clickPin.current);
+      clearMarks();
     };
-  }, [map, index, synthById, stations]);
+  }, [map, inspect, clearMarks]);
+
+  // 2GIS: metroya real piyada yolu və yaxınlıqdakı xidmətlər (yalnız şəhər içində klikdə)
+  const [live, setLive] = useState(null);
+  const placeAt = place?.at ? place.at.join(",") : "";
+  useEffect(() => {
+    if (!map || !place?.at || !place.cell?.pop) return undefined;
+    let alive = true;
+    const at = place.at;
+    const near = place.near;
+    const want = { key: placeAt, route: null, services: null, failed: false };
+    const routeP = near && near.dist < 4000 ? walkRoute(at, near.at).catch(() => null) : Promise.resolve(null);
+    const servP = Promise.all(SERVICES.map(([q]) => countPlaces(q, at, 500).catch(() => null)));
+    Promise.all([routeP, servP]).then(([route, counts]) => {
+      if (!alive) return;
+      if (route?.line?.length > 1) {
+        if (routeLine.current) map.removeLayer(routeLine.current);
+        routeLine.current = L.polyline(route.line, { color: cssVar("--accent"), weight: 5, opacity: 0.9, dashArray: "1 9", lineCap: "round", interactive: false }).addTo(map);
+      }
+      setLive({ ...want, route, services: counts.every((c) => c == null) ? null : counts, failed: !route && counts.every((c) => c == null) });
+    });
+    return () => {
+      alive = false;
+    };
+  }, [map, place, placeAt]);
+
+  // 2GIS axtarışı: ünvan və ya yer adı
+  const [query, setQuery] = useState("");
+  const [found, setFound] = useState(null);
+  const [searching, setSearching] = useState(false);
+  const runSearch = (e) => {
+    e.preventDefault();
+    const t = query.trim();
+    if (t.length < 2) return;
+    setSearching(true);
+    geocode(t)
+      .then((r) => setFound(r))
+      .catch(() => setFound([]))
+      .finally(() => setSearching(false));
+  };
+  const pick = (r) => {
+    setFound(null);
+    setQuery(r.name);
+    // kəşfə keçid kameranı şəhərə qaytarmasın: axtarılan yerə uçuruq
+    lastMode.current = "explore";
+    if (mode === "tour") setMode("explore");
+    setPlaying(false);
+    map?.stop();
+    map?.flyTo([r.lat, r.lon], 15, { animate: !still(), duration: 1.2 });
+    inspect(L.latLng(r.lat, r.lon), r.name);
+  };
+
   const closePlace = () => {
     setPlace(null);
-    if (clickPin.current) map?.removeLayer(clickPin.current);
+    setLive(null);
+    clearMarks();
   };
 
   const go = useCallback(
@@ -340,6 +406,32 @@ const Tour = ({ d }) => {
             <Compass size={15} /> Kəşf et
           </button>
         </Seg>
+        <SearchBox onSubmit={runSearch} role="search">
+          <Search size={15} />
+          <input
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setFound(null);
+            }}
+            placeholder="Ünvan və ya yer axtarın"
+            aria-label="Ünvan və ya yer axtarın (2GIS)"
+          />
+          {searching && <Loader2 size={15} className="spin" />}
+          {found && (
+            <ul>
+              {found.length === 0 && <li className="none">Heç nə tapılmadı</li>}
+              {found.map((r) => (
+                <li key={r.id}>
+                  <button type="button" onClick={() => pick(r)}>
+                    <b>{r.name}</b>
+                    {r.address && r.address !== r.name && <span>{r.address}</span>}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </SearchBox>
         {mode === "explore" && (
           <Chips>
             {EXPLORE.map((x) => (
@@ -356,7 +448,7 @@ const Tour = ({ d }) => {
           <CloseBtn type="button" onClick={closePlace} aria-label="Bağla">
             <X size={16} />
           </CloseBtn>
-          <PlaceBody place={place} city={C} layers={d.synth.layers} />
+          <PlaceBody place={place} city={C} layers={d.synth.layers} live={live?.key === placeAt ? live : place.at && place.cell?.pop ? { loading: true } : null} />
         </PlaceCard>
       )}
 
@@ -673,7 +765,7 @@ const LegendBar = ({ legend }) =>
     </Legend>
   );
 
-const PlaceBody = ({ place, city, layers }) => {
+const PlaceBody = ({ place, city, layers, live }) => {
   if (place.pilot) {
     const p = place.pilot;
     return (
@@ -702,7 +794,7 @@ const PlaceBody = ({ place, city, layers }) => {
   return (
     <>
       <small>Bu yer haqqında · {c.rayon}</small>
-      <h4>{s?.place || c.rayon}</h4>
+      <h4>{place.label || s?.place || c.rayon}</h4>
       {verdict && <Verdict className={verdict[0]}>{verdict[1]}</Verdict>}
       <Facts>
         <li>
@@ -724,7 +816,11 @@ const PlaceBody = ({ place, city, layers }) => {
             <TrainFront size={15} />
             <span>
               Ən yaxın metro: <b>{place.near.name}</b>,{" "}
-              {mins <= 30 ? (
+              {live?.route ? (
+                <>
+                  piyada yolu <b>{Math.round(live.route.duration / 60)} dəqiqə</b> ({fmt(live.route.distance)} m)
+                </>
+              ) : mins <= 30 ? (
                 <>
                   piyada təxminən <b>{mins} dəqiqə</b>
                 </>
@@ -741,6 +837,29 @@ const PlaceBody = ({ place, city, layers }) => {
           <span>{probs.length ? <>Problemlər: <b>{probs.join(", ").toLowerCase()}</b></> : s ? "Ciddi problem yoxdur" : "Burada az insan yaşayır, problemlər yoxlanmayıb"}</span>
         </li>
       </Facts>
+      {live?.loading && (
+        <LiveNote>
+          <Loader2 size={14} className="spin" /> 2GIS-dən yaxınlıqdakı yerlər yüklənir…
+        </LiveNote>
+      )}
+      {live?.services && (
+        <>
+          <SubHead>500 m-də (~7 dəq piyada) nə var</SubHead>
+          <Services>
+            {SERVICES.map(([q, label], i) => {
+              const n = live.services[i];
+              return (
+                <li key={q} className={n === 0 ? "zero" : ""}>
+                  <b>{n == null ? "?" : n > 99 ? "99+" : n}</b>
+                  {label}
+                </li>
+              );
+            })}
+          </Services>
+        </>
+      )}
+      {(live?.services || live?.route) && <LiveNote>Mənbə: 2GIS. Xəritədəki nöqtəli xətt metroya real piyada yoludur.</LiveNote>}
+      {live?.failed && <LiveNote>2GIS məlumatı indi alınmadı.</LiveNote>}
     </>
   );
 };
@@ -833,6 +952,11 @@ const Frame = styled.div`
   }
   @media (max-width: 760px) {
     height: 640px;
+    /* alt xəritə düyməsi aşağıdakı kartın altında qalmasın */
+    .leaflet-bottom.leaflet-right {
+      bottom: auto;
+      top: 100px;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     .tour-pin {
@@ -1044,6 +1168,125 @@ const Facts = styled.ul`
   b {
     font-family: var(--font-semibold);
     color: var(--text);
+  }
+`;
+
+const SearchBox = styled.form`
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--solid) 94%, transparent);
+  border: 1px solid var(--line);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  flex: 0 1 260px;
+  min-width: 0;
+  color: var(--text-3);
+  &:focus-within {
+    border-color: var(--accent);
+  }
+  input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 13.5px;
+  }
+  .spin {
+    animation: ${keyframes`to { transform: rotate(360deg); }`} 0.9s linear infinite;
+  }
+  ul {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    min-width: 260px;
+    padding: 6px;
+    border-radius: 16px;
+    background: var(--solid);
+    border: 1px solid var(--line);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  li.none {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+  li button {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 8px 10px;
+    border-radius: 10px;
+  }
+  li button:hover,
+  li button:focus-visible {
+    background: var(--bg-secondary);
+  }
+  li b {
+    font-family: var(--font-semibold);
+    font-size: 13.5px;
+    color: var(--text);
+  }
+  li span {
+    font-size: 12px;
+    color: var(--text-3);
+  }
+  @media (max-width: 760px) {
+    flex: 1 1 100%;
+    order: 3;
+  }
+`;
+
+const SubHead = styled.span`
+  font-family: var(--font-semibold);
+  font-size: 12px;
+  color: var(--text-3);
+  margin-top: 4px;
+`;
+
+const Services = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: 6px;
+  li {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 7px 9px;
+    border-radius: 12px;
+    background: var(--bg-secondary);
+    font-size: 12px;
+    color: var(--text-2);
+  }
+  b {
+    font-family: var(--font-bold);
+    font-size: 17px;
+    color: var(--text);
+  }
+  li.zero b {
+    color: var(--critical);
+  }
+`;
+
+const LiveNote = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--text-3);
+  .spin {
+    animation: ${keyframes`to { transform: rotate(360deg); }`} 0.9s linear infinite;
   }
 `;
 
