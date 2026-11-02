@@ -26,7 +26,7 @@ const buildThemes = (R, C) => {
       var: `Əhalinin ${C.transit500_pct}%-i dayanacağa və ya metroya 500 m məsafədə yaşayır (SDG 11.2.1). Metro gündə ${fmt(C.metro_ride_total)} sərnişin daşıyır.`,
       yox: `${C.no_metro_rayons.length} rayonda metro yoxdur: ${C.no_metro_rayons.join(", ")}. Orada ${fmt(C.pop_no_metro)} nəfər yaşayır.`,
       dq: `Əlçatanlıq Pirallahıda ${r("Pirallahı").transit500_pct}%, Qaradağda ${r("Qaradağ").transit500_pct}%-dir. Ən yüklü metro Nizami rayonundadır (${fmt(r("Nizami").metro_ride)}/gün), piyada indeksi isə orada ${r("Nizami").walk_score}-dir.` },
-    { t: "İqlim və yaşıllıq", src: "Landsat 8, 30.08.2025", m: ["lst_mean", "green_pct", "g:lst"],
+    { t: "İqlim və yaşıllıq", src: "Landsat 8, 01.08.2026", m: ["lst_mean", "green_pct", "g:lst"],
       var: `Mərkəz periferiyadan sərindir: Xətaidə ${r("Xətai").lst_mean}°C, Nəsimidə ${r("Nəsimi").lst_mean}°C. Suvarılan parklar və kölgə işləyir: “tərs istilik adası”.`,
       yox: `Əhaliyə görə orta yaşıl örtük cəmi ${C.green_pct_popw}%-dir. Səth temperaturu ${C.lst_popw}°C-yə çatır.`,
       dq: `Ən isti rayon Qaradağdır (${r("Qaradağ").lst_mean}°C, 90-cı persentil ${r("Qaradağ").lst_p90}°C), sonra Pirallahı (${r("Pirallahı").lst_mean}°C).` },

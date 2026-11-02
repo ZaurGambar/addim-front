@@ -7,7 +7,7 @@ const SOURCES = [
   ["opendata.az · Yerüstü Nəqliyyat Agentliyi", "Velosiped zolaqları, parkinqlər, avtobus trayektoriyaları", "Açıq lisenziya"],
   ["opendata.az · DSK", "Rayonlar üzrə əhali (2024-cü ilin əvvəlinə) və əlilliyi olan şəxslər (2026)", "CC0"],
   ["WorldPop", "Rayon daxilində əhali paylanması və yaş strukturu, 100 m, 2020 (DSK 2024-ə kalibrlənib)", "CC BY 4.0"],
-  ["Landsat 8 · Planetary Computer", "Yer səthinin temperaturu və NDVI, 30.08.2025", "Açıq"],
+  ["Landsat 8 · Planetary Computer", "Yer səthinin temperaturu və NDVI, 01.08.2026 (sintez: 30.08.2025)", "Açıq"],
   ["SRTM · AWS Terrain Tiles", "Hündürlük və meyl", "Açıq"],
 ];
 

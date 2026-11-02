@@ -5,7 +5,7 @@ export const BAKU_METRICS = [
   ["Topoqrafiya", [["elev_mean", "Orta hündürlük", "m", "r"], ["slope_mean", "Orta meyl", "%", "r"], ["steep_pct", "Dik ərazi (meyl > 15%)", "ərazinin %-i", "r"], ["g:elev", "Hündürlük (1 km hücrə)", "m", "g"], ["g:slope", "Meyl (1 km hücrə)", "%", "g"]]],
   ["Küçə şəbəkəsi", [["road_km_km2", "Yol sıxlığı", "km/km²", "r"], ["intersections_km2", "Kəsişmə sıxlığı", "kəsişmə/km²", "r"], ["deadend_pct", "Dalan küçə payı", "%", "r"], ["major_share", "Magistral payı", "yolların %-i", "r"], ["ped_km_km2", "Piyada yolu sıxlığı", "km/km²", "r"], ["g:inter", "Kəsişmələr (1 km hücrə)", "say", "g"]]],
   ["Nəqliyyat", [["transit500_pct", "Dayanacağa 500 m (SDG 11.2.1)", "əhalinin %-i", "r"], ["metro_ride", "Metro sərnişini", "gündə", "r"], ["bus_stops_km2", "Avtobus dayanacağı sıxlığı", "dayanacaq/km²", "r"], ["g:stops", "Dayanacaqlar (1 km hücrə)", "say", "g"]]],
-  ["İqlim və yaşıllıq", [["lst_mean", "Yer səthinin temperaturu", "°C, 30.08.2025", "r"], ["uhi", "Şəhər ortasından fərq", "°C", "r"], ["green_pct", "Yaşıl örtük (NDVI > 0.3)", "%", "r"], ["g:lst", "Səth temperaturu (1 km hücrə)", "°C", "g"], ["g:ndvi", "NDVI (1 km hücrə)", "indeks", "g"]]],
+  ["İqlim və yaşıllıq", [["lst_mean", "Yer səthinin temperaturu", "°C, 01.08.2026", "r"], ["uhi", "Şəhər ortasından fərq", "°C", "r"], ["green_pct", "Yaşıl örtük (NDVI > 0.3)", "%", "r"], ["g:lst", "Səth temperaturu (1 km hücrə)", "°C", "g"], ["g:ndvi", "NDVI (1 km hücrə)", "indeks", "g"]]],
   ["Risk", [["below_m20_pct", "Alçaq sahil (−20 m-dən aşağı)", "ərazinin %-i", "r"], ["steep_pct", "Sürüşmə riski: dik yamac", "ərazinin %-i", "r"]]],
   ["Tarixi-mədəni", [["heritage", "Tarixi obyektlər", "say", "r"], ["culture", "Mədəniyyət obyektləri", "say", "r"]]],
   ["Piyada (mərkəz)", [["walk_score", "Piyada indeksi (mərkəzi zona)", "0–100", "r"]]],
@@ -18,7 +18,7 @@ export const BAKU_SOURCES = {
   pop: "DSK 2024; hücrələrdə WorldPop 2020 paylanması", density: "DSK 2024", disabled_per1000: "DSK 2026 / DSK 2024", poi_km2: "OSM", commerce_per1000: "OSM / DSK 2024",
   office_per1000: "OSM / DSK 2024", mix_index: "OSM, 8 kateqoriya", tourism_beds: "OSM", elev_mean: "SRTM", slope_mean: "SRTM", steep_pct: "SRTM",
   road_km_km2: "OSM", intersections_km2: "OSM", deadend_pct: "OSM", major_share: "OSM", ped_km_km2: "OSM", transit500_pct: "BakuBus, metro / WorldPop",
-  metro_ride: "Bakı Metropoliteni 2026", bus_stops_km2: "BakuBus", lst_mean: "Landsat 8, 30.08.2025", uhi: "Landsat 8", green_pct: "Landsat 8 NDVI",
+  metro_ride: "Bakı Metropoliteni 2026", bus_stops_km2: "BakuBus", lst_mean: "Landsat 8, 01.08.2026", uhi: "Landsat 8, 01.08.2026", green_pct: "Landsat 8 NDVI, 01.08.2026",
   below_m20_pct: "SRTM", heritage: "OSM", culture: "OSM", walk_score: "ADDIM indeksi, yalnız mərkəzi zona",
 };
 
@@ -27,7 +27,7 @@ export const DATA_GAPS = [
   "Binalar: OSM-də Bakının binaları çox natamamdır (məs. Səbaildə 0). Bina sıxlığı ölçülməyib.",
   "Gəlir və mənzil: DSK yalnız “Bakı şəhəri – cəmi” verir.",
   "Rayon əhalisi DSK 2024 rəsmi rəqəmidir. Rayon daxilində paylanma WorldPop 2020-dən götürülüb, yeni tikililər tam əks olunmaya bilər.",
-  "Səth temperaturu bir yay gününə aiddir (30.08.2025). Çoxillik ortalama deyil.",
+  "Səth temperaturu bir yay gününə aiddir (01.08.2026). Çoxillik ortalama deyil. Sintez səhifəsi hələ 30.08.2025 şəklinə əsaslanır.",
   "Seysmik, daşqın və qəza datası açıq deyil. Risk proksilərlə qiymətləndirilib.",
 ];
 

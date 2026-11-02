@@ -39,7 +39,7 @@ const Synthesis = () => {
         <SectionHeading
           eyebrow="02 · Sintez · 1 km hücrələr · məskunlaşmış ərazi"
           title="Problemlər harada üst-üstə düşür"
-          lede="Səkkiz problem qatı (istilik, yaşıllıq, nəqliyyat boşluğu, şəbəkə qırıqlığı, avtomobil hökmranlığı, relyef, alçaq sahil, xidmət) üst-üstə qoyulub. Getis-Ord Gi* statistik qaynar nöqtələri, k-means isə məhəllə tiplərini göstərir. Yalnız məskunlaşmış hücrələr (≥ 300 nəfər/km²) daxildir."
+          lede="Səkkiz problem qatı (istilik, yaşıllıq, nəqliyyat boşluğu, şəbəkə qırıqlığı, avtomobil hökmranlığı, relyef, alçaq sahil, xidmət) üst-üstə qoyulub. Getis-Ord Gi* statistik qaynar nöqtələri, k-means isə məhəllə tiplərini göstərir. Yalnız məskunlaşmış hücrələr (≥ 300 nəfər/km²) daxildir. İstilik və yaşıllıq qatları Landsat 30.08.2025 şəklinə əsaslanır."
         />
         {error && <ErrorText />}
         {loading && <MapSkeleton />}

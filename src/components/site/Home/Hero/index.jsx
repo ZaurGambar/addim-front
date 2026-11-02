@@ -9,7 +9,7 @@ const Hero = ({ city, synth, onHelp }) => {
     [fmt(city.pop), "Bakı əhalisi (DSK, 2024)"],
     [fmt(synth.hot_pop), "nəfər statistik qaynar nöqtələrdə"],
     [`${city.transit500_pct}%`, "əhali dayanacağa 500 m-də"],
-    [`${city.lst_popw}°C`, "yay günü səth temperaturu"],
+    [`${city.lst_popw}°C`, "yay günü səth temperaturu (01.08.2026)"],
   ];
   return (
     <Wrap>
