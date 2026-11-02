@@ -3,7 +3,7 @@ import L from "leaflet";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { ArrowRight, Info } from "lucide-react";
+import { ArrowRight, Baby, Bus, Droplets, Footprints, Info, Link2, Mountain, School, ShoppingBasket, Sun, Trees, Users } from "lucide-react";
 import Card from "@/components/common/Card";
 import Tabs from "@/components/common/Tabs";
 import Dropdown from "@/components/common/Dropdown";
@@ -26,11 +26,37 @@ import { binColor, cssVar, fmt } from "@/utils/helpers/format";
 const BOUNDS = [[40.18, 49.45], [40.62, 50.45]];
 const NEED_BREAKS = [35, 42, 48, 54, 60, 66];
 const P_BREAKS = [15, 30, 45, 60, 67, 80];
-const LEVEL_COLOR = { yüksək: "--critical", orta: "--warn", aşağı: "--good" };
+// İnsan miqyasında piyada həlləri: blok -> zona proqramı -> şəhər qaydası
+const SOL = {
+  A: { icon: Footprints, color: "--critical", what: "Yeraltı keçid və uzun magistral əvəzinə hər 200–300 m-də zebra və svetofor." },
+  B: { icon: School, color: "--warn", what: "Məktəbə gedən yolda 30 km/saat, səki səviyyəsində keçid, dərs vaxtı nəzarət." },
+  C: { icon: Sun, color: "--serious", what: "Səki boyu ağac sırası, dayanacaqda örtük, açıq rəngli səki." },
+  D: { icon: Trees, color: "--good", what: "Boş həyət və ya küncdə kiçik park: kölgə, oturacaq, içməli su." },
+  E: { icon: Bus, color: "--accent", what: "Evdən 300 m-də dayanacaq və ona kölgəli, işıqlı piyada yolu." },
+  F: { icon: Link2, color: "--t3", what: "Dalanlar və həyətlər arasında açıq, işıqlı piyada keçidi." },
+  G: { icon: ShoppingBasket, color: "--t2", what: "Birinci mərtəbədə market və aptek, həftəlik açıq bazar." },
+  H: { icon: Mountain, color: "--g2", what: "Pilləkən yanında pandus və məhəccər, hər 50 m-də oturacaq." },
+  I: { icon: Droplets, color: "--s6", what: "Yağışda səkidə su yığılmasın: drenaj, hündür keçidlər." },
+};
+const why = (k, p, C) =>
+  ({
+    A: `Yanındakı magistralda ${fmt(p.major_m)} m boyunca OSM-də ${p.cross_n} yer üstü keçid var${p.under_n ? `, ${p.under_n} yeraltı keçid` : ""}.`,
+    B: `Ən yaxın məktəb ${fmt(p.school_m)} m-dədir, yolda magistral var.`,
+    C: `Yay günü yer səthi ${p.lst}°C (şəhər ortası ${C.lst_city}°C), yaşıllıq ${p.green_pct}%.`,
+    D: `Ən yaxın park ${fmt(p.park_m)} m-dədir.`,
+    E: `Ən yaxın dayanacaq ${fmt(p.stop_m)} m-dədir: piyada ~${Math.max(1, Math.round(p.stop_m / 75))} dəqiqə.`,
+    F: `Küçələrin ${p.deadend_pct}%-i dalandır: piyada dolama yolla gedir.`,
+    G: `Ən yaxın market ${fmt(p.shop_m)} m, aptek ${fmt(p.pharm_m)} m.`,
+    H: `Orta yamac ${p.slope}°: yaşlı və uşaq arabalı insan üçün çətindir.`,
+    I: `Yer dəniz səviyyəsindən ${Math.abs(p.elev)} m aşağıdadır.`,
+  })[k];
+const firstSol = (p) => (p.sol || "").split(",").filter(Boolean)[0];
 
 const Zoning = () => {
   const summary = useGet("zoning", ENDPOINTS.ZONING);
   const zones = useGet("zoningZones", ENDPOINTS.ZONING_ZONES);
+  const analysis = useGet("bakuAnalysis", ENDPOINTS.BAKU_ANALYSIS);
+  const city = analysis.data?.city;
   const S = summary.data;
   const [sel, setSel] = useState(null);
   const [rayon, setRayon] = useState("all");
@@ -68,14 +94,14 @@ const Zoning = () => {
       <Container>
         <SectionHeading
           eyebrow="15 · Bölgələmə"
-          title="Məhəllə səviyyəsində planlama zonaları"
-          lede="Rayon qərar üçün çox böyükdür: bir rayonda 100–300 min insan və tamam fərqli məhəllələr var. Ona görə şəhəri kiçik zonalara böldük və təklifləri hər zona üçün ayrıca verdik."
+          title="Hər məhəllə bloku üçün piyada həlli"
+          lede="Rayon qərar üçün çox böyükdür: bir rayonda 100–300 min insan və tamam fərqli məhəllələr var. Şəhəri insan miqyasına, məhəllə bloklarına qədər böldük. Hər blok öz piyada problemlərinə uyğun həll alır; həllər zonada proqrama, şəhərdə qaydaya birləşir."
         />
         <PageIntro
           art={<MapLayers />}
           answer="Əvvəl şəhəri küçələrlə məhəllə bloklarına böldük. Sonra problemləri oxşar olan qonşu blokları birləşdirib 5–15 min nəfərlik planlama zonaları qurduq."
-          steps={["Xəritədə zonaya klikləyin: problemləri və təklif olunan qaydalar çıxacaq.", "“Bloklar” qatında hər məhəllə blokunu ayrıca görün.", "Aşağıdakı cədvəldə zonalar prioritetə görə sıralanıb: insan sayı × ehtiyac."]}
-          idea="Zona həm qərar üçün kifayət qədər kiçikdir (15 dəqiqəlik piyada ərazi), həm də bir layihə üçün kifayət qədər böyükdür."
+          steps={["Zonaya klikləyin, sonra “Bu zonanın bloklarına baxın”.", "Bloka klikləyin: orada neçə insan yaşayır, piyadaya nə mane olur və nə etmək lazımdır.", "Aşağıda: 9 piyada həlli və onların zona proqramı, şəhər qaydası."]}
+          idea="Blok insan miqyasıdır (keçid, kölgə, oturacaq). Zona 15 dəqiqəlik məhəllədir (proqram). Şəhər qayda və büdcə verir."
         />
         {(summary.isError || zones.isError) && <ErrorText />}
         {stats && (
@@ -106,10 +132,53 @@ const Zoning = () => {
             </div>
           </Ladder>
         )}
-        <div ref={mapRef}>{S && zones.data && <ZoningMap S={S} zonesGeo={zones.data} sel={sel} setSel={setSel} byRank={byRank} />}</div>
+        <div ref={mapRef}>{S && zones.data && <ZoningMap S={S} zonesGeo={zones.data} sel={sel} setSel={setSel} byRank={byRank} city={city} />}</div>
 
         {S && (
           <>
+            <H2>Piyada həlləri: blokdan şəhərə</H2>
+            <Note>Hər həll üç miqyasda işləyir: məhəllə blokunda konkret iş, zonada proqram, şəhərdə qayda. Rəqəmlər: neçə blokda lazımdır və orada neçə insan yaşayır.</Note>
+            <Scales>
+              <span>
+                <b>Blok</b> insan miqyası: keçid, kölgə, oturacaq
+              </span>
+              <ArrowRight size={16} />
+              <span>
+                <b>Zona</b> 15 dəqiqəlik məhəllə: proqram
+              </span>
+              <ArrowRight size={16} />
+              <span>
+                <b>Şəhər</b> qayda və büdcə
+              </span>
+            </Scales>
+            <Catalog>
+              {Object.entries(S.solutions).map(([k, v]) => {
+                const X = SOL[k];
+                const t = S.solution_totals[k];
+                return (
+                  <li key={k} style={{ "--c": `var(${X.color})` }}>
+                    <X.icon size={22} />
+                    <h3>{v.title}</h3>
+                    <p>{X.what}</p>
+                    <dl>
+                      <dt>Blok</dt>
+                      <dd>
+                        {fmt(t.blocks)} blokda lazımdır · {fmt(t.pop)} insan
+                      </dd>
+                      <dt>Zona</dt>
+                      <dd>{v.program}</dd>
+                      <dt>Şəhər</dt>
+                      <dd>
+                        <Link to="/qaydalar">
+                          Qayda {v.rule}: {S.rules[v.rule]}
+                        </Link>
+                      </dd>
+                    </dl>
+                  </li>
+                );
+              })}
+            </Catalog>
+
             <H2>Zonalar prioritetə görə</H2>
             <Note>Sıra: insan sayı × ehtiyac balı. Sətrə klikləyin: zona xəritədə açılacaq.</Note>
             <Filters>
@@ -135,6 +204,7 @@ const Zoning = () => {
                     <th>İnsan</th>
                     <th>Ehtiyac</th>
                     <th>Əsas problemlər</th>
+                    <th>Zona proqramı</th>
                     <th>Qaydalar</th>
                   </tr>
                 </thead>
@@ -151,6 +221,7 @@ const Zoning = () => {
                         <Level className={z.level}>{z.need}</Level>
                       </td>
                       <td>{z.problems.map(([k]) => S.layers[k].toLowerCase()).join(", ")}</td>
+                      <td>{z.program.slice(0, 2).map(([k]) => S.solutions[k].program).join("; ")}</td>
                       <td>
                         <RuleNums>
                           {z.recs.map((r) => (
@@ -197,14 +268,20 @@ const Zoning = () => {
 
 export default Zoning;
 
-const ZoningMap = ({ S, zonesGeo, sel, setSel, byRank }) => {
+const ZoningMap = ({ S, zonesGeo, sel, setSel, byRank, city }) => {
   const { ref, map, renderer } = useLeafletMap({ bounds: BOUNDS, maxZoom: 17, attribution: "© OpenStreetMap · WorldPop · Landsat · SRTM · opendata.az" });
   const dark = useColorScheme();
   const [view, setView] = useState("zones");
   const [layer, setLayer] = useState("need");
+  const [block, setBlock] = useState(null);
   const blocks = useGet("zoningBlocks", ENDPOINTS.ZONING_BLOCKS, undefined, { enabled: view === "blocks" });
-  const layersOpt = [{ value: "need", label: "Ehtiyac (8-in ortası)" }, ...Object.entries(S.layers).map(([k, v]) => ({ value: k, label: v }))];
-  const field = layer === "need" ? "need" : `p_${layer}`;
+  const layersOpt = [
+    { value: "sol", label: "Bloklar: əsas piyada həlli" },
+    { value: "need", label: "Ehtiyac (8-in ortası)" },
+    ...Object.entries(S.layers).map(([k, v]) => ({ value: k, label: v })),
+  ];
+  const solView = layer === "sol";
+  const field = layer === "need" || solView ? "need" : `p_${layer}`;
   const breaks = layer === "need" ? NEED_BREAKS : P_BREAKS;
   const zoneLayer = useRef(null);
   const flown = useRef(null);
@@ -227,7 +304,10 @@ const ZoningMap = ({ S, zonesGeo, sel, setSel, byRank }) => {
       onEachFeature: (f, l) => {
         const p = f.properties;
         l.bindTooltip(`<b>${p.name}</b><br>${fmt(p.pop)} insan · ehtiyac ${p.need}`, { sticky: true });
-        l.on("click", () => setSel(p.rank));
+        l.on("click", () => {
+          setBlock(null);
+          setSel(p.rank);
+        });
       },
     }).addTo(map);
     zoneLayer.current = g;
@@ -238,16 +318,35 @@ const ZoningMap = ({ S, zonesGeo, sel, setSel, byRank }) => {
   useEffect(() => {
     if (!map || view !== "blocks" || !blocks.data) return undefined;
     const g = L.geoJSON(blocks.data, {
-      style: (f) => ({ renderer, stroke: true, color: cssVar("--panel"), weight: 0.4, fillColor: binColor(f.properties[field], breaks), fillOpacity: 0.68 }),
+      style: (f) => {
+        const k = firstSol(f.properties);
+        const fill = solView ? (k ? cssVar(SOL[k].color) : cssVar("--text-3")) : binColor(f.properties[field], breaks);
+        return { renderer, stroke: true, color: cssVar("--panel"), weight: 0.4, fillColor: fill, fillOpacity: solView && !k ? 0.15 : 0.68 };
+      },
       onEachFeature: (f, l) => {
         const p = f.properties;
-        l.bindTooltip(`Məhəllə bloku · ${fmt(p.pop)} insan<br>${layer === "need" ? "Ehtiyac" : S.layers[layer]}: <b>${p[field]}</b>`, { sticky: true });
-        l.on("click", () => setSel(p.zone_rank));
+        const k = firstSol(p);
+        const head = solView ? (k ? S.solutions[k].title : "ciddi problem yoxdur") : `${layer === "need" ? "Ehtiyac" : S.layers[layer]}: <b>${p[field]}</b>`;
+        l.bindTooltip(`Məhəllə bloku · ${fmt(p.pop)} insan<br>${head}`, { sticky: true });
+        l.on("click", (e) => {
+          L.DomEvent.stopPropagation(e);
+          setBlock(p);
+          setSel(p.zone_rank);
+        });
       },
     }).addTo(map);
     g.bringToBack();
     return () => map.removeLayer(g);
-  }, [map, renderer, blocks.data, view, field, breaks, layer, S.layers, dark, setSel]);
+  }, [map, renderer, blocks.data, view, field, breaks, layer, solView, S.layers, S.solutions, dark, setSel]);
+
+  // seçilmiş blok: kontur
+  useEffect(() => {
+    if (!map || !block || view !== "blocks" || !blocks.data) return undefined;
+    const f = blocks.data.features.find((x) => x.properties.bid === block.bid);
+    if (!f) return undefined;
+    const g = L.geoJSON(f, { style: { renderer, color: cssVar("--text"), weight: 3, fill: false }, interactive: false }).addTo(map);
+    return () => map.removeLayer(g);
+  }, [map, renderer, block, view, blocks.data, dark]);
 
   // seçilmiş zona: vurğu və uçuş
   useEffect(() => {
@@ -285,14 +384,39 @@ const ZoningMap = ({ S, zonesGeo, sel, setSel, byRank }) => {
         side={
           <>
             <Card>
-              <RampLegend title={layer === "need" ? "Ehtiyac balı (0–100)" : `${S.layers[layer]}: sıra faizi`} breaks={breaks} />
+              {solView && view === "blocks" ? (
+                <SwatchLegend title="Blokun əsas piyada həlli" items={Object.entries(S.solutions).map(([k, v]) => ({ color: cssVar(SOL[k].color), label: v.title }))} />
+              ) : (
+                <RampLegend title={layer === "need" || solView ? "Ehtiyac balı (0–100)" : `${S.layers[layer]}: sıra faizi`} breaks={breaks} />
+              )}
+              {solView && view === "zones" && <Small>Həllər blok səviyyəsindədir: “Məhəllə blokları” qatını açın.</Small>}
               {view === "blocks" && blocks.isLoading && <Small>Bloklar yüklənir…</Small>}
               <Small>{view === "zones" ? "Rəng: zonanın orta dəyəri (əhali ilə çəkili)." : "Rəng: hər blokun öz dəyəri. Xətlər: zona sərhədləri."}</Small>
             </Card>
-            <Card title={z ? `#${z.rank} · ${z.name}` : "Zona"}>
-              {!z && <Small>Xəritədə zonaya və ya bloka klikləyin.</Small>}
-              {z && <ZoneCard z={z} S={S} />}
-            </Card>
+            {block && view === "blocks" && (
+              <Card title="Məhəllə bloku">
+                <BlockCard p={block} S={S} z={z} city={city} onZone={() => setBlock(null)} />
+              </Card>
+            )}
+            {!(block && view === "blocks") && (
+              <Card title={z ? `#${z.rank} · ${z.name}` : "Zona"}>
+                {!z && <Small>Xəritədə zonaya və ya bloka klikləyin.</Small>}
+                {z && (
+                  <ZoneCard
+                    z={z}
+                    S={S}
+                    onBlocks={
+                      view === "zones"
+                        ? () => {
+                            setView("blocks");
+                            setLayer("sol");
+                          }
+                        : null
+                    }
+                  />
+                )}
+              </Card>
+            )}
           </>
         }
       />
@@ -300,7 +424,7 @@ const ZoningMap = ({ S, zonesGeo, sel, setSel, byRank }) => {
   );
 };
 
-const ZoneCard = ({ z, S }) => (
+const ZoneCard = ({ z, S, onBlocks }) => (
   <ZBody>
     <Meta>
       <Level className={z.level}>{z.level} ehtiyac · {z.need}</Level>
@@ -328,28 +452,260 @@ const ZoneCard = ({ z, S }) => (
       <span>Dayanacağa orta: <b>{fmt(z.stop_m)} m</b></span>
       <span>500 m-də gündəlik xidmət: <b>{z.svc_500}</b></span>
     </Facts>
-    <h4>Bu zona üçün təkliflər</h4>
+    <h4>Zona proqramı</h4>
     <Recs>
-      {z.recs.map((r) => (
-        <li key={r.rule}>
-          <Num>{r.rule}</Num>
+      {z.program.map(([k, n, pp]) => {
+        const X = SOL[k];
+        return (
+          <li key={k}>
+            <SolIcon style={{ "--c": `var(${X.color})` }}>
+              <X.icon size={14} />
+            </SolIcon>
+            <div>
+              <b>{S.solutions[k].program}</b>
+              <span>
+                {n} blokda · {fmt(pp)} insan · Qayda {S.solutions[k].rule}
+              </span>
+            </div>
+          </li>
+        );
+      })}
+      {z.level === "yüksək" && (
+        <li>
+          <Num>3</Num>
           <div>
-            <b>{r.title}</b>
-            <span>
-              {r.for ? `${S.layers[r.for]}: ` : ""}
-              {r.action}
-            </span>
+            <b>Pilot (sınaq) rejimi</b>
+            <span>Yüksək ehtiyac: ilk sınaq bu zonada</span>
           </div>
         </li>
-      ))}
+      )}
     </Recs>
+    {onBlocks && (
+      <BlocksBtn type="button" onClick={onBlocks}>
+        Bu zonanın bloklarına baxın <ArrowRight size={14} />
+      </BlocksBtn>
+    )}
     <More to="/qaydalar">
       Qaydaların tam mətni <ArrowRight size={14} />
     </More>
   </ZBody>
 );
 
+const BlockCard = ({ p, S, z, city, onZone }) => {
+  const sols = (p.sol || "").split(",").filter(Boolean);
+  const kids = city ? Math.round((p.pop * city.child_pct_city) / 100) : null;
+  const old = city ? Math.round((p.pop * city.old_pct_city) / 100) : null;
+  return (
+    <ZBody>
+      <Human>
+        <span>
+          <Users size={15} /> <b>{fmt(p.pop)}</b> insan
+        </span>
+        {kids != null && (
+          <span>
+            <Baby size={15} /> ~<b>{fmt(kids)}</b> uşaq, ~<b>{fmt(old)}</b> yaşlı
+          </span>
+        )}
+      </Human>
+      <Meta>
+        <span>
+          {p.rayon} · {z ? `zona #${z.rank} ${z.name}` : ""} · {Math.round(p.area_km2 * 100) / 100} km²
+        </span>
+      </Meta>
+      <h4>Bu blok üçün piyada həlləri</h4>
+      {sols.length === 0 && <Small>Bu blokda ciddi piyada problemi tapılmadı.</Small>}
+      <Sols>
+        {sols.map((k, i) => {
+          const X = SOL[k];
+          return (
+            <li key={k} style={{ "--c": `var(${X.color})` }}>
+              <SolIcon>
+                <X.icon size={16} />
+              </SolIcon>
+              <div>
+                <b>
+                  {i + 1}. {S.solutions[k].title}
+                </b>
+                <span className="why">{why(k, p, S)}</span>
+                <span>{X.what}</span>
+                <small>
+                  Zona: {S.solutions[k].program} · Şəhər: Qayda {S.solutions[k].rule}
+                </small>
+              </div>
+            </li>
+          );
+        })}
+      </Sols>
+      <Facts>
+        <span>
+          Məktəb: <b>{fmt(p.school_m)} m</b>
+        </span>
+        <span>
+          Bağça: <b>{fmt(p.kinder_m)} m</b>
+        </span>
+        <span>
+          Market: <b>{fmt(p.shop_m)} m</b>
+        </span>
+        <span>
+          Park: <b>{fmt(p.park_m)} m</b>
+        </span>
+      </Facts>
+      {z && (
+        <BlocksBtn type="button" onClick={onZone}>
+          Zona proqramına baxın <ArrowRight size={14} />
+        </BlocksBtn>
+      )}
+    </ZBody>
+  );
+};
+
 /* ---------- stil ---------- */
+
+const Scales = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  color: var(--text-3);
+  span {
+    ${card}
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--text-2);
+  }
+  b {
+    font-family: var(--font-bold);
+    color: var(--accent);
+    margin-right: 6px;
+  }
+`;
+
+const Catalog = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  li {
+    ${card}
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 3px solid var(--c);
+  }
+  li > svg {
+    color: var(--c);
+  }
+  h3 {
+    font-family: var(--font-bold);
+    font-size: 16px;
+  }
+  p {
+    font-size: 13.5px;
+    color: var(--text-2);
+    line-height: 1.5;
+  }
+  dl {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 4px 8px;
+    margin-top: auto;
+    font-size: 12.5px;
+  }
+  dt {
+    font-family: var(--font-semibold);
+    color: var(--c);
+  }
+  dd {
+    color: var(--text-2);
+  }
+  a {
+    color: var(--accent);
+  }
+`;
+
+const Human = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 12px;
+    background: var(--bg-secondary);
+    font-size: 13px;
+    color: var(--text-2);
+  }
+  svg {
+    color: var(--accent);
+  }
+  b {
+    font-family: var(--font-bold);
+    color: var(--text);
+  }
+`;
+
+const Sols = styled.ol`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--c) 8%, var(--bg-secondary));
+    border: 1px solid color-mix(in srgb, var(--c) 30%, transparent);
+  }
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  b {
+    font-family: var(--font-semibold);
+    font-size: 14px;
+  }
+  span {
+    font-size: 12.5px;
+    color: var(--text-2);
+    line-height: 1.45;
+  }
+  .why {
+    color: var(--text);
+  }
+  small {
+    font-size: 11.5px;
+    color: var(--text-3);
+  }
+`;
+
+const SolIcon = styled.i`
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: var(--c);
+  background: color-mix(in srgb, var(--c) 16%, transparent);
+`;
+
+const BlocksBtn = styled.button`
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 17px;
+  font-family: var(--font-semibold);
+  font-size: 13px;
+  color: #fff;
+  background: var(--grad);
+`;
 
 const Section = styled.section`
   padding: 20px 0 56px;

@@ -49,6 +49,46 @@ ACTION = {
 }
 
 
+# İnsan miqyasında piyada həlləri (blok səviyyəsi). Hər biri zona proqramına və şəhər qaydasına bağlanır.
+SOLUTIONS = {
+    "A": ("Yer üstü piyada keçidi", "Yer üstü keçid proqramı", 1),
+    "B": ("Təhlükəsiz məktəb yolu", "Təhlükəsiz məktəb yolları", 2),
+    "C": ("Kölgəli səki", "Kölgəli piyada marşrutları", 4),
+    "D": ("Cib parkı və oturacaq", "Cib parkları şəbəkəsi", 4),
+    "E": ("Dayanacağı yaxınlaşdırmaq", "Dayanacaq şəbəkəsini sıxlaşdırmaq", 6),
+    "F": ("Məhəllə keçidi", "Dalanları birləşdirən keçidlər", 7),
+    "G": ("Gündəlik xidmət yaxında", "Məhəllə xidmət nöqtələri", 7),
+    "H": ("Maneəsiz yamac", "Maneəsiz yamaclar", 1),
+    "I": ("Quru səki", "Səki drenajı", 8),
+}
+
+
+def block_solutions(r, lst_city):
+    """Blokun göstəricilərinə görə piyada həlləri və ciddilik (0..100); ən ciddi 3-ü."""
+    out = []
+    gap = r.major_m / (r.cross_n + 1)
+    if r.major_m >= 300 and gap >= 250:
+        out.append(("A", min(100, gap / 5) * 0.7 + 30 * (r.under_n > 0) + 0.3 * r.p_car))
+    if r.school_m <= 700 and r.major_m >= 200:
+        out.append(("B", 45 + 0.45 * r.p_car))
+    if r.p_heat >= 60 or (r.p_green_gap >= 67 and r.lst >= lst_city):
+        out.append(("C", 0.9 * max(r.p_heat, r.p_green_gap)))
+    if r.park_m >= 500 and r.p_green_gap >= 50:
+        out.append(("D", min(100, r.park_m / 12) * 0.6 + 0.3 * r.p_green_gap))
+    if r.stop_m >= 400:
+        out.append(("E", min(100, r.stop_m / 10)))
+    if r.p_fragment >= 67:
+        out.append(("F", 0.85 * r.p_fragment))
+    if r.shop_m >= 400 or r.p_service_gap >= 67:
+        out.append(("G", max(0.9 * r.p_service_gap, min(100, r.shop_m / 8))))
+    if r.p_slope >= 75 and r.slope >= 4:
+        out.append(("H", 0.8 * r.p_slope))
+    if r.p_lowland >= 80 and r.elev <= -10:
+        out.append(("I", 0.7 * r.p_lowland))
+    out = [x for x in sorted(out, key=lambda t: -t[1]) if x[1] >= 45][:3]
+    return ",".join(k for k, _ in out)
+
+
 def rank(v):
     return pd.Series(v).rank(method="average").sub(1).div(len(v) - 1).mul(100).values
 
@@ -71,6 +111,8 @@ def main():
         L["p_" + k] = P[k].round().astype(int)
     L["need"] = P.mean(axis=1).round(1)
     L["overlap"] = (P >= WORST).sum(axis=1)
+    lst_city = float((L.lst * L["pop"]).sum() / L["pop"].sum())
+    L["sol"] = [block_solutions(r, lst_city) for r in L.itertuples()]
 
     # ---- qonşuluq qrafı
     L = L.reset_index(drop=True)
@@ -229,17 +271,27 @@ def main():
     q1, q2 = np.percentile(Z.need, [33.3, 66.7])
     Z["level"] = np.where(Z.need >= q2, "yüksək", np.where(Z.need >= q1, "orta", "aşağı"))
 
+    # zona proqramı: bloklardakı həllər, təsir etdikləri insan sayı ilə
+    prog = {}
+    for zone, grp in L.groupby("zone"):
+        c = defaultdict(lambda: [0, 0])
+        for sol, pp in zip(grp.sol, grp["pop"]):
+            for k in filter(None, sol.split(",")):
+                c[k][0] += 1
+                c[k][1] += int(pp)
+        prog[zone] = sorted(([k, v[0], v[1]] for k, v in c.items()), key=lambda t: -t[2])[:4]
+    Z["program"] = Z.zone.map(prog)
+
     def recs(r):
         probs = sorted(((k, r["p_" + k]) for k in KEYS if r["p_" + k] >= 60), key=lambda t: -t[1])[:3]
         if not probs:
             probs = sorted(((k, r["p_" + k]) for k in KEYS), key=lambda t: -t[1])[:1]
         out, seen_r = [], set()
-        for k, v in probs:
-            for rid in RULE_FOR[k]:
-                if rid not in seen_r:
-                    seen_r.add(rid)
-                    out.append({"rule": rid, "title": RULES[rid], "for": k, "action": ACTION[k]})
-                    break
+        for k, n_, pp in r["program"]:
+            rid = SOLUTIONS[k][2]
+            if rid not in seen_r:
+                seen_r.add(rid)
+                out.append({"rule": rid, "title": RULES[rid], "for": k, "action": SOLUTIONS[k][1]})
         if r["level"] == "yüksək" and 3 not in seen_r:
             out.append({"rule": 3, "title": RULES[3], "for": None, "action": "ilk sınaq bu zonada"})
         return {"problems": [[k, int(v)] for k, v in probs], "recs": out}
@@ -252,6 +304,7 @@ def main():
     zmap = Z.set_index("zone")
     L["zone_rank"] = L.zone.map(zmap["rank"])
     blocks = L[["bid", "rayon", "pop", "area_km2", "lst", "green_pct", "elev", "slope", "inter_km2", "deadend_pct", "major_km2", "stop_m", "metro_m", "svc_500",
+                "major_m", "cross_n", "under_n", "school_m", "kinder_m", "shop_m", "pharm_m", "park_m", "sol",
                 *["p_" + k for k in KEYS], "need", "overlap", "zone_rank", "geometry"]].copy()
     blocks["geometry"] = blocks.geometry.simplify(6)
     blocks = blocks.to_crs(4326)
@@ -270,6 +323,9 @@ def main():
         "layers": {"heat": "İstilik stressi", "green_gap": "Yaşıllıq çatışmazlığı", "transit_gap": "Nəqliyyat boşluğu", "fragment": "Şəbəkə qırıqlığı",
                    "car": "Avtomobil hökmranlığı", "slope": "Relyef maneəsi", "lowland": "Alçaq sahil riski", "service_gap": "Xidmət çatışmazlığı"},
         "rules": RULES,
+        "solutions": {k: {"title": v[0], "program": v[1], "rule": v[2]} for k, v in SOLUTIONS.items()},
+        "lst_city": round(lst_city, 1),
+        "solution_totals": {k: {"blocks": int(sum(k in s_.split(",") for s_ in L.sol)), "pop": int(sum(pp for s_, pp in zip(L.sol, L["pop"]) if k in s_.split(",")))} for k in SOLUTIONS},
         "pop": int(Z["pop"].sum()),
         "zones": json.loads(Z.drop(columns=["score"]).to_json(orient="records", force_ascii=False)),
     }
@@ -277,6 +333,7 @@ def main():
     print(Z[["rank", "name", "rayon", "pop", "blocks", "need", "level"]].head(15).to_string())
     print("səviyyələr:", Z.level.value_counts().to_dict())
     print("qayda sayı:", Counter(x["rule"] for rs in Z.recs for x in rs))
+    print("blok həlləri:", Counter(k for s_ in L.sol for k in filter(None, s_.split(","))), "həllsiz blok:", int((L.sol == "").sum()))
 
 
 if __name__ == "__main__":

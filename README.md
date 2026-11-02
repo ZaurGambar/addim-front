@@ -77,7 +77,7 @@ Məhdudiyyətlər: `need` indeksinin dəqiq düsturu bərpa olunmayıb (8 qatın
 # Python: geopandas, pyogrio, rasterio, scipy, numpy
 python scripts/zoning/build_blocks.py    # bloklar: əsas küçə, dəmir yolu, sahil; böyük bloklar daxili küçələrlə
 python scripts/zoning/block_metrics.py   # əhali, LST/NDVI, relyef, küçə şəbəkəsi, dayanacaq, xidmət
-python scripts/zoning/zones.py           # 8 problem, zonalar (5–15 min nəfər), zona təklifləri
+python scripts/zoning/zones.py           # 8 problem, blok üzrə piyada həlləri (A–I), zonalar (5–15 min nəfər), zona proqramları
 ```
 
 Girişlər: Geofabrik Azerbaijan OSM shapefile (`OSM_DIR`), WorldPop 2020 100 m (`data-raw/zoning/src/`),

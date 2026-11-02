@@ -9,6 +9,10 @@
   stop_m     blokun əhali mərkəzindən ən yaxın avtobus dayanacağına (opendata.az + OSM), m
   metro_m    ən yaxın işləyən metro stansiyasına, m
   svc_500    500 m-də gündəlik xidmət sayı (OSM: market, aptek, məktəb, bağça, klinika ...)
+  major_m    blokun 150 m ətrafında magistral uzunluğu, m
+  cross_n    həmin magistralda yer üstü piyada keçidi sayı (OSM crossing / traffic_signals, yola 25 m)
+  under_n    həmin ərazidə yeraltı keçid sayı (ADDIM siyahısı + OSM tuneldə piyada yolu)
+  school_m, kinder_m, shop_m, pharm_m, park_m   ən yaxın məktəb, bağça, market, aptek, park (>= 0,5 ha), m
 
 Giriş: data-raw/zoning/blocks_raw.gpkg; Çıxış: data-raw/zoning/blocks_attr.gpkg
 """
@@ -160,10 +164,49 @@ def main():
     sv = gpd.sjoin(P, gpd.GeoDataFrame({"bid": B.bid}, geometry=pts.buffer(500), crs=UTM), predicate="within")
     B["svc_500"] = B.bid.map(sv.groupby("bid").size()).fillna(0).astype(int)
 
+    # --- insan miqyası: keçidlər, yeraltı keçidlər, gündəlik yerlərə məsafə
+    B["major_m"] = B.bid.map(mj.groupby("bid")["len"].sum()).fillna(0).round().astype(int)
+    tr = gpd.read_file(OSM / "gis_osm_traffic_free_1.shp", bbox=bb).to_crs(UTM)
+    cr = tr[tr.fclass.isin(["crossing", "traffic_signals"])]
+    near_major = unary_union(list(major.geometry)).buffer(25)
+    cr = cr[cr.within(near_major)]
+    cj = gpd.sjoin(cr[["geometry"]], gpd.GeoDataFrame({"bid": B.bid}, geometry=buf, crs=UTM), predicate="within")
+    B["cross_n"] = B.bid.map(cj.groupby("bid").size()).fillna(0).astype(int)
+    up = gpd.read_file(ROOT / "public/data/underpasses.geojson").to_crs(UTM)[["geometry"]]
+    ft = R[R.fclass.isin(["footway", "steps", "path", "pedestrian"]) & (R.tunnel == "T")]
+    ft = gpd.GeoDataFrame(geometry=ft.geometry.centroid, crs=UTM)
+    ft = ft[ft.within(near_major)]
+    U = gpd.GeoDataFrame(geometry=list(up.geometry) + list(ft.geometry), crs=UTM)
+    U = U[~U.geometry.buffer(60).duplicated()] if len(U) else U
+    uj = gpd.sjoin(U, gpd.GeoDataFrame({"bid": B.bid}, geometry=buf, crs=UTM), predicate="within")
+    B["under_n"] = B.bid.map(uj.groupby("bid").size()).fillna(0).astype(int)
+
+    allp = gpd.GeoDataFrame(
+        {"fclass": list(gpd.read_file(OSM / "gis_osm_pois_free_1.shp", bbox=bb).fclass) + list(Pa.fclass)},
+        geometry=list(gpd.read_file(OSM / "gis_osm_pois_free_1.shp", bbox=bb).to_crs(UTM).geometry) + list(Pa.to_crs(UTM).geometry),
+        crs=UTM,
+    )
+    lu = gpd.read_file(OSM / "gis_osm_landuse_a_free_1.shp", bbox=bb).to_crs(UTM)
+    parks = lu[(lu.fclass == "park") & (lu.area >= 5000)]
+    targets = {
+        "school_m": allp[allp.fclass == "school"],
+        "kinder_m": allp[allp.fclass == "kindergarten"],
+        "shop_m": allp[allp.fclass.isin(["supermarket", "convenience", "greengrocer", "bakery", "butcher"])],
+        "pharm_m": allp[allp.fclass == "pharmacy"],
+        "park_m": gpd.GeoDataFrame(geometry=parks.geometry.boundary, crs=UTM),
+    }
+    PT = gpd.GeoDataFrame({"bid": B.bid}, geometry=pts, crs=UTM)
+    for col, T_ in targets.items():
+        T_ = T_[["geometry"]].reset_index(drop=True)
+        d = gpd.sjoin_nearest(PT, T_, distance_col="d").groupby("bid").d.min().reindex(B.bid).values
+        B[col] = np.round(d)
+    inpark = gpd.sjoin(PT, parks[["geometry"]], predicate="within").bid.unique()
+    B.loc[B.bid.isin(inpark), "park_m"] = 0
+
     B.to_file(ROOT / "data-raw/zoning/blocks_attr.gpkg", driver="GPKG")
     live = B[B["pop"] >= 100]
     print(f"bloklar {len(B)}, insan yaşayan (>=100) {len(live)}, əhali {B['pop'].sum():,} ({live['pop'].sum():,} yaşayan bloklarda)")
-    print(live[["pop", "lst", "ndvi", "green_pct", "elev", "slope", "inter_km2", "deadend_pct", "major_km2", "stop_m", "metro_m", "svc_500"]].describe().round(1).to_string())
+    print(live[["pop", "lst", "ndvi", "green_pct", "elev", "slope", "inter_km2", "deadend_pct", "major_km2", "stop_m", "metro_m", "svc_500", "major_m", "cross_n", "under_n", "school_m", "kinder_m", "shop_m", "pharm_m", "park_m"]].describe().round(1).to_string())
 
 
 if __name__ == "__main__":
