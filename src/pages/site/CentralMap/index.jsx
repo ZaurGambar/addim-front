@@ -3,6 +3,8 @@ import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import Container from "@/styles/common/Container";
+import PageIntro from "@/components/common/PageIntro";
+import { WalkScore } from "@/components/common/Illustrations";
 import SectionHeading from "@/components/common/SectionHeading";
 import PageMobilSafeArea from "@/components/common/PageMobilSafeArea";
 import MapSkeleton from "@/components/common/Skeleton/MapSkeleton";
@@ -65,6 +67,11 @@ const CentralMap = () => {
           eyebrow="04 · Mərkəzi zona · 250 m hücrələr"
           title="Piyada Rahatlığı İndeksi"
           lede="Metro çıxışına və parka məsafə, zebra keçidlərin sıxlığı, piyada küçələri və BakuBus dayanacaqları balı artırır. Magistral yollar və yeraltı keçidlər balı azaldır. Tələb metro stansiyalarının real sərnişin sayı ilə çəkilənir."
+        />
+        <PageIntro
+          art={<WalkScore />}
+          answer="Şəhər mərkəzində hər 250 metrlik sahəyə “piyada balı” verdik, 0-dan 100-ə qədər. Metro, park, zebra və piyada küçəsi yaxındırsa, bal yüksəkdir. Geniş maşın yolu və yeraltı keçid balı azaldır."
+          steps={["Xəritədə rəngə baxın: tünd göy yaxşıdır, açıq rəng pisdir.", "Kvadrata klikləyin: niyə belə bal aldığını görün.", "Seul ssenarisini açın: dəyişiklikdən sonra bal necə artır."]}
         />
         {error && <ErrorText />}
         {loading && <MapSkeleton height={620} />}

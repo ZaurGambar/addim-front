@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import Container from "@/styles/common/Container";
+import PageIntro from "@/components/common/PageIntro";
+import { Models as ModelsArt } from "@/components/common/Illustrations";
 import SectionHeading from "@/components/common/SectionHeading";
 import PageMobilSafeArea from "@/components/common/PageMobilSafeArea";
 import CityCards from "@/components/site/Models/CityCards";
@@ -18,6 +20,11 @@ const Models = () => (
         eyebrow="05 · Benchmark"
         title="Altı şəhər, altı model"
         lede="Hər şəhərdən bir əsas yanaşma götürülür və Bakının şərtləri ilə yoxlanılır: relyef, Xəzri küləyi, yay istisi, geniş sovet prospektləri və avtomobilə bağlılıq."
+      />
+      <PageIntro
+        art={<ModelsArt />}
+        answer="Dünyanın 6 şəhəri piyadalar üçün nə edib? Hər birindən bir yaxşı fikir götürdük və yoxladıq: bu, Bakıda işləyərmi?"
+        steps={["Hər kartda şəhərin gördüyü əsas iş var.", "Cədvəldə: bu, Bakıda var, yarımçıqdır, yoxsa yoxdur.", "Sonda: köçürəndə nə səhv gedə bilər."]}
       />
       <CityCards />
       <SectionHeading as="h2" eyebrow="06 · Boşluq analizi" title="Bakıda nə var, nə çatışmır" lede="Status komandanın açıq mənbələrə əsaslanan ilkin qiymətləndirməsidir." />

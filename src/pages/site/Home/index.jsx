@@ -9,6 +9,7 @@ import Hero from "@/components/site/Home/Hero";
 import QuickLinks from "@/components/site/Home/QuickLinks";
 import KeyFindings from "@/components/site/Home/KeyFindings";
 import Story from "@/components/site/Home/Story";
+import TourMap from "@/components/site/Home/TourMap";
 import { useGet } from "@/utils/hooks/useCustomQuery";
 import { ENDPOINTS } from "@/utils/constants/Endpoints";
 import { useModal } from "@/contexts/ModalContext";
@@ -36,20 +37,29 @@ const Home = () => {
             <Block>
               <SectionHeading
                 as="h2"
+                eyebrow="Tur"
+                title="Xəritədə 8 addımda Bakı"
+                lede="“İrəli” düyməsini basın. Xəritə özü lazım olan yerə gedəcək və hər addımda bir şeyi sadə dillə izah edəcək."
+              />
+              <TourMap />
+            </Block>
+            <Block>
+              <SectionHeading
+                as="h2"
                 eyebrow="Hekayə"
-                title="Bir piyadanın yolu: problemdən pilota"
-                lede="Aşağı skroll edin: xətt piyadanın yoludur. Hər addım bir mərhələdir və öz səhifəsinə aparır."
+                title="5 addımda: problemdən həllə"
+                lede="Aşağı sürüşdürün. Soldakı xətt piyadanın yoludur. Hər addım bir mərhələdir və öz səhifəsinə aparır."
               />
               <Story summary={summary.data} city={analysis.data.city} synth={synth.data} />
             </Block>
             <Block>
-              <SectionHeading as="h2" eyebrow="Əsas nəticələr" title="Data nə deyir" />
+              <SectionHeading as="h2" eyebrow="Əsas nəticələr" title="Rəqəmlər nə deyir" />
               <KeyFindings analysis={analysis.data} synth={synth.data} />
             </Block>
           </>
         )}
         <Block>
-          <SectionHeading as="h2" eyebrow="Bölmələr" title="Platformanı kəşf edin" />
+          <SectionHeading as="h2" eyebrow="Bölmələr" title="Daha ətraflı baxın" />
           <QuickLinks />
         </Block>
       </Container>

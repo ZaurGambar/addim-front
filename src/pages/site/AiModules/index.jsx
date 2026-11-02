@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { glass } from "@/styles/common/mixins";
 import { Helmet } from "react-helmet-async";
 import Container from "@/styles/common/Container";
+import PageIntro from "@/components/common/PageIntro";
+import { Brain } from "@/components/common/Illustrations";
 import SectionHeading from "@/components/common/SectionHeading";
 import PageMobilSafeArea from "@/components/common/PageMobilSafeArea";
 import Architecture from "@/components/site/AiModules/Architecture";
@@ -18,6 +20,11 @@ const AiModules = () => (
         eyebrow="09 · Arxitektura"
         title="Əl ilə görülən işi AI modulları ilə əvəz edirik"
         lede="İndi piyada axını əl ilə sayılır, svetofor rejimi sabitdir, şikayətlər bir-bir oxunur, planlama intuisiyaya əsaslanır. ADDIM bunların hər birini bir data platforması üzərində işləyən AI modulu ilə əvəz edir."
+      />
+      <PageIntro
+        art={<Brain />}
+        answer="Bu gün çox iş əl ilə görülür: piyadalar əl ilə sayılır, şikayətlər bir-bir oxunur. Süni intellekt (AI) bu işləri daha sürətli və dəqiq görə bilər."
+        steps={["Sxemdə data haradan gəlir və hara gedir.", "Hər kart bir işi göstərir: indi necə edilir, AI necə edəcək.", "Qərarı yenə insan verir, AI yalnız kömək edir."]}
       />
       <Architecture />
       <ModuleCards />

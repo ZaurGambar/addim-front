@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
-import styled, { css, keyframes } from "styled-components";
+import styled, { keyframes } from "styled-components";
+import { Art, DataGrid, Hotspot, Models, Steps, Underpass } from "@/components/common/Illustrations";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { CountUp, useInView } from "@/components/common/Motion";
@@ -40,38 +41,38 @@ const Story = ({ summary, city, synth }) => {
   const chapters = [
     {
       tag: "Problem",
-      title: "Bakıda piyada yeraltına enir",
-      text: "Mərkəzdə magistralı keçmək çox vaxt pilləkənlə yeraltı keçidə enmək, ya da səkkiz zolaqlı yolu gözləmək deməkdir. Uşaq arabası, yaşlı və əlil üçün bu yol bağlanır.",
+      title: "Yolu keçmək üçün yerin altına enirik",
+      text: "Mərkəzdə geniş maşın yolunu keçmək üçün çox vaxt pilləkənlə yeraltı keçidə enmək lazımdır. Uşaq arabası olan ana, yaşlı insan və əlil arabasında olan adam üçün bu, böyük çətinlikdir.",
       stats: [
         [summary.underpass_sites, "yeraltı keçid"],
-        [summary.barrier_km, "km maneə magistral", 1],
-        [summary.crossings_signalized, "işıqforlu keçid"],
+        [summary.barrier_km, "km keçilməsi çətin geniş yol", 1],
+        [summary.crossings_signalized, "svetoforlu keçid"],
       ],
       art: <Underpass />,
       to: "/xerite",
       cta: "Mərkəzi xəritə",
     },
     {
-      tag: "Data",
-      title: "Şəhəri 1 km-lik hücrələrlə ölçdük",
-      text: "12 rayon, 9 mövzu: əhali, yollar, nəqliyyat, istilik, yaşıllıq, relyef, xidmətlər. Hamısı açıq mənbələrdən: OSM, opendata.az, DSK, Landsat.",
+      tag: "Ölçdük",
+      title: "Bütün şəhəri kiçik kvadratlara böldük",
+      text: "Bakını 1 km-lik kvadratlara böldük. Hər kvadratda baxdıq: neçə insan yaşayır, nə qədər istidir, ağac varmı, avtobus yaxındırmı, mağaza və məktəb varmı. Bütün məlumat açıq mənbələrdəndir.",
       stats: [
-        [city.grid_cells, "hücrə"],
-        [city.pois, "obyekt (POI)"],
-        [city.pop, "nəfər, DSK 2024"],
+        [city.grid_cells, "kvadrat yoxlandı"],
+        [city.pois, "mağaza, məktəb, aptek və s."],
+        [city.pop, "insan (rəsmi statistika)"],
       ],
       art: <DataGrid />,
       to: "/analiz",
       cta: "Bakı analizi",
     },
     {
-      tag: "Sintez",
-      title: "Problemlər eyni yerdə toplanır",
-      text: `Səkkiz problem qatını üst-üstə qoyduq. Getis-Ord Gi* statistik qaynar nöqtələri göstərdi. 1-ci prioritet zona: ${top.place} (${top.top_layers.map((l) => l[0].toLowerCase()).join(", ")}).`,
+      tag: "Tapdıq",
+      title: "Problemlər eyni yerlərdə toplanır",
+      text: `Bəzi yerlərdə bir neçə problem birdən var: isti, ağac az, avtobus uzaq, yol keçmək çətin. Biz belə yerləri xəritədə tapdıq. 1-ci yer: ${top.place}. Orada əsas problemlər: ${top.top_layers.map((l) => l[0].toLowerCase()).join(", ")}.`,
       stats: [
-        [synth.hot_pop, "nəfər qaynar nöqtələrdə"],
-        [synth.zones.length, "prioritet zona"],
-        [top.pop, `nəfər ${top.place} zonasında`],
+        [synth.hot_pop, "insan ən çətin yerlərdə yaşayır"],
+        [synth.zones.length, "kömək lazım olan zona"],
+        [top.pop, `insan ${top.place} zonasında`],
       ],
       art: <Hotspot />,
       to: "/sintez",
@@ -79,26 +80,26 @@ const Story = ({ summary, city, synth }) => {
       hot: true,
     },
     {
-      tag: "Dünya",
-      title: "İşləyən modelləri Bakıya uyğunlaşdırdıq",
-      text: `${CITIES.map((c) => c.name).slice(0, 3).join(", ")} və digərləri: piyada küçələri, yerüstü keçidlər, 15 dəqiqəlik şəhər. Hər model üçün Bakıda nə var, nə çatışmır.`,
+      tag: "Öyrəndik",
+      title: "Başqa şəhərlər bunu necə həll edib?",
+      text: `${CITIES.map((c) => c.name).slice(0, 3).join(", ")} və başqa şəhərlər piyadalar üçün çox iş görüb: piyada küçələri açıblar, yerüstü zebra çəkiblər. Onların yaxşı fikirlərini götürüb Bakıya uyğunlaşdırdıq.`,
       stats: [
-        [CITIES.length, "şəhər modeli"],
-        [29, "şəhərsalma anlayışı"],
-        [8, "AI modulu"],
+        [CITIES.length, "şəhərin təcrübəsi"],
+        [29, "şəhərsalma fikri"],
+        [8, "süni intellekt aləti"],
       ],
       art: <Models />,
       to: "/modeller",
       cta: "Şəhər modelləri",
     },
     {
-      tag: "Pilot",
-      title: "Yerdə yoxlayırıq: addım-addım",
-      text: "Pilot zonalarda yeraltı keçidin yanına yerüstü zebra, kölgə və oturacaq. Peyk görüntüsü ilə 15 namizəd yoxlanıb, sahə yoxlaması forması açıqdır.",
+      tag: "Sınayırıq",
+      title: "Əvvəlcə kiçik bir yerdə sınayırıq",
+      text: "3 yer seçdik. Orada yeraltı keçidin yanına adi zebra, kölgə və oturacaq qoymağı təklif edirik. Nəticə yaxşı olsa, bu həll bütün şəhərə yayılacaq.",
       stats: [
-        [PILOTS.length, "pilot zona"],
-        [15, "peykdə yoxlanmış namizəd"],
-        [city.transit500_pct, "% əhali dayanacağa 500 m-də", 1],
+        [PILOTS.length, "sınaq yeri"],
+        [15, "yer peykdən yoxlanıb"],
+        [city.transit500_pct, "% insan dayanacağa yaxındır", 1],
       ],
       art: <Steps />,
       to: "/pilot",
@@ -153,84 +154,6 @@ const Chapter = ({ index, tag, title, text, stats, art, to, cta, hot }) => {
     </Row>
   );
 };
-
-/* ---------- illüstrasiyalar (SVG + CSS) ---------- */
-
-const flow = keyframes`to { stroke-dashoffset: -40; }`;
-const drive = keyframes`
-  from { translate: -60px 0; }
-  to { translate: 240px 0; }
-`;
-const still = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-const Underpass = () => (
-  <svg viewBox="0 0 220 140">
-    <rect className="road" x="0" y="34" width="220" height="44" rx="6" />
-    <line className="lane" x1="0" y1="56" x2="220" y2="56" />
-    <rect className="car" x="20" y="40" width="26" height="12" rx="4" />
-    <rect className="car c2" x="120" y="60" width="26" height="12" rx="4" />
-    <path className="tunnel" d="M30 92 h22 v24 h116 v-24 h22" />
-    <path id="ped-path" className="route" d="M10 26 H40 V106 H180 V26 H210" />
-    {still() ? (
-      <circle className="ped" cx="110" cy="106" r="5" />
-    ) : (
-      <circle className="ped" r="5">
-        <animateMotion dur="5s" repeatCount="indefinite" rotate="0">
-          <mpath href="#ped-path" />
-        </animateMotion>
-      </circle>
-    )}
-  </svg>
-);
-
-const DataGrid = () => (
-  <svg viewBox="0 0 220 140">
-    {Array.from({ length: 40 }, (_, i) => {
-      const x = (i % 8) * 26 + 6;
-      const y = Math.floor(i / 8) * 26 + 6;
-      return <rect key={i} className="cell" x={x} y={y} width="22" height="22" rx="5" style={{ animationDelay: `${((i % 8) + Math.floor(i / 8)) * 0.12}s` }} />;
-    })}
-  </svg>
-);
-
-const Hotspot = () => (
-  <svg viewBox="0 0 220 140">
-    {Array.from({ length: 40 }, (_, i) => (
-      <rect key={i} className="cell dim" x={(i % 8) * 26 + 6} y={Math.floor(i / 8) * 26 + 6} width="22" height="22" rx="5" />
-    ))}
-    <circle className="ring" cx="122" cy="70" r="16" />
-    <circle className="ring r2" cx="122" cy="70" r="16" />
-    <circle className="ring r3" cx="122" cy="70" r="16" />
-    <circle className="core" cx="122" cy="70" r="9" />
-  </svg>
-);
-
-const CITY_PTS = [
-  [24, 28], [70, 16], [196, 24], [204, 108], [30, 112], [150, 126],
-];
-const Models = () => (
-  <svg viewBox="0 0 220 140">
-    {CITY_PTS.map(([x, y], i) => (
-      <g key={i}>
-        <path className="arc" d={`M${x} ${y} Q ${(x + 110) / 2} ${(y + 70) / 2 - 24} 110 70`} style={{ animationDelay: `${i * 0.3}s` }} />
-        <circle className="city" cx={x} cy={y} r="6" />
-      </g>
-    ))}
-    <circle className="baku-glow" cx="110" cy="70" r="16" />
-    <circle className="baku" cx="110" cy="70" r="9" />
-  </svg>
-);
-
-const Steps = () => (
-  <svg viewBox="0 0 220 140">
-    <path className="route" d="M14 120 C 70 120, 70 30, 120 40 S 190 90, 206 20" />
-    {[
-      [22, 112], [40, 118], [56, 100], [66, 82], [70, 64], [84, 48], [104, 40], [124, 44], [140, 56], [156, 70], [174, 70], [188, 52], [200, 32],
-    ].map(([x, y], i) => (
-      <ellipse key={i} className="step" cx={x + (i % 2 ? 4 : -4)} cy={y} rx="4" ry="6.5" style={{ animationDelay: `${i * 0.22}s` }} />
-    ))}
-  </svg>
-);
 
 /* ---------- stil ---------- */
 
@@ -434,145 +357,3 @@ const Cta = styled(Link)`
   }
 `;
 
-const dash = keyframes`to { stroke-dashoffset: -32; }`;
-const wave = keyframes`
-  0%, 100% { fill-opacity: 0.12; }
-  45% { fill-opacity: 0.85; }
-`;
-const ring = keyframes`
-  from { transform: scale(1); opacity: 0.7; }
-  to { transform: scale(4.2); opacity: 0; }
-`;
-const glowK = keyframes`
-  0%, 100% { opacity: 0.25; transform: scale(1); }
-  50% { opacity: 0.55; transform: scale(1.35); }
-`;
-const stepK = keyframes`
-  0%, 8% { opacity: 0; }
-  14%, 70% { opacity: 1; }
-  100% { opacity: 0; }
-`;
-
-const Art = styled.div`
-  justify-self: center;
-  width: 100%;
-  max-width: 300px;
-  aspect-ratio: 220 / 140;
-  border-radius: 20px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--line-soft);
-  overflow: hidden;
-
-  svg {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-  ${({ $on }) =>
-    !$on &&
-    css`
-      * {
-        animation-play-state: paused !important;
-      }
-    `}
-
-  .road {
-    fill: color-mix(in srgb, var(--text) 10%, transparent);
-  }
-  .lane {
-    stroke: var(--text-3);
-    stroke-width: 2;
-    stroke-dasharray: 10 10;
-    animation: ${flow} 1s linear infinite;
-  }
-  .car {
-    fill: var(--warn);
-    animation: ${drive} 2.6s linear infinite;
-  }
-  .car.c2 {
-    fill: var(--critical);
-    animation-direction: reverse;
-    animation-duration: 3.2s;
-  }
-  .tunnel {
-    fill: none;
-    stroke: var(--line);
-    stroke-width: 10;
-    stroke-linejoin: round;
-  }
-  .route {
-    fill: none;
-    stroke: color-mix(in srgb, var(--accent) 55%, transparent);
-    stroke-width: 2;
-    stroke-dasharray: 4 6;
-    animation: ${dash} 1.2s linear infinite;
-  }
-  .ped {
-    fill: var(--accent);
-    filter: drop-shadow(0 0 4px var(--accent));
-  }
-  .cell {
-    fill: var(--accent);
-    fill-opacity: 0.12;
-    animation: ${wave} 3.2s ease-in-out infinite;
-  }
-  .cell.dim {
-    fill: var(--text-3);
-    fill-opacity: 0.1;
-    animation: none;
-  }
-  .ring {
-    fill: none;
-    stroke: var(--critical);
-    stroke-width: 2;
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: ${ring} 2.4s ease-out infinite;
-  }
-  .ring.r2 {
-    animation-delay: 0.8s;
-  }
-  .ring.r3 {
-    animation-delay: 1.6s;
-  }
-  .core {
-    fill: var(--critical);
-    filter: drop-shadow(0 0 8px var(--critical));
-  }
-  .arc {
-    fill: none;
-    stroke: var(--accent);
-    stroke-width: 1.6;
-    stroke-dasharray: 3 7;
-    opacity: 0.8;
-    animation: ${dash} 1.4s linear infinite;
-  }
-  .city {
-    fill: var(--solid);
-    stroke: var(--accent);
-    stroke-width: 2;
-  }
-  .baku {
-    fill: var(--accent);
-  }
-  .baku-glow {
-    fill: var(--accent);
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: ${glowK} 2.4s ease-in-out infinite;
-  }
-  .step {
-    fill: var(--accent);
-    opacity: 0;
-    animation: ${stepK} 3.6s ease-in-out infinite;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    * {
-      animation: none !important;
-    }
-    .step {
-      opacity: 0.8;
-    }
-  }
-`;

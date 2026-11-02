@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { card } from "@/styles/common/mixins";
 import { Helmet } from "react-helmet-async";
 import Container from "@/styles/common/Container";
+import PageIntro from "@/components/common/PageIntro";
+import { Steps } from "@/components/common/Illustrations";
 import SectionHeading from "@/components/common/SectionHeading";
 import PageMobilSafeArea from "@/components/common/PageMobilSafeArea";
 import CardGridSkeleton from "@/components/common/Skeleton/CardGridSkeleton";
@@ -43,6 +45,11 @@ const Pilot = () => {
       </Helmet>
       <Container>
         <SectionHeading eyebrow="10 · Data əsaslı seçim" title="Üç pilot zona" lede="Zonaları biz seçməmişik, model seçib: tələbin yüksək, rahatlığın aşağı olduğu yerlər." />
+        <PageIntro
+          art={<Steps />}
+          answer="Fikri əvvəlcə kiçik bir yerdə sınayırıq. Model 3 yer seçib: insanı çox, piyada üçün rahatlığı az olan yerlər."
+          steps={["Hər kartda bir pilot yer və orada nə ediləcəyi var.", "Peyk şəkli ilə 15 yer yoxlanıb: zebra var, yoxsa yox.", "Formanı doldurun: siz də yerdə yoxlaya bilərsiniz."]}
+        />
         {error && <ErrorText />}
         {loading && <CardGridSkeleton count={3} />}
         {!loading && !error && (

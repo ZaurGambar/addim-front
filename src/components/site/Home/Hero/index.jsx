@@ -1,7 +1,6 @@
 import styled, { keyframes } from "styled-components";
 import { CountUp } from "@/components/common/Motion";
 import { card, glow, kpiValue, label, pill } from "@/styles/common/mixins";
-import { Link } from "react-router-dom";
 import Button from "@/components/common/Button";
 
 // "ADDIM." nöqtəsi addım atır; mətnlər ardıcıl görünür
@@ -21,10 +20,10 @@ const stepDot = keyframes`
 
 const Hero = ({ city, synth, onHelp }) => {
   const facts = [
-    [city.pop, "Bakı əhalisi (DSK, 2024)", 0, ""],
-    [synth.hot_pop, "nəfər statistik qaynar nöqtələrdə", 0, ""],
-    [city.transit500_pct, "əhali dayanacağa 500 m-də", 1, "%"],
-    [city.lst_popw, "yay günü səth temperaturu (01.08.2026)", 1, "°C"],
+    [city.pop, "insan Bakıda yaşayır", 0, ""],
+    [synth.hot_pop, "insan problemlərin toplandığı yerlərdə yaşayır", 0, ""],
+    [city.transit500_pct, "insanın evi dayanacağa 500 metrdən yaxındır", 1, "%"],
+    [city.lst_popw, "yayda yerin səthi bu qədər qızır", 1, "°C"],
   ];
   return (
     <Wrap>
@@ -48,11 +47,11 @@ const Hero = ({ city, synth, onHelp }) => {
       <Grid>
         <div>
           <Thesis>
-            Bakıda piyada çox vaxt yeraltı keçidə enir, 8 zolaqlı prospekti gözləyir və kölgəsiz səkidə yeriyir. ADDIM şəhəri 9 mövzu üzrə analiz edir, problemlərin üst-üstə düşdüyü zonaları tapır və dünya şəhərlərinin modellərini Bakıya uyğunlaşdırır.
+            Bakıda piyada olmaq çətindir. Yolu keçmək üçün yerin altına enirsən, geniş maşın yolunu gözləyirsən, kölgəsiz səkidə günün altında qalırsan. ADDIM bütün şəhəri yoxlayır, ən çətin yerləri tapır və onları necə düzəltməyi göstərir.
           </Thesis>
           <Actions>
-            <Button as={Link} to="/analiz" size="lg">
-              Analizə başla
+            <Button as="a" href="#tur" size="lg">
+              Xəritədə turu başlat
             </Button>
             <Button variant="secondary" size="lg" onClick={onHelp}>
               Necə oxumalı

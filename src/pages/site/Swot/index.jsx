@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import Container from "@/styles/common/Container";
+import PageIntro from "@/components/common/PageIntro";
+import { Swot as SwotArt } from "@/components/common/Illustrations";
 import SectionHeading from "@/components/common/SectionHeading";
 import PageMobilSafeArea from "@/components/common/PageMobilSafeArea";
 import CardGridSkeleton from "@/components/common/Skeleton/CardGridSkeleton";
@@ -27,6 +29,11 @@ const Swot = () => {
           eyebrow="03 · Analizin yekunu"
           title="SWOT: insanyönümlü Bakı"
           lede="Hər bənd analiz və sintezdən gəlir, rəqəmlər real datadandır. Güclü və zəif tərəflər şəhərin daxili vəziyyətini, imkanlar və təhdidlər xarici amilləri göstərir."
+        />
+        <PageIntro
+          art={<SwotArt />}
+          answer="Bütün analizi 4 qutuya yığdıq: Bakının güclü tərəfləri, zəif tərəfləri, istifadə edə biləcəyi imkanlar və qarşısındakı təhlükələr."
+          steps={["S (yaşıl): güclü tərəflər.", "W (qırmızı): zəif tərəflər.", "O (göy): imkanlar. T (narıncı): təhlükələr."]}
         />
         {error && <ErrorText />}
         {loading && <CardGridSkeleton count={4} height={320} />}

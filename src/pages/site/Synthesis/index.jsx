@@ -2,6 +2,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import Container from "@/styles/common/Container";
+import PageIntro from "@/components/common/PageIntro";
+import { Hotspot } from "@/components/common/Illustrations";
 import SectionHeading from "@/components/common/SectionHeading";
 import PageMobilSafeArea from "@/components/common/PageMobilSafeArea";
 import MapSkeleton from "@/components/common/Skeleton/MapSkeleton";
@@ -40,6 +42,12 @@ const Synthesis = () => {
           eyebrow="02 · Sintez · 1 km hücrələr · məskunlaşmış ərazi"
           title="Problemlər harada üst-üstə düşür"
           lede="Səkkiz problem qatı (istilik, yaşıllıq, nəqliyyat boşluğu, şəbəkə qırıqlığı, avtomobil hökmranlığı, relyef, alçaq sahil, xidmət) üst-üstə qoyulub. Getis-Ord Gi* statistik qaynar nöqtələri, k-means isə məhəllə tiplərini göstərir. Yalnız məskunlaşmış hücrələr (≥ 300 nəfər/km²) daxildir. İstilik və yaşıllıq qatları Landsat 01.08.2026 şəklinə əsaslanır."
+        />
+        <PageIntro
+          art={<Hotspot />}
+          answer="Bir yerdə bir neçə problem birdən olanda həyat çətinləşir: isti olur, yaşıllıq olmur, avtobus uzaq olur, yolu keçmək çətin olur. Biz 8 problemi bir xəritəyə yığdıq və onların toplandığı yerləri tapdıq."
+          steps={["Qırmızı yerlərdə problemlər toplanıb.", "Göy yerlərdə vəziyyət yaxşıdır.", "Siyahıda zonaya klikləyin: xəritədə onu görəcəksiniz."]}
+          idea="Siyahıda 1-ci yerdə olan zona köməyin ilk lazım olduğu yerdir."
         />
         {error && <ErrorText />}
         {loading && <MapSkeleton />}

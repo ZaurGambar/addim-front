@@ -1,17 +1,17 @@
 import styled from "styled-components";
 import { card, kpiValue } from "@/styles/common/mixins";
 import { fmt } from "@/utils/helpers/format";
-import { overlap4Pop, typeInfo } from "@/utils/helpers/synth";
+import { overlap4Pop } from "@/utils/helpers/synth";
 
 const KeyFindings = ({ analysis, synth }) => {
   const C = analysis.city;
   const r = (n) => analysis.rayons.find((x) => x.rayon === n) || {};
   const top = synth.zones[0];
   const items = [
-    { k: `${C.no_metro_rayons.length} rayon`, t: "metrosuz", p: `${fmt(C.pop_no_metro)} nəfər metro olmayan rayonlarda yaşayır: ${C.no_metro_rayons.join(", ")}.` },
-    { k: `${(r("Qaradağ").lst_mean - r("Nəsimi").lst_mean).toFixed(1)}°C`, t: "tərs istilik adası", p: "Suvarılan parklar mərkəzi periferiyadan sərin saxlayır. Bu model isti qəsəbələrə köçürülə bilər." },
-    { k: fmt(overlap4Pop(synth)), t: "nəfər 4+ problemlə", p: "Bu insanların hücrəsində səkkiz problemdən dördü və ya daha çoxu eyni anda ən pis üçdə birlikdədir." },
-    { k: top.place, t: "1-ci prioritet zona", p: `${fmt(top.pop)} nəfər. ${top.top_layers.map((l) => l[0]).join(", ")}. Tip: ${typeInfo(synth, Math.max(0, synth.types.findIndex((t) => t.places.some((pl) => pl[0] === top.place)))).name}.` },
+    { k: `${C.no_metro_rayons.length} rayon`, t: "metro yoxdur", p: `${fmt(C.pop_no_metro)} insan metrosu olmayan rayonlarda yaşayır: ${C.no_metro_rayons.join(", ")}.` },
+    { k: `${(r("Qaradağ").lst_mean - r("Nəsimi").lst_mean).toFixed(1)}°C`, t: "kənar rayonlar daha istidir", p: "Qaradağ Nəsimidən bu qədər istidir. Mərkəzdə suvarılan parklar havanı sərinləşdirir. Eyni şeyi isti qəsəbələrdə də etmək olar." },
+    { k: fmt(overlap4Pop(synth)), t: "insan çox problemlə yaşayır", p: "Bu insanların yaşadığı yerdə 8 problemdən ən azı 4-ü birdən var: isti, yaşıllıq azlığı, uzaq avtobus və s." },
+    { k: top.place, t: "kömək ən çox lazım olan yer", p: `Burada ${fmt(top.pop)} insan yaşayır. Əsas problemlər: ${top.top_layers.map((l) => l[0].toLowerCase()).join(", ")}.` },
   ];
   return (
     <Grid>

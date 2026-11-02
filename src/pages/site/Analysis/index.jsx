@@ -2,6 +2,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import Container from "@/styles/common/Container";
+import PageIntro from "@/components/common/PageIntro";
+import { MapLayers } from "@/components/common/Illustrations";
 import SectionHeading from "@/components/common/SectionHeading";
 import PageMobilSafeArea from "@/components/common/PageMobilSafeArea";
 import MapSkeleton from "@/components/common/Skeleton/MapSkeleton";
@@ -42,6 +44,12 @@ const Analysis = () => {
           eyebrow="01 · Bütün Bakı · 12 rayon · 2018 km² quru"
           title="Bakı: tematik analiz"
           lede="Doqquz mövzu üzrə şəhəri oxuyuruq: demoqrafiya, sosial-iqtisadi vəziyyət, topoqrafiya, küçə şəbəkəsi, nəqliyyat, iqlim, risk və tarixi-mədəni irs. Hər mövzuda göstərilir: nə var, nə yoxdur və nə diqqət çəkir."
+        />
+        <PageIntro
+          art={<MapLayers />}
+          answer="Bakının 12 rayonunu müqayisə edirik: harada insan çoxdur, harada istidir, harada yaşıllıq azdır, metro və avtobus nə qədər yaxındır."
+          steps={["Yuxarıdan bir mövzu seçin, məsələn “istilik”.", "Xəritədə rəng tündləşdikcə problem böyüyür.", "Aşağıdakı cədvəldə rayonları bir-biri ilə müqayisə edin."]}
+          idea="Mərkəzdəki parklar şəhəri sərinləşdirir. Kənar rayonlar daha istidir."
         />
         {error && <ErrorText />}
         {loading && <MapSkeleton />}

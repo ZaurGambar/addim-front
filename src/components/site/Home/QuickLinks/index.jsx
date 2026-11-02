@@ -5,15 +5,15 @@ import { ArrowRight } from "lucide-react";
 import { NAV_ITEMS } from "@/utils/constants/ContractConstants";
 
 const DESC = {
-  "/analiz": "12 rayon, 9 mövzu: nə var, nə yoxdur",
-  "/sintez": "Qaynar nöqtələr və 4 məhəllə tipi",
-  "/swot": "Güclü, zəif tərəflər, imkan və təhdidlər",
-  "/xerite": "250 m hücrələrdə piyada indeksi",
-  "/modeller": "Seul, Amsterdam, Barselona və digərləri",
-  "/anlayislar": "29 nəzəriyyə Bakının datası ilə",
-  "/ai": "8 AI modulu və arxitektura",
-  "/pilot": "3 pilot zona və sahə yoxlaması",
-  "/metodologiya": "İndeks, mənbələr, müraciət mətni",
+  "/analiz": "12 rayonu müqayisə edin: istilik, yaşıllıq, nəqliyyat",
+  "/sintez": "Problemlərin toplandığı yerlər xəritədə",
+  "/swot": "Bakının güclü və zəif tərəfləri, 4 qutuda",
+  "/xerite": "Mərkəzdə piyada nə qədər rahatdır: 0–100 bal",
+  "/modeller": "Başqa şəhərlər piyadalar üçün nə edib",
+  "/anlayislar": "Şəhərsalmanın 29 məşhur fikri Bakıda",
+  "/ai": "Süni intellekt hansı işi asanlaşdırır",
+  "/pilot": "Fikri sınayacağımız 3 yer",
+  "/metodologiya": "Ballar necə hesablanır, data haradandır",
 };
 
 const QuickLinks = () => (

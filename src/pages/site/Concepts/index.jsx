@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import Container from "@/styles/common/Container";
+import PageIntro from "@/components/common/PageIntro";
+import { Network } from "@/components/common/Illustrations";
 import SectionHeading from "@/components/common/SectionHeading";
 import PageMobilSafeArea from "@/components/common/PageMobilSafeArea";
 import CardGridSkeleton from "@/components/common/Skeleton/CardGridSkeleton";
@@ -36,6 +38,11 @@ const Concepts = () => {
           eyebrow="08 · Nəzəriyyə × data"
           title="29 anlayış Bakının datası ilə"
           lede="Hər anlayış ölçülə bilən göstəriciyə çevrilib, 808 hücrədə hesablanıb və çarpaz müqayisə olunub. Ölçmək üçün data olmayanlar açıq şəkildə “data yoxdur” kimi qeyd olunub."
+        />
+        <PageIntro
+          art={<Network />}
+          answer="Şəhərsalmada 29 məşhur fikir var, məsələn “15 dəqiqəlik şəhər”. Biz hər birini rəqəmə çevirdik və Bakının mərkəzində ölçdük."
+          steps={["Kartlarda əsas tapıntılar var.", "Rəngli cədvəl göstərir ki, hansı fikirlər bir-biri ilə bağlıdır.", "Siyahıda fikri seçin və xəritədə baxın."]}
         />
         {error && <ErrorText />}
         {loading && <CardGridSkeleton count={6} />}

@@ -5,6 +5,8 @@ import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
 import { Copy } from "lucide-react";
 import Container from "@/styles/common/Container";
+import PageIntro from "@/components/common/PageIntro";
+import { Checklist } from "@/components/common/Illustrations";
 import SectionHeading from "@/components/common/SectionHeading";
 import PageMobilSafeArea from "@/components/common/PageMobilSafeArea";
 import Button from "@/components/common/Button";
@@ -51,6 +53,11 @@ const Methodology = () => {
       </Helmet>
       <Container>
         <SectionHeading eyebrow="12 · Metodologiya" title="İndeks necə hesablanır" lede="Qaydaya əsaslanan ilkin model. Pilotda çəkilər real piyada sayı ilə öyrədiləcək." />
+        <PageIntro
+          art={<Checklist />}
+          answer="Burada hər balın necə hesablandığı açıq yazılıb: nə balı artırır, nə azaldır, data haradan gəlir."
+          steps={["Cədvəldə hər hissənin balı var.", "Mənbələrin hamısı açıq datadır.", "Aşağıda tez-tez verilən suallara qısa cavablar var."]}
+        />
         <Wrap>
           <table>
             <thead>
