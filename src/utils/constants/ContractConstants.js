@@ -1,4 +1,4 @@
-import { BarChart3, BrainCircuit, Building2, Footprints, Home, Layers, Lightbulb, MapPinned, Ruler, Target } from "lucide-react";
+import { BarChart3, BrainCircuit, Building2, Footprints, Home, Layers, Lightbulb, MapPinned, Ruler, Scale, Target } from "lucide-react";
 
 export const SITE_NAME = "ADDIM Bakı";
 export const SITE_URL = import.meta.env.VITE_SITE_URL || "";
@@ -13,10 +13,11 @@ export const NAV_ITEMS = [
   { path: "/anlayislar", label: "29 anlayış", short: "Anlayışlar", icon: Lightbulb },
   { path: "/ai", label: "AI modulları", short: "AI", icon: BrainCircuit },
   { path: "/pilot", label: "Pilot", short: "Pilot", icon: Footprints, tab: true },
+  { path: "/qaydalar", label: "Qayda təklifləri", short: "Qaydalar", icon: Scale },
   { path: "/metodologiya", label: "Metodologiya", short: "Metod", icon: Ruler },
 ];
 
 // SiteRoot üçün route qrupları (":param" dəstəklənir)
 export const pagesWithHeaderAndTab = ["/", "/analiz", "/sintez", "/swot", "/xerite", "/pilot"];
-export const pagesWithHeaderWebBackMobile = ["/modeller", "/anlayislar", "/ai"];
+export const pagesWithHeaderWebBackMobile = ["/modeller", "/anlayislar", "/ai", "/qaydalar"];
 export const pagesWithOnlyBack = ["/metodologiya"];
