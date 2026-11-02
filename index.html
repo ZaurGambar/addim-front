@@ -4,7 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg" />
-    <meta name="theme-color" content="#165a7a" />
+    <meta name="theme-color" content="#17171b" />
+    <script>
+      (function () {
+        var t = "dark";
+        try { t = localStorage.getItem("addim-theme") || "dark"; } catch (e) {}
+        document.documentElement.setAttribute("data-theme", t);
+        if (t === "light") document.querySelector('meta[name="theme-color"]').setAttribute("content", "#e9e8ed");
+      })();
+    </script>
     <title>ADDIM Bakı</title>
     <meta name="description" content="Bakı üçün süni intellekt əsaslı piyada platforması: tematik analiz, sintez, SWOT, 29 anlayış və GeoJSON xəritələri." />
     <meta property="og:type" content="website" />

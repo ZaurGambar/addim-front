@@ -40,9 +40,9 @@ const Select = styled.select`
   width: 100%;
   font-size: 14px;
   color: var(--text);
-  background: var(--bg);
+  background: var(--bg-secondary);
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: 14px;
   padding: 9px 10px;
   min-height: 42px;
 `;

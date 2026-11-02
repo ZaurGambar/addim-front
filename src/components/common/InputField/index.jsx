@@ -24,15 +24,16 @@ const Field = styled.input`
   width: 100%;
   font-size: 15px;
   color: var(--text);
-  background: var(--bg);
+  background: var(--bg-secondary);
   border: 1px solid ${({ $error }) => ($error ? "var(--critical)" : "var(--line)")};
-  border-radius: var(--radius);
+  border-radius: 14px;
   padding: 10px 12px;
   min-height: 44px;
 
   &:focus {
     outline: none;
-    border-color: var(--primary);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
   }
 `;
 

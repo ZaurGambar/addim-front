@@ -23,14 +23,14 @@ export const useLeafletMap = ({ bounds, minZoom = 9, maxZoom = 18, attribution =
   return { ref, map: state.map, renderer: state.renderer };
 };
 
-// Rəng tokenləri tema dəyişəndə yenidən oxunsun deyə
+// Rəng tokenləri tema dəyişəndə yenidən oxunsun deyə (<html data-theme> izlənir)
 export const useColorScheme = () => {
-  const [dark, setDark] = useState(() => window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const read = () => document.documentElement.getAttribute("data-theme") !== "light";
+  const [dark, setDark] = useState(read);
   useEffect(() => {
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const fn = (e) => setDark(e.matches);
-    mq.addEventListener("change", fn);
-    return () => mq.removeEventListener("change", fn);
+    const obs = new MutationObserver(() => setDark(read()));
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => obs.disconnect();
   }, []);
   return dark;
 };

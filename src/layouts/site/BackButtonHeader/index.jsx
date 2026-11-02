@@ -28,12 +28,14 @@ const Bar = styled.header`
   left: 0;
   right: 0;
   z-index: 1000;
-  background: var(--bg);
-  border-bottom: 1px solid var(--line);
+  background: var(--glass);
+  backdrop-filter: saturate(1.6) blur(20px);
+  -webkit-backdrop-filter: saturate(1.6) blur(20px);
+  border-bottom: 1px solid var(--line-soft);
   padding-top: env(safe-area-inset-top, 0px);
   display: ${({ $webVisible }) => ($webVisible ? "block" : "none")};
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     display: block;
   }
 `;
@@ -51,14 +53,14 @@ const Back = styled.button`
   border-radius: 50%;
   display: grid;
   place-items: center;
-  color: var(--text);
+  color: var(--accent);
   &:hover {
     background: var(--bg-secondary);
   }
 `;
 
 const Title = styled.h2`
-  font-family: var(--font-semibold);
+  font-family: var(--font-bold);
   font-size: 17px;
   white-space: nowrap;
   overflow: hidden;
