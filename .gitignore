@@ -5,3 +5,6 @@ dist-ssr
 .env
 .DS_Store
 npm-debug.log*
+data-raw/zoning/src/
+data-raw/zoning/*.gpkg
+scripts/__pycache__/

@@ -68,3 +68,19 @@ Asılılıqlar: `numpy rasterio pystac-client planetary-computer shapely pyproj`
 `scripts/update_synthesis.py` sintezi (`baku_synth.*`) yeni LST/NDVI dəyərlərinə keçirir. Orijinal `baku/synthesis.py` faylındakı addımlar fayllardan bərpa olunub: qat faizləri 701 hücrə arasında sıra faizidir; problem sayı p ≥ 66.7 olan qatlardır; Gi* `need` üzərində 1.5 km (8 qonşu + hücrənin özü) ilə hesablanır, siniflər 1.645 / 1.96 / 2.576-dır; tiplər k-means mərkəzlərinə ən yaxın hücrələrdir; zonalar qonşu Gi* ≥ 95% hücrələrdir. Hər addımda fərq üsulu istifadə olunur. Landsat dəyişməyəndə skript köhnə faylları 0 fərqlə təkrar edir.
 
 Məhdudiyyətlər: `need` indeksinin dəqiq düsturu bərpa olunmayıb (8 qatın ortası × əhali amili), ona görə `need` nisbət üsulu ilə yenilənir. k-means yenidən öyrədilmir: hücrələr köhnə mərkəzlərə bağlanır. Yeni zonaların adı əhaliyə görə çəkili ən çox rast gəlinən yaşayış məntəqəsidir.
+
+## Bölgələmə: məhəllə blokları və planlama zonaları
+
+1 km kvadratlar əvəzinə real məhəllə blokları və onlardan qurulan planlama zonaları (`/bolgeleme`).
+
+```bash
+# Python: geopandas, pyogrio, rasterio, scipy, numpy
+python scripts/zoning/build_blocks.py    # bloklar: əsas küçə, dəmir yolu, sahil; böyük bloklar daxili küçələrlə
+python scripts/zoning/block_metrics.py   # əhali, LST/NDVI, relyef, küçə şəbəkəsi, dayanacaq, xidmət
+python scripts/zoning/zones.py           # 8 problem, zonalar (5–15 min nəfər), zona təklifləri
+```
+
+Girişlər: Geofabrik Azerbaijan OSM shapefile (`OSM_DIR`), WorldPop 2020 100 m (`data-raw/zoning/src/`),
+Landsat npz keşi (`LANDSAT_NPZ`, `update_landsat.py --cache`), SRTM `.hgt` (`SRTM_DIR`).
+Çıxışlar: `public/data/zoning.json`, `zoning_zones.geojson`, `zoning_blocks.geojson`.
+Məhdudiyyət: xidmət sayı hələ OSM-dəndir; 2GIS datası tam toplananda əvəz olunacaq.

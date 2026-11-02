@@ -136,6 +136,11 @@ const Policy = () => {
           steps={["Əvvəl tez nəticə verən 3 qaydaya baxın.", "Hər kartda: nə dəyişir və niyə lazımdır.", "Rəngli etiket qaydanın hansı problemə aid olduğunu göstərir."]}
           idea="Qısası: ölçürük → sınayırıq → işləyəni qayda edirik."
         />
+        <ZoneLink to="/bolgeleme">
+          <b>Hər zona üçün ayrıca təkliflər</b>
+          <span>Rayon qərar üçün çox böyükdür. Şəhəri 237 planlama zonasına böldük: hər zonanın öz problemləri və ona uyğun qaydaları var.</span>
+          <ArrowRight size={18} />
+        </ZoneLink>
 
         {ready && (
           <Stats>
@@ -220,6 +225,32 @@ export default Policy;
 
 const Section = styled.section`
   padding: 20px 0 56px;
+`;
+
+const ZoneLink = styled(Link)`
+  ${card}
+  ${hoverLift}
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 12px;
+  align-items: center;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  b {
+    font-family: var(--font-bold);
+    font-size: 16px;
+    color: var(--accent);
+  }
+  span {
+    grid-column: 1;
+    font-size: 13.5px;
+    color: var(--text-2);
+  }
+  svg {
+    grid-row: 1 / span 2;
+    grid-column: 2;
+    color: var(--accent);
+  }
 `;
 
 const Stats = styled.div`

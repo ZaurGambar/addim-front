@@ -13,6 +13,7 @@ const Models = lazy(() => import("@/pages/site/Models"));
 const Concepts = lazy(() => import("@/pages/site/Concepts"));
 const AiModules = lazy(() => import("@/pages/site/AiModules"));
 const Pilot = lazy(() => import("@/pages/site/Pilot"));
+const Zoning = lazy(() => import("@/pages/site/Zoning"));
 const TwoGis = lazy(() => import("@/pages/site/TwoGis"));
 const Policy = lazy(() => import("@/pages/site/Policy"));
 const Methodology = lazy(() => import("@/pages/site/Methodology"));
@@ -41,6 +42,7 @@ export const ROUTES = [
       { path: "anlayislar", element: page(Concepts) },
       { path: "ai", element: page(AiModules) },
       { path: "pilot", element: page(Pilot) },
+      { path: "bolgeleme", element: page(Zoning) },
       { path: "2gis", element: page(TwoGis) },
       { path: "qaydalar", element: page(Policy) },
       { path: "metodologiya", element: page(Methodology) },
