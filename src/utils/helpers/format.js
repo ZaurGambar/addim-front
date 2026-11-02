@@ -7,7 +7,20 @@ export const fmtN = (v) => {
   return v.toFixed(Math.abs(v) < 1 ? 2 : 1);
 };
 
-export const cssVar = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+// CSS dəyişənləri keşlənir: hər hücrə üçün getComputedStyle çağırmaq xəritəni yavaşladırdı.
+// Tema (data-theme) dəyişəndə keş təmizlənir.
+const varCache = new Map();
+if (typeof MutationObserver !== "undefined") {
+  new MutationObserver(() => varCache.clear()).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+}
+export const cssVar = (name) => {
+  let v = varCache.get(name);
+  if (v === undefined) {
+    v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    varCache.set(name, v);
+  }
+  return v;
+};
 
 export const RAMP = ["--s1", "--s2", "--s3", "--s4", "--s5", "--s6", "--s7"];
 export const GAP_RAMP = ["--g1", "--g2", "--g3", "--g4"];

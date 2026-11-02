@@ -16,13 +16,6 @@ const CENTER = [[40.355, 49.8], [40.425, 49.905]];
 const AUTOPLAY_MS = 9000;
 const still = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-const rampColor = (v, breaks, ramp) => {
-  if (v == null) return "transparent";
-  let i = 0;
-  while (i < breaks.length && v > breaks[i]) i++;
-  return cssVar(ramp[Math.min(i, ramp.length - 1)]);
-};
-
 const TourMap = () => {
   const [box, near] = useInView({ threshold: 0, rootMargin: "400px 0px" });
   const opts = { enabled: near };
@@ -140,70 +133,101 @@ const Tour = ({ d }) => {
     return () => base.forEach((l) => map.removeLayer(l));
   }, [map, renderer, d.rayons, d.coast, dark]);
 
-  // addımın qatları və kamera
+  // addımın qatları: hər addım+tema üçün bir dəfə qurulur və keşdə saxlanır
+  const cache = useRef(new Map());
+  const build = useCallback(
+    (i) => {
+      const layers = [];
+      const red = cssVar("--critical");
+      const blue = cssVar("--accent");
+      const grey = cssVar("--text-3");
+      const popCols = RAMP.map((v) => cssVar(v));
+      const lstCols = GAP_RAMP.map((v) => cssVar(v));
+      const pick = (v, breaks, cols) => {
+        let k = 0;
+        while (k < breaks.length && v > breaks[k]) k++;
+        return cols[Math.min(k, cols.length - 1)];
+      };
+      const cell = (fill, op) => ({ renderer, stroke: false, fillColor: fill || "#000", fillOpacity: fill ? op : 0 });
+      const pin = (hot) => L.divIcon({ className: "", html: `<span class="tour-pin${hot ? " hot" : ""}"></span>`, iconSize: [24, 24], iconAnchor: [12, 12] });
+
+      if (i === 0) {
+        layers.push(
+          L.geoJSON(d.rayons, {
+            style: () => ({ renderer, color: blue, weight: 2, fill: false }),
+            interactive: false,
+            onEachFeature: (f, l) => l.bindTooltip(f.properties.rayon, { permanent: true, direction: "center", className: "tour-label" }),
+          })
+        );
+      }
+      if (i === 1) layers.push(L.geoJSON(d.grid, { style: (f) => cell(f.properties.pop > 0 ? pick(f.properties.pop, popBreaks, popCols) : null, 0.8), interactive: false }));
+      if (i === 2) layers.push(L.geoJSON(d.grid, { style: (f) => cell(f.properties.lst == null ? null : pick(f.properties.lst, lstBreaks, lstCols), 0.75), interactive: false }));
+      if (i === 3) {
+        d.metro.features
+          .filter((f) => f.properties.status === "işləyir")
+          .forEach((f) => {
+            const [lon, lat] = f.geometry.coordinates;
+            layers.push(L.circle([lat, lon], { renderer, radius: 800, color: blue, weight: 1, fillColor: blue, fillOpacity: 0.18, interactive: false }));
+            layers.push(L.circleMarker([lat, lon], { renderer, radius: 3.5, stroke: false, fillColor: blue, fillOpacity: 1 }).bindTooltip(f.properties.name));
+          });
+      }
+      if (i === 4) {
+        layers.push(L.geoJSON(d.barriers, { style: () => ({ renderer, color: red, weight: 4, opacity: 0.85 }), interactive: false }));
+        const solid = cssVar("--solid");
+        const warn = cssVar("--warn");
+        layers.push(L.geoJSON(d.underpasses, { pointToLayer: (f, ll) => L.circleMarker(ll, { renderer, radius: 5, color: solid, weight: 1.5, fillColor: warn, fillOpacity: 1 }), interactive: false }));
+      }
+      if (i === 5 || i === 6) {
+        layers.push(
+          L.geoJSON(d.synthGeo, {
+            style: (f) => {
+              const g = f.properties.gi_cls;
+              return cell(g >= 2 ? red : g <= -2 ? blue : grey, g >= 2 || g <= -2 ? 0.75 : 0.12);
+            },
+            interactive: false,
+          })
+        );
+      }
+      if (i === 6) layers.push(L.marker([top.lat, top.lon], { icon: pin(true), interactive: false }));
+      if (i === 7) {
+        layers.push(L.geoJSON(d.barriers, { style: () => ({ renderer, color: red, weight: 3, opacity: 0.4 }), interactive: false }));
+        pilotStations.forEach(({ p, f }) => {
+          const [lon, lat] = f.geometry.coordinates;
+          layers.push(L.marker([lat, lon], { icon: pin(false) }).bindTooltip(`${p.title}: ${p.station}`, { permanent: true, direction: "top", offset: [0, -12], className: "tour-label" }));
+        });
+      }
+      return layers;
+    },
+    [renderer, d, popBreaks, lstBreaks, top, pilotStations]
+  );
+
+  // kamera əvvəl uçur (yalnız yüngül fon ilə), ağır qat uçuş bitəndən sonra çəkilir
   useEffect(() => {
     if (!map) return undefined;
-    const layers = [];
-    const cellStyle = (fill, op = 0.8) => ({ renderer, stroke: false, fillColor: fill, fillOpacity: fill === "transparent" ? 0 : op });
-    if (step === 0) {
-      layers.push(
-        L.geoJSON(d.rayons, {
-          style: () => ({ renderer, color: cssVar("--accent"), weight: 2, fill: false }),
-          onEachFeature: (f, l) => l.bindTooltip(f.properties.rayon, { permanent: true, direction: "center", className: "tour-label" }),
-        })
-      );
+    const key = `${step}-${dark}`;
+    let layers = cache.current.get(key);
+    if (!layers) {
+      layers = build(step);
+      cache.current.set(key, layers);
     }
-    if (step === 1) layers.push(L.geoJSON(d.grid, { style: (f) => cellStyle(f.properties.pop > 0 ? rampColor(f.properties.pop, popBreaks, RAMP) : "transparent"), interactive: false }));
-    if (step === 2) layers.push(L.geoJSON(d.grid, { style: (f) => cellStyle(rampColor(f.properties.lst, lstBreaks, GAP_RAMP), 0.75), interactive: false }));
-    if (step === 3) {
-      d.metro.features
-        .filter((f) => f.properties.status === "işləyir")
-        .forEach((f) => {
-          const [lon, lat] = f.geometry.coordinates;
-          layers.push(L.circle([lat, lon], { renderer, radius: 800, color: cssVar("--accent"), weight: 1, fillColor: cssVar("--accent"), fillOpacity: 0.18 }));
-          layers.push(L.circleMarker([lat, lon], { renderer, radius: 3.5, stroke: false, fillColor: cssVar("--accent"), fillOpacity: 1 }).bindTooltip(f.properties.name));
-        });
-    }
-    if (step === 4) {
-      layers.push(L.geoJSON(d.barriers, { style: () => ({ renderer, color: cssVar("--critical"), weight: 4, opacity: 0.85 }), interactive: false }));
-      layers.push(
-        L.geoJSON(d.underpasses, {
-          pointToLayer: (f, ll) => L.circleMarker(ll, { renderer, radius: 5, color: cssVar("--solid"), weight: 1.5, fillColor: cssVar("--warn"), fillOpacity: 1 }),
-          interactive: false,
-        })
-      );
-    }
-    if (step === 5 || step === 6) {
-      layers.push(
-        L.geoJSON(d.synthGeo, {
-          style: (f) => {
-            const g = f.properties.gi_cls;
-            const c = g >= 2 ? cssVar("--critical") : g <= -2 ? cssVar("--accent") : cssVar("--text-3");
-            return cellStyle(c, g >= 2 || g <= -2 ? 0.75 : 0.12);
-          },
-          interactive: false,
-        })
-      );
-    }
-    if (step === 6) {
-      layers.push(L.marker([top.lat, top.lon], { icon: L.divIcon({ className: "", html: '<span class="tour-pin hot"></span>', iconSize: [24, 24], iconAnchor: [12, 12] }) }));
-    }
-    if (step === 7) {
-      layers.push(L.geoJSON(d.barriers, { style: () => ({ renderer, color: cssVar("--critical"), weight: 3, opacity: 0.4 }), interactive: false }));
-      pilotStations.forEach(({ p, f }) => {
-        const [lon, lat] = f.geometry.coordinates;
-        layers.push(
-          L.marker([lat, lon], { icon: L.divIcon({ className: "", html: '<span class="tour-pin"></span>', iconSize: [24, 24], iconAnchor: [12, 12] }) }).bindTooltip(`${p.title}: ${p.station}`, { permanent: true, direction: "top", offset: [0, -12], className: "tour-label" })
-        );
-      });
-    }
-    layers.forEach((l) => l.addTo(map));
-
+    let shown = false;
+    const show = () => {
+      if (shown) return;
+      shown = true;
+      layers.forEach((l) => l.addTo(map));
+    };
     const animate = !still();
-    if (S.center) map.flyTo(S.center, S.zoom, { animate, duration: 1.6 });
-    else map.flyToBounds(S.view, { animate, duration: 1.6, padding: [16, 16] });
-    return () => layers.forEach((l) => map.removeLayer(l));
-  }, [map, renderer, step, S, d, popBreaks, lstBreaks, top, pilotStations, dark]);
+    map.stop();
+    if (animate) map.once("moveend", show);
+    if (S.center) map.flyTo(S.center, S.zoom, { animate, duration: 1.4, easeLinearity: 0.2 });
+    else map.flyToBounds(S.view, { animate, duration: 1.4, easeLinearity: 0.2, padding: [16, 16] });
+    const fallback = setTimeout(show, animate ? 1700 : 0);
+    return () => {
+      clearTimeout(fallback);
+      map.off("moveend", show);
+      layers.forEach((l) => map.removeLayer(l));
+    };
+  }, [map, step, S, dark, build]);
 
   const go = useCallback((n) => setStep(Math.max(0, Math.min(last, n))), [last]);
 
@@ -353,7 +377,10 @@ const capIn = keyframes`
 
 const Caption = styled.div`
   ${glass}
-  background: var(--glass);
+  background: color-mix(in srgb, var(--solid) 94%, transparent);
+  /* xəritənin üstündə bulanıqlıq hər kadrda yenidən hesablanır: söndürülüb */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   position: absolute;
   left: 16px;
   bottom: 16px;

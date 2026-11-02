@@ -9,7 +9,12 @@ export const useLeafletMap = ({ bounds, minZoom = 9, maxZoom = 18, attribution =
 
   useEffect(() => {
     if (!ref.current) return undefined;
-    const m = L.map(ref.current, { preferCanvas: true, zoomSnap: 0.5, minZoom, maxZoom });
+    // Siçan təkəri xəritəni yalnız klikdən sonra zoom edir: səhifə skrollu xəritədə ilişmir
+    const m = L.map(ref.current, { preferCanvas: true, zoomSnap: 0.5, minZoom, maxZoom, scrollWheelZoom: false, wheelPxPerZoomLevel: 90 });
+    const enableWheel = () => m.scrollWheelZoom.enable();
+    const disableWheel = () => m.scrollWheelZoom.disable();
+    m.on("click focus", enableWheel);
+    m.on("mouseout blur", disableWheel);
     m.fitBounds(JSON.parse(boundsKey));
     m.attributionControl.setPrefix(false).addAttribution(attribution);
     // Renderer xəritə ilə birlikdə yaradılır (StrictMode-da köhnə xəritəyə bağlı qalmasın)
