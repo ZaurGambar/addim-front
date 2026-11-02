@@ -22,6 +22,7 @@ export const ENDPOINTS = {
   CONCEPTS: "/data/concepts.json",
   BAKU_RAYONS: "/data/baku_rayons.geojson",
   BAKU_GRID: "/data/baku_grid.geojson",
+  TWOGIS_CELLS: "/data/twogis_cells.geojson",
   BAKU_ANALYSIS: "/data/baku_analysis.json",
   BAKU_SYNTH: "/data/baku_synth.geojson",
   BAKU_SYNTH_SUMMARY: "/data/baku_synth.json",

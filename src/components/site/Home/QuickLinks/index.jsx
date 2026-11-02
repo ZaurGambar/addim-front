@@ -13,6 +13,7 @@ const DESC = {
   "/anlayislar": "Şəhərsalmanın 29 məşhur fikri Bakıda",
   "/ai": "Süni intellekt hansı işi asanlaşdırır",
   "/pilot": "Fikri sınayacağımız 3 yer",
+  "/2gis": "2GIS-dən toplanan data: OSM ilə müqayisə",
   "/qaydalar": "Həlli bütün şəhərə yaymaq üçün 10 qayda",
   "/metodologiya": "Ballar necə hesablanır, data haradandır",
 };
