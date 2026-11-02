@@ -27,7 +27,7 @@ export const DATA_GAPS = [
   "Binalar: OSM-də Bakının binaları çox natamamdır (məs. Səbaildə 0). Bina sıxlığı ölçülməyib.",
   "Gəlir və mənzil: DSK yalnız “Bakı şəhəri – cəmi” verir.",
   "Rayon əhalisi DSK 2024 rəsmi rəqəmidir. Rayon daxilində paylanma WorldPop 2020-dən götürülüb, yeni tikililər tam əks olunmaya bilər.",
-  "Səth temperaturu bir yay gününə aiddir (01.08.2026). Çoxillik ortalama deyil. Sintez səhifəsi hələ 30.08.2025 şəklinə əsaslanır.",
+  "Səth temperaturu bir yay gününə aiddir (01.08.2026). Çoxillik ortalama deyil.",
   "Seysmik, daşqın və qəza datası açıq deyil. Risk proksilərlə qiymətləndirilib.",
 ];
 

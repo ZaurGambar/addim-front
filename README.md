@@ -44,7 +44,7 @@ npm run build      # dist/
 - opendata.az: Bakı Metropoliteni, Yerüstü Nəqliyyat Agentliyi, Dövlət Statistika Komitəsi
 - Dövlət Statistika Komitəsi, rayonlar üzrə əhali, 2024-cü ilin əvvəlinə: CC0
 - WorldPop 2020: CC BY 4.0 (yalnız rayon daxilində paylanma üçün)
-- Landsat 8 C2 L2 (Microsoft Planetary Computer): analiz 01.08.2026, sintez 30.08.2025; SRTM (AWS Terrain Tiles)
+- Landsat 8 C2 L2 (Microsoft Planetary Computer), 01.08.2026; SRTM (AWS Terrain Tiles)
 
 Peyk və 2GIS ekran görüntüləri lisenziya səbəbindən repoya daxil edilməyib. Saytda yalnız onlardan çıxan nəticələr göstərilir.
 
@@ -59,6 +59,12 @@ Data hazırlama skriptləri (Python) ayrıca `pedastrainized/data` qovluğundad�
 
 ### Landsat yeniləməsi
 
-`scripts/update_landsat.py <scene_id>` Bakı analizinin LST və NDVI qatlarını yeni Landsat C2 L2 şəklinə keçirir (hazırda `LC08_L2SP_166032_20260801_02_T1`). Fərq üsulu istifadə olunur: `yeni = köhnə + (yeni şəkil − köhnə şəkil)`, eyni təmiz piksellər üzərində (su, bulud və kölgə çıxılır). Yenilənir: hücrələrin `lst`/`ndvi`, rayonların `lst_mean`, `lst_p90`, `ndvi_mean`, `green_pct` (NDVI > 0.3), `uhi` və şəhərin `lst_popw`, `green_pct_popw`. Sintez (`baku_synth.*`) hələ 30.08.2025 şəklinə əsaslanır: onu `baku/synthesis.py` ilə yeniləmək lazımdır.
+`scripts/update_landsat.py <scene_id>` Bakı analizinin LST və NDVI qatlarını yeni Landsat C2 L2 şəklinə keçirir (hazırda `LC08_L2SP_166032_20260801_02_T1`). Fərq üsulu istifadə olunur: `yeni = köhnə + (yeni şəkil − köhnə şəkil)`, eyni təmiz piksellər üzərində (su, bulud və kölgə çıxılır). Yenilənir: hücrələrin `lst`/`ndvi`, rayonların `lst_mean`, `lst_p90`, `ndvi_mean`, `green_pct` (NDVI > 0.3), `uhi` və şəhərin `lst_popw`, `green_pct_popw`. Sonra `scripts/update_synthesis.py` sintezi yeniləyir (aşağıya baxın).
 
 Asılılıqlar: `numpy rasterio pystac-client planetary-computer shapely pyproj`.
+
+### Sintez yeniləməsi
+
+`scripts/update_synthesis.py` sintezi (`baku_synth.*`) yeni LST/NDVI dəyərlərinə keçirir. Orijinal `baku/synthesis.py` faylındakı addımlar fayllardan bərpa olunub: qat faizləri 701 hücrə arasında sıra faizidir; problem sayı p ≥ 66.7 olan qatlardır; Gi* `need` üzərində 1.5 km (8 qonşu + hücrənin özü) ilə hesablanır, siniflər 1.645 / 1.96 / 2.576-dır; tiplər k-means mərkəzlərinə ən yaxın hücrələrdir; zonalar qonşu Gi* ≥ 95% hücrələrdir. Hər addımda fərq üsulu istifadə olunur. Landsat dəyişməyəndə skript köhnə faylları 0 fərqlə təkrar edir.
+
+Məhdudiyyətlər: `need` indeksinin dəqiq düsturu bərpa olunmayıb (8 qatın ortası × əhali amili), ona görə `need` nisbət üsulu ilə yenilənir. k-means yenidən öyrədilmir: hücrələr köhnə mərkəzlərə bağlanır. Yeni zonaların adı əhaliyə görə çəkili ən çox rast gəlinən yaşayış məntəqəsidir.

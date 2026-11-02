@@ -602,7 +602,6 @@
   "landsat_scene": "LC08_L2SP_166032_20260801_02_T1",
   "worldpop_year": 2020,
   "pop_source": "DSK 2024 (ilin əvvəlinə); hücrə paylanması WorldPop 2020",
-  "pop_year": 2024,
-  "synth_landsat_scene": "LC08_L2SP_166032_20250830_02_T1"
+  "pop_year": 2024
  }
 }

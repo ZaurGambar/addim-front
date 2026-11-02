@@ -9,8 +9,7 @@ fərqləri silinir, yalnız il fərqi qalır.
 Yenilənir: baku_grid.geojson (lst, ndvi), baku_rayons.geojson və baku_analysis.json
 (lst_mean, lst_p90, ndvi_mean, green_pct, uhi), şəhər (lst_popw, green_pct_popw,
 landsat_scene). uhi = rayonun lst_mean - şəhərin əhaliyə görə çəkili LST-si.
-Sintez faylları (baku_synth.*) dəyişmir: onların faizləri, Gi* və tipləri
-baku/synthesis.py ilə yenidən hesablanmalıdır.
+Sintez faylları (baku_synth.*) bundan sonra scripts/update_synthesis.py ilə yenilənir.
 
 Asılılıqlar: numpy rasterio pystac-client planetary-computer shapely pyproj
   python3 scripts/update_landsat.py LC08_L2SP_166032_20260801_02_T1 [--cache DIR]
@@ -144,7 +143,6 @@ def main():
     pops = {p["rayon"]: p["pop"] for p in analysis["rayons"]}
     C["green_pct_popw"] = round(sum(new[r]["green_pct"] * pops[r] for r in pops) / sum(pops.values()), 1)
     C["landsat_scene"] = args.scene
-    C["synth_landsat_scene"] = C.get("synth_landsat_scene", old_scene)
 
     save_json("baku_grid.geojson", grid)
     save_json("baku_rayons.geojson", rayons_geo)

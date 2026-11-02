@@ -25,28 +25,28 @@
   {
    "id": 0,
    "cells": 211,
-   "pop": 1495366,
+   "pop": 1491992,
    "z": {
     "density": 1.1,
     "poi": 1.01,
     "inter": 0.3,
     "deadend": -0.64,
-    "lst": -0.36,
-    "ndvi": -0.21,
+    "lst": 0.08,
+    "ndvi": -0.24,
     "slope": 0.08,
     "transit": -0.83,
     "major": 0.55
    },
    "mean": {
-    "density": 7087,
-    "poi": 58.4,
-    "lst": 41.5,
-    "ndvi": 0.211,
+    "density": 7071,
+    "poi": 58.7,
+    "lst": 42.7,
+    "ndvi": 0.229,
     "slope": 5.3,
-    "transit_m": 192,
+    "transit_m": 195,
     "deadend": 22,
-    "need": 37.4,
-    "hot_share": 14.7
+    "need": 39.3,
+    "hot_share": 19.0
    },
    "rayons": [
     [
@@ -63,7 +63,7 @@
     ],
     [
      "Suraxanı",
-     21
+     20
     ]
    ],
    "places": [
@@ -92,29 +92,29 @@
   },
   {
    "id": 1,
-   "cells": 364,
-   "pop": 469271,
+   "cells": 362,
+   "pop": 462375,
    "z": {
     "density": -0.57,
     "poi": -0.32,
     "inter": 0.34,
     "deadend": 0.04,
-    "lst": 0.06,
-    "ndvi": 0.36,
+    "lst": -0.31,
+    "ndvi": 0.37,
     "slope": -0.38,
     "transit": 0.25,
     "major": -0.24
    },
    "mean": {
-    "density": 1289,
-    "poi": 8.2,
-    "lst": 42.2,
-    "ndvi": 0.243,
+    "density": 1277,
+    "poi": 8.0,
+    "lst": 41.9,
+    "ndvi": 0.265,
     "slope": 3.8,
-    "transit_m": 548,
+    "transit_m": 545,
     "deadend": 32,
-    "need": 35.4,
-    "hot_share": 6.3
+    "need": 34.0,
+    "hot_share": 5.0
    },
    "rayons": [
     [
@@ -123,15 +123,15 @@
     ],
     [
      "Xəzər",
-     112
+     109
     ],
     [
      "Suraxanı",
-     62
+     63
     ],
     [
      "Binəqədi",
-     23
+     24
     ]
    ],
    "places": [
@@ -141,7 +141,7 @@
     ],
     [
      "Hövsan",
-     25
+     26
     ],
     [
      "Binə",
@@ -161,40 +161,40 @@
   {
    "id": 2,
    "cells": 39,
-   "pop": 131790,
+   "pop": 134166,
    "z": {
     "density": 0.52,
     "poi": -0.23,
     "inter": -0.02,
     "deadend": 0.48,
-    "lst": 0.43,
-    "ndvi": -0.38,
+    "lst": 0.74,
+    "ndvi": -0.22,
     "slope": 3.3,
     "transit": 0.04,
     "major": 0.03
    },
    "mean": {
-    "density": 3379,
-    "poi": 11.8,
-    "lst": 42.9,
-    "ndvi": 0.202,
+    "density": 3440,
+    "poi": 12.2,
+    "lst": 44.0,
+    "ndvi": 0.231,
     "slope": 16.3,
-    "transit_m": 405,
+    "transit_m": 395,
     "deadend": 38,
-    "need": 49.3,
-    "hot_share": 51.3
+    "need": 50.3,
+    "hot_share": 53.8
    },
    "rayons": [
     [
      "Səbail",
-     16
-    ],
-    [
-     "Binəqədi",
-     8
+     17
     ],
     [
      "Qaradağ",
+     7
+    ],
+    [
+     "Binəqədi",
      7
     ],
     [
@@ -205,7 +205,7 @@
    "places": [
     [
      "Badamdar",
-     7
+     8
     ],
     [
      "Heybət",
@@ -228,29 +228,29 @@
   },
   {
    "id": 3,
-   "cells": 87,
-   "pop": 115081,
+   "cells": 89,
+   "pop": 122975,
    "z": {
     "density": -0.53,
     "poi": -1.03,
     "inter": -2.14,
     "deadend": 1.16,
-    "lst": 0.42,
-    "ndvi": -0.84,
+    "lst": 0.74,
+    "ndvi": -0.83,
     "slope": -0.09,
     "transit": 0.94,
     "major": -0.32
    },
    "mean": {
-    "density": 1322,
+    "density": 1381,
     "poi": 2.3,
-    "lst": 42.9,
-    "ndvi": 0.176,
+    "lst": 44.0,
+    "ndvi": 0.195,
     "slope": 4.7,
-    "transit_m": 1744,
+    "transit_m": 1725,
     "deadend": 47,
-    "need": 51.6,
-    "hot_share": 46.0
+    "need": 52.6,
+    "hot_share": 48.3
    },
    "rayons": [
     [
@@ -259,7 +259,7 @@
     ],
     [
      "Qaradağ",
-     21
+     22
     ],
     [
      "Sabunçu",
@@ -297,20 +297,54 @@
  ],
  "zones": [
   {
-   "cells": 37,
-   "pop": 130510,
-   "need": 53.2,
-   "lon": 49.8007,
-   "lat": 40.3475,
+   "cells": 19,
+   "pop": 153636,
+   "need": 52.3,
+   "lon": 49.9092,
+   "lat": 40.3879,
+   "place": "Keşlə",
+   "rayons": [
+    [
+     "Xətai",
+     12
+    ],
+    [
+     "Nizami",
+     7
+    ]
+   ],
+   "top_layers": [
+    [
+     "Yaşıllıq çatışmazlığı",
+     82
+    ],
+    [
+     "Xidmət çatışmazlığı",
+     70
+    ],
+    [
+     "İstilik stressi",
+     67
+    ]
+   ],
+   "overlap_mean": 3.5,
+   "rank": 1
+  },
+  {
+   "cells": 41,
+   "pop": 132972,
+   "need": 54.3,
+   "lon": 49.8003,
+   "lat": 40.3468,
    "place": "Badamdar",
    "rayons": [
     [
      "Səbail",
-     23
+     26
     ],
     [
      "Qaradağ",
-     9
+     10
     ],
     [
      "Yasamal",
@@ -320,178 +354,118 @@
    "top_layers": [
     [
      "Relyef maneəsi",
-     87
+     85
+    ],
+    [
+     "İstilik stressi",
+     75
     ],
     [
      "Yaşıllıq çatışmazlığı",
      72
-    ],
-    [
-     "Avtomobil hökmranlığı",
-     70
     ]
    ],
-   "overlap_mean": 4.1,
-   "rank": 1
-  },
-  {
-   "cells": 8,
-   "pop": 58061,
-   "need": 50.0,
-   "lon": 49.9101,
-   "lat": 40.3814,
-   "place": "Keşlə",
-   "rayons": [
-    [
-     "Xətai",
-     7
-    ],
-    [
-     "Nizami",
-     1
-    ]
-   ],
-   "top_layers": [
-    [
-     "Yaşıllıq çatışmazlığı",
-     79
-    ],
-    [
-     "Xidmət çatışmazlığı",
-     73
-    ],
-    [
-     "Avtomobil hökmranlığı",
-     65
-    ]
-   ],
-   "overlap_mean": 3.1,
+   "overlap_mean": 4.3,
    "rank": 2
   },
   {
-   "cells": 18,
-   "pop": 53653,
-   "need": 50.2,
-   "lon": 49.8392,
-   "lat": 40.4643,
-   "place": "Binəqədi",
+   "cells": 15,
+   "pop": 58635,
+   "need": 52.0,
+   "lon": 49.9123,
+   "lat": 40.4578,
+   "place": "Balaxanı",
    "rayons": [
     [
-     "Binəqədi",
-     18
+     "Sabunçu",
+     15
     ]
    ],
    "top_layers": [
     [
      "İstilik stressi",
-     81
+     83
     ],
     [
      "Yaşıllıq çatışmazlığı",
+     81
+    ],
+    [
+     "Xidmət çatışmazlığı",
+     77
+    ]
+   ],
+   "overlap_mean": 4.7,
+   "rank": 3
+  },
+  {
+   "cells": 17,
+   "pop": 39372,
+   "need": 52.8,
+   "lon": 49.9825,
+   "lat": 40.3504,
+   "place": "Zığ",
+   "rayons": [
+    [
+     "Suraxanı",
+     12
+    ],
+    [
+     "Xətai",
+     5
+    ]
+   ],
+   "top_layers": [
+    [
+     "Xidmət çatışmazlığı",
      79
+    ],
+    [
+     "Yaşıllıq çatışmazlığı",
+     69
+    ],
+    [
+     "Alçaq sahil riski",
+     67
+    ]
+   ],
+   "overlap_mean": 4.1,
+   "rank": 4
+  },
+  {
+   "cells": 9,
+   "pop": 35148,
+   "need": 49.5,
+   "lon": 49.842,
+   "lat": 40.4604,
+   "place": "Binəqədi",
+   "rayons": [
+    [
+     "Binəqədi",
+     9
+    ]
+   ],
+   "top_layers": [
+    [
+     "Yaşıllıq çatışmazlığı",
+     82
+    ],
+    [
+     "İstilik stressi",
+     76
     ],
     [
      "Şəbəkə qırıqlığı",
      74
     ]
    ],
-   "overlap_mean": 4.3,
-   "rank": 3
-  },
-  {
-   "cells": 14,
-   "pop": 49471,
-   "need": 52.6,
-   "lon": 49.9086,
-   "lat": 40.4597,
-   "place": "Balaxanı",
-   "rayons": [
-    [
-     "Sabunçu",
-     14
-    ]
-   ],
-   "top_layers": [
-    [
-     "Yaşıllıq çatışmazlığı",
-     85
-    ],
-    [
-     "İstilik stressi",
-     82
-    ],
-    [
-     "Xidmət çatışmazlığı",
-     80
-    ]
-   ],
-   "overlap_mean": 4.7,
-   "rank": 4
-  },
-  {
-   "cells": 6,
-   "pop": 18879,
-   "need": 49.5,
-   "lon": 49.7567,
-   "lat": 40.4332,
-   "place": "Sulutəpə",
-   "rayons": [
-    [
-     "Binəqədi",
-     6
-    ]
-   ],
-   "top_layers": [
-    [
-     "İstilik stressi",
-     87
-    ],
-    [
-     "Relyef maneəsi",
-     87
-    ],
-    [
-     "Şəbəkə qırıqlığı",
-     75
-    ]
-   ],
-   "overlap_mean": 3.8,
+   "overlap_mean": 3.9,
    "rank": 5
-  },
-  {
-   "cells": 8,
-   "pop": 11638,
-   "need": 51.5,
-   "lon": 50.0054,
-   "lat": 40.3491,
-   "place": "Zığ",
-   "rayons": [
-    [
-     "Suraxanı",
-     8
-    ]
-   ],
-   "top_layers": [
-    [
-     "Alçaq sahil riski",
-     89
-    ],
-    [
-     "Yaşıllıq çatışmazlığı",
-     86
-    ],
-    [
-     "Xidmət çatışmazlığı",
-     81
-    ]
-   ],
-   "overlap_mean": 4.1,
-   "rank": 6
   },
   {
    "cells": 6,
    "pop": 11456,
-   "need": 48.0,
+   "need": 48.3,
    "lon": 50.0491,
    "lat": 40.4565,
    "place": "Yeni Suraxanı",
@@ -507,25 +481,25 @@
    ],
    "top_layers": [
     [
-     "İstilik stressi",
-     83
-    ],
-    [
      "Şəbəkə qırıqlığı",
      79
+    ],
+    [
+     "İstilik stressi",
+     78
     ],
     [
      "Nəqliyyat boşluğu",
      76
     ]
    ],
-   "overlap_mean": 3.8,
-   "rank": 7
+   "overlap_mean": 4.0,
+   "rank": 6
   },
   {
    "cells": 4,
    "pop": 4974,
-   "need": 49.5,
+   "need": 58.5,
    "lon": 49.2786,
    "lat": 40.2817,
    "place": "Sanqaçal",
@@ -542,50 +516,20 @@
     ],
     [
      "Yaşıllıq çatışmazlığı",
-     98
-    ],
-    [
-     "Xidmət çatışmazlığı",
-     86
-    ]
-   ],
-   "overlap_mean": 4.0,
-   "rank": 8
-  },
-  {
-   "cells": 2,
-   "pop": 4035,
-   "need": 51.5,
-   "lon": 49.9585,
-   "lat": 40.4653,
-   "place": "Zabrat",
-   "rayons": [
-    [
-     "Sabunçu",
-     2
-    ]
-   ],
-   "top_layers": [
-    [
-     "Yaşıllıq çatışmazlığı",
-     94
+     96
     ],
     [
      "İstilik stressi",
-     92
-    ],
-    [
-     "Şəbəkə qırıqlığı",
-     89
+     95
     ]
    ],
-   "overlap_mean": 4.5,
-   "rank": 9
+   "overlap_mean": 5.0,
+   "rank": 7
   },
   {
    "cells": 6,
    "pop": 3662,
-   "need": 55.6,
+   "need": 55.5,
    "lon": 49.4207,
    "lat": 39.9734,
    "place": "Baş Ələt",
@@ -598,11 +542,11 @@
    "top_layers": [
     [
      "İstilik stressi",
-     98
+     99
     ],
     [
      "Yaşıllıq çatışmazlığı",
-     93
+     92
     ],
     [
      "Nəqliyyat boşluğu",
@@ -610,128 +554,104 @@
     ]
    ],
    "overlap_mean": 4.3,
-   "rank": 10
-  },
-  {
-   "cells": 1,
-   "pop": 1892,
-   "need": 64.3,
-   "lon": 49.956,
-   "lat": 40.3396,
-   "place": "Əhmədli",
-   "rayons": [
-    [
-     "Xətai",
-     1
-    ]
-   ],
-   "top_layers": [
-    [
-     "Şəbəkə qırıqlığı",
-     98
-    ],
-    [
-     "Alçaq sahil riski",
-     98
-    ],
-    [
-     "Xidmət çatışmazlığı",
-     87
-    ]
-   ],
-   "overlap_mean": 6.0,
-   "rank": 11
+   "rank": 8
   },
   {
    "cells": 3,
-   "pop": 1164,
-   "need": 53.4,
-   "lon": 50.0081,
-   "lat": 40.5794,
-   "place": "Nardaran",
+   "pop": 2026,
+   "need": 57.8,
+   "lon": 49.7253,
+   "lat": 40.3107,
+   "place": "Lökbatan",
    "rayons": [
     [
-     "Sabunçu",
+     "Qaradağ",
      3
     ]
    ],
    "top_layers": [
     [
-     "Nəqliyyat boşluğu",
-     89
-    ],
-    [
-     "Xidmət çatışmazlığı",
-     89
+     "Yaşıllıq çatışmazlığı",
+     96
     ],
     [
      "İstilik stressi",
-     77
+     87
+    ],
+    [
+     "Xidmət çatışmazlığı",
+     76
     ]
    ],
    "overlap_mean": 5.0,
-   "rank": 12
+   "rank": 9
+  },
+  {
+   "cells": 2,
+   "pop": 1249,
+   "need": 56.6,
+   "lon": 49.7256,
+   "lat": 40.2857,
+   "place": "Lökbatan 2",
+   "rayons": [
+    [
+     "Qaradağ",
+     2
+    ]
+   ],
+   "top_layers": [
+    [
+     "Yaşıllıq çatışmazlığı",
+     97
+    ],
+    [
+     "Alçaq sahil riski",
+     96
+    ],
+    [
+     "Şəbəkə qırıqlığı",
+     93
+    ]
+   ],
+   "overlap_mean": 5.5,
+   "rank": 10
   }
  ],
- "zones_total": 13,
- "hot_cells": 114,
- "hot_pop": 349820,
- "cold_cells": 127,
- "cold_pop": 286711,
+ "zones_total": 10,
+ "hot_cells": 122,
+ "hot_pop": 443130,
+ "cold_cells": 137,
+ "cold_pop": 202041,
  "overlap_hist": [
-  50,
-  166,
-  159,
-  152,
-  103,
-  51,
-  18,
-  2,
+  55,
+  167,
+  145,
+  170,
+  85,
+  55,
+  21,
+  3,
   0
  ],
  "overlap_pop": [
-  101768,
-  550437,
-  708820,
-  396973,
-  308341,
-  111330,
-  33144,
-  695,
+  110828,
+  493688,
+  598105,
+  515599,
+  327348,
+  121492,
+  37607,
+  6841,
   0
  ],
  "top_combos": [
-  {
-   "layers": [
-    "Yaşıllıq çatışmazlığı",
-    "Avtomobil hökmranlığı",
-    "Relyef maneəsi"
-   ],
-   "pop": 183631
-  },
-  {
-   "layers": [
-    "İstilik stressi",
-    "Yaşıllıq çatışmazlığı",
-    "Relyef maneəsi"
-   ],
-   "pop": 170436
-  },
   {
    "layers": [
     "İstilik stressi",
     "Yaşıllıq çatışmazlığı",
     "Avtomobil hökmranlığı"
    ],
-   "pop": 137367
-  },
-  {
-   "layers": [
-    "Yaşıllıq çatışmazlığı",
-    "Şəbəkə qırıqlığı",
-    "Xidmət çatışmazlığı"
-   ],
-   "pop": 136322
+   "pop": 291206
   },
   {
    "layers": [
@@ -739,7 +659,23 @@
     "Yaşıllıq çatışmazlığı",
     "Xidmət çatışmazlığı"
    ],
-   "pop": 133513
+   "pop": 206538
+  },
+  {
+   "layers": [
+    "İstilik stressi",
+    "Yaşıllıq çatışmazlığı",
+    "Relyef maneəsi"
+   ],
+   "pop": 198936
+  },
+  {
+   "layers": [
+    "Yaşıllıq çatışmazlığı",
+    "Avtomobil hökmranlığı",
+    "Relyef maneəsi"
+   ],
+   "pop": 181293
   },
   {
    "layers": [
@@ -747,10 +683,25 @@
     "Yaşıllıq çatışmazlığı",
     "Şəbəkə qırıqlığı"
    ],
-   "pop": 128682
+   "pop": 169723
+  },
+  {
+   "layers": [
+    "İstilik stressi",
+    "Avtomobil hökmranlığı",
+    "Relyef maneəsi"
+   ],
+   "pop": 167325
   }
  ],
  "top_pairs": [
+  {
+   "layers": [
+    "İstilik stressi",
+    "Yaşıllıq çatışmazlığı"
+   ],
+   "cells": 156
+  },
   {
    "layers": [
     "Nəqliyyat boşluğu",
@@ -767,13 +718,6 @@
   },
   {
    "layers": [
-    "İstilik stressi",
-    "Yaşıllıq çatışmazlığı"
-   ],
-   "cells": 118
-  },
-  {
-   "layers": [
     "Şəbəkə qırıqlığı",
     "Xidmət çatışmazlığı"
    ],
@@ -784,26 +728,26 @@
     "İstilik stressi",
     "Xidmət çatışmazlığı"
    ],
-   "cells": 109
-  },
-  {
-   "layers": [
-    "İstilik stressi",
-    "Şəbəkə qırıqlığı"
-   ],
-   "cells": 106
+   "cells": 108
   },
   {
    "layers": [
     "Yaşıllıq çatışmazlığı",
     "Xidmət çatışmazlığı"
    ],
-   "cells": 101
+   "cells": 102
   },
   {
    "layers": [
     "İstilik stressi",
-    "Nəqliyyat boşluğu"
+    "Relyef maneəsi"
+   ],
+   "cells": 97
+  },
+  {
+   "layers": [
+    "İstilik stressi",
+    "Şəbəkə qırıqlığı"
    ],
    "cells": 95
   }
@@ -813,109 +757,110 @@
    "rayon": "Qaradağ",
    "cells": 52,
    "pop": 60096,
-   "need": 50.5,
-   "hot_pct": 64.8,
+   "need": 52.1,
+   "hot_pct": 70.5,
    "cold_pct": 0.0,
-   "overlap4_pct": 59.8
+   "overlap4_pct": 67.1
   },
   {
    "rayon": "Səbail",
    "cells": 36,
    "pop": 103793,
-   "need": 46.9,
-   "hot_pct": 64.0,
+   "need": 50.0,
+   "hot_pct": 65.9,
    "cold_pct": 0.0,
-   "overlap4_pct": 37.3
-  },
-  {
-   "rayon": "Binəqədi",
-   "cells": 80,
-   "pop": 292772,
-   "need": 42.7,
-   "hot_pct": 25.0,
-   "cold_pct": 4.4,
-   "overlap4_pct": 33.4
+   "overlap4_pct": 36.5
   },
   {
    "rayon": "Xətai",
    "cells": 37,
    "pop": 272844,
-   "need": 40.5,
-   "hot_pct": 18.2,
-   "cold_pct": 7.3,
-   "overlap4_pct": 19.0
+   "need": 44.8,
+   "hot_pct": 39.9,
+   "cold_pct": 2.2,
+   "overlap4_pct": 24.6
   },
   {
    "rayon": "Yasamal",
    "cells": 16,
    "pop": 186223,
-   "need": 39.8,
+   "need": 42.1,
    "hot_pct": 17.9,
    "cold_pct": 0.0,
-   "overlap4_pct": 19.1
+   "overlap4_pct": 17.1
   },
   {
-   "rayon": "Pirallahı",
-   "cells": 12,
-   "pop": 12961,
-   "need": 39.3,
-   "hot_pct": 0.0,
-   "cold_pct": 0.0,
-   "overlap4_pct": 25.2
-  },
-  {
-   "rayon": "Sabunçu",
-   "cells": 175,
-   "pop": 319194,
-   "need": 39.3,
-   "hot_pct": 17.1,
-   "cold_pct": 14.6,
-   "overlap4_pct": 24.4
+   "rayon": "Binəqədi",
+   "cells": 80,
+   "pop": 292772,
+   "need": 41.8,
+   "hot_pct": 12.3,
+   "cold_pct": 1.5,
+   "overlap4_pct": 32.0
   },
   {
    "rayon": "Nəsimi",
    "cells": 9,
    "pop": 197458,
-   "need": 38.4,
+   "need": 41.7,
    "hot_pct": 0.0,
    "cold_pct": 0.0,
    "overlap4_pct": 29.3
   },
   {
-   "rayon": "Suraxanı",
-   "cells": 111,
-   "pop": 198777,
-   "need": 37.4,
-   "hot_pct": 6.1,
-   "cold_pct": 13.9,
-   "overlap4_pct": 12.9
-  },
-  {
    "rayon": "Nizami",
    "cells": 21,
    "pop": 193445,
-   "need": 36.1,
-   "hot_pct": 5.3,
-   "cold_pct": 32.7,
-   "overlap4_pct": 3.9
+   "need": 40.5,
+   "hot_pct": 33.9,
+   "cold_pct": 21.7,
+   "overlap4_pct": 17.0
+  },
+  {
+   "rayon": "Sabunçu",
+   "cells": 175,
+   "pop": 319194,
+   "need": 39.0,
+   "hot_pct": 18.4,
+   "cold_pct": 17.8,
+   "overlap4_pct": 23.9
+  },
+  {
+   "rayon": "Suraxanı",
+   "cells": 111,
+   "pop": 198777,
+   "need": 39.0,
+   "hot_pct": 9.6,
+   "cold_pct": 5.0,
+   "overlap4_pct": 15.8
   },
   {
    "rayon": "Nərimanov",
    "cells": 21,
    "pop": 195227,
-   "need": 33.9,
+   "need": 38.0,
    "hot_pct": 0.0,
-   "cold_pct": 19.4,
+   "cold_pct": 0.0,
    "overlap4_pct": 3.2
+  },
+  {
+   "rayon": "Pirallahı",
+   "cells": 12,
+   "pop": 12961,
+   "need": 37.5,
+   "hot_pct": 0.0,
+   "cold_pct": 0.0,
+   "overlap4_pct": 14.1
   },
   {
    "rayon": "Xəzər",
    "cells": 131,
    "pop": 178718,
-   "need": 31.2,
+   "need": 30.9,
    "hot_pct": 6.2,
-   "cold_pct": 43.9,
-   "overlap4_pct": 8.5
+   "cold_pct": 46.4,
+   "overlap4_pct": 8.9
   }
- ]
+ ],
+ "landsat_scene": "LC08_L2SP_166032_20260801_02_T1"
 }

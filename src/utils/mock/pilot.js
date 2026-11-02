@@ -16,7 +16,7 @@ export const TIMELINE = [
 
 export const PITCH = `ADDIM — Bakı üçün süni intellekt əsaslı piyada platforması.
 
-Problem: Bakının mərkəzində piyada yeraltı keçidlər, geniş magistrallar və kölgəsiz səkilər arasında qalır. Bütün şəhər üzrə analizimiz göstərir ki, 350 min nəfər statistik “qaynar nöqtələrdə” yaşayır, 5 rayonda (880 min nəfər) metro yoxdur, yay günü (01.08.2026) səth temperaturu orta hesabla 43°C-dir, Qaradağda 50°C-yə çatır.
+Problem: Bakının mərkəzində piyada yeraltı keçidlər, geniş magistrallar və kölgəsiz səkilər arasında qalır. Bütün şəhər üzrə analizimiz göstərir ki, 443 min nəfər statistik “qaynar nöqtələrdə” yaşayır, 5 rayonda (880 min nəfər) metro yoxdur, yay günü (01.08.2026) səth temperaturu orta hesabla 43°C-dir, Qaradağda 50°C-yə çatır.
 
 Həll: Seul, Amsterdam, Barselona, Paris, Kopenhagen və Sinqapurun modellərini Bakının şərtlərinə uyğunlaşdırırıq. 9 mövzu üzrə analiz, sintez və 4 məhəllə tipi ilə hər yerə uyğun müdaxilə seçilir. Platforma 8 AI modulundan ibarətdir. AI təklif edir, operator təsdiq edir.
 
