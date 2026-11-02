@@ -1,4 +1,24 @@
-import { css } from "styled-components";
+import { css, keyframes } from "styled-components";
+
+// Skrolla bağlı görünmə: element ekrana girdikcə qalxır (JS yoxdur).
+// transform əvəzinə translate/scale istifadə olunur ki, hover effektləri ilə toqquşmasın.
+const rise = keyframes`
+  from {
+    opacity: 0;
+    translate: 0 28px;
+    scale: 0.98;
+  }
+`;
+
+export const scrollReveal = css`
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: ${rise} linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+  }
+`;
 
 // UCH CRM dizayn hissələri: bütün səhifə komponentləri bunlardan istifadə edir
 
@@ -13,6 +33,7 @@ export const glass = css`
 
 export const card = css`
   ${glass}
+  ${scrollReveal}
   border-radius: var(--r);
   padding: 20px;
   min-width: 0;

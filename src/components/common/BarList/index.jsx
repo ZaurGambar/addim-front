@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { growX } from "@/components/common/Motion";
 import { fmtN } from "@/utils/helpers/format";
 
 // items: [{ key, label, value }]; max: şkala; marker: kəsik xətt; onSelect: sətrə klik
@@ -65,6 +66,7 @@ const Track = styled.span`
 `;
 
 const Fill = styled.i`
+  ${growX}
   position: absolute;
   top: 0;
   bottom: 0;

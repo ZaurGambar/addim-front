@@ -1,18 +1,46 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+import { CountUp } from "@/components/common/Motion";
 import { card, glow, kpiValue, label, pill } from "@/styles/common/mixins";
 import { Link } from "react-router-dom";
 import Button from "@/components/common/Button";
-import { fmt } from "@/utils/helpers/format";
+
+// "ADDIM." nöqtəsi addım atır; mətnlər ardıcıl görünür
+const flowK = keyframes`to { stroke-dashoffset: -48; }`;
+const inK = keyframes`
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
+`;
+const stepDot = keyframes`
+  0%, 60%, 100% { translate: 0 0; }
+  70% { translate: 6px -10px; }
+  80% { translate: 12px 0; }
+  90% { translate: 6px 0; }
+`;
 
 const Hero = ({ city, synth, onHelp }) => {
   const facts = [
-    [fmt(city.pop), "Bakı əhalisi (DSK, 2024)"],
-    [fmt(synth.hot_pop), "nəfər statistik qaynar nöqtələrdə"],
-    [`${city.transit500_pct}%`, "əhali dayanacağa 500 m-də"],
-    [`${city.lst_popw}°C`, "yay günü səth temperaturu (01.08.2026)"],
+    [city.pop, "Bakı əhalisi (DSK, 2024)", 0, ""],
+    [synth.hot_pop, "nəfər statistik qaynar nöqtələrdə", 0, ""],
+    [city.transit500_pct, "əhali dayanacağa 500 m-də", 1, "%"],
+    [city.lst_popw, "yay günü səth temperaturu (01.08.2026)", 1, "°C"],
   ];
   return (
     <Wrap>
+      <Streets aria-hidden="true" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
+        <path id="h-s1" d="M-20 300 C 160 260, 260 330, 420 250 S 700 120, 840 160" />
+        <path id="h-s2" d="M-20 120 C 120 160, 300 60, 460 120 S 700 300, 840 260" />
+        <path id="h-s3" d="M200 -20 C 240 120, 160 260, 260 420" />
+        <path id="h-s4" d="M600 -20 C 560 140, 680 260, 600 420" />
+        {["h-s1", "h-s2", "h-s3", "h-s4"].map((id, i) => (
+          <circle key={id} r="4">
+            <animateMotion dur={`${9 + i * 2}s`} repeatCount="indefinite" begin={`${-i * 1.7}s`}>
+              <mpath href={`#${id}`} />
+            </animateMotion>
+          </circle>
+        ))}
+      </Streets>
       <Brand>
         ADDIM<span>.</span>
       </Brand>
@@ -32,11 +60,13 @@ const Hero = ({ city, synth, onHelp }) => {
           </Actions>
         </div>
         <Facts>
-          {facts.map(([v, l]) => (
-            <div key={l}>
-              <b>{v}</b>
+          {facts.map(([v, l, d, suf], i) => (
+            <Fact key={l} style={{ animationDelay: `${0.25 + i * 0.12}s` }}>
+              <b>
+                <CountUp value={v} decimals={d} suffix={suf} />
+              </b>
               <span>{l}</span>
-            </div>
+            </Fact>
           ))}
         </Facts>
       </Grid>
@@ -79,8 +109,17 @@ const Brand = styled.h1`
   font-size: clamp(44px, 7vw, 80px);
   letter-spacing: -0.045em;
   line-height: 1;
+  animation: ${inK} 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   span {
     color: var(--accent);
+    display: inline-block;
+    animation: ${stepDot} 2.4s ease-in-out 1s infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    span {
+      animation: none;
+    }
   }
 `;
 
@@ -93,6 +132,10 @@ const Tag = styled.p`
   margin-top: 14px;
   background: var(--accent-soft);
   color: var(--accent);
+  animation: ${inK} 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.1s both;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 `;
 
 const Grid = styled.div`
@@ -112,6 +155,10 @@ const Thesis = styled.p`
   line-height: 1.45;
   color: var(--text-2);
   max-width: 48ch;
+  animation: ${inK} 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 `;
 
 const Actions = styled.div`
@@ -119,6 +166,10 @@ const Actions = styled.div`
   gap: 10px;
   flex-wrap: wrap;
   margin-top: 20px;
+  animation: ${inK} 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) 0.3s both;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 `;
 
 const Facts = styled.div`
@@ -140,5 +191,44 @@ const Facts = styled.div`
   }
   span {
     ${label}
+  }
+`;
+
+
+const Streets = styled.svg`
+  position: absolute !important;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0 !important;
+  opacity: 0.55;
+  pointer-events: none;
+  mask-image: radial-gradient(120% 90% at 70% 40%, #000 30%, transparent 85%);
+
+  path {
+    fill: none;
+    stroke: color-mix(in srgb, var(--accent) 45%, transparent);
+    stroke-width: 1.5;
+    stroke-dasharray: 6 10;
+    animation: ${flowK} 2.4s linear infinite;
+  }
+  circle {
+    fill: var(--accent);
+    filter: drop-shadow(0 0 6px var(--accent));
+  }
+  @media (prefers-reduced-motion: reduce) {
+    path {
+      animation: none;
+    }
+    circle {
+      display: none;
+    }
+  }
+`;
+
+const Fact = styled.div`
+  animation: ${inK} 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
   }
 `;

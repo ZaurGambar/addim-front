@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import styled from "styled-components";
-import { glass, num, table as tableCss } from "@/styles/common/mixins";
+import { growX } from "@/components/common/Motion";
+import { glass, num, table as tableCss, scrollReveal } from "@/styles/common/mixins";
 import { fmtN } from "@/utils/helpers/format";
 
 const COLS = [
@@ -62,6 +63,7 @@ export default RayonTable;
 const Wrap = styled.div`
   overflow-x: auto;
   ${glass}
+  ${scrollReveal}
   border-radius: var(--r);
   padding: 6px 10px;
 `;
@@ -93,6 +95,7 @@ const Table = styled.table`
     ${num}
   }
   td.n i {
+    ${growX}
     position: absolute;
     left: 0;
     top: 5px;

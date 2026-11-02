@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { scrollReveal } from "@/styles/common/mixins";
 
 const Card = ({ title, children, ...props }) => {
   return (
@@ -12,6 +13,7 @@ const Card = ({ title, children, ...props }) => {
 export default Card;
 
 export const StyledCard = styled.div`
+  ${scrollReveal}
   background: var(--panel);
   backdrop-filter: var(--blur);
   -webkit-backdrop-filter: var(--blur);

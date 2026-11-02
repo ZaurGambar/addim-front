@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { glass, num, table } from "@/styles/common/mixins";
+import { glass, num, table, scrollReveal } from "@/styles/common/mixins";
 
 const RayonNeed = ({ rayons }) => (
   <Wrap>
@@ -35,6 +35,7 @@ export default RayonNeed;
 // CRM cədvəli: şüşə kart içində, incə xətlər, sağa düzülmüş rəqəmlər
 export const Wrap = styled.div`
   ${glass}
+  ${scrollReveal}
   border-radius: var(--r);
   padding: 6px 10px;
   overflow-x: auto;

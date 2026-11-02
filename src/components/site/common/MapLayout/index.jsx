@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { scrollReveal } from "@/styles/common/mixins";
 
 // Xəritə + yan panel düzülüşü (bütün xəritə səhifələrində eyni)
 const MapLayout = ({ map, side }) => (
@@ -11,6 +12,7 @@ const MapLayout = ({ map, side }) => (
 export default MapLayout;
 
 export const MapBox = styled.div`
+  ${scrollReveal}
   height: ${({ $h }) => $h || 560}px;
   border: 1px solid var(--line);
   border-radius: var(--r);
