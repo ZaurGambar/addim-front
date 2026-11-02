@@ -251,59 +251,36 @@ def diff(a, b, path=""):
     return [] if a == b else [f"{path}: {a!r} != {b!r}"]
 
 
-def main(check):
-    S = load("baku_synth.json")
-    geo = load("baku_synth.geojson")
+def propagate(S, geo, changed, new_cols):
+    """Dəyişən qatları sintezin qalan hissəsinə ötürür (fərq üsulu).
+
+    changed:  {qat: [yeni faiz (float), hücrə sırası ilə]}
+    new_cols: {sütun: [yeni dəyər, hücrə sırası ilə]} (lst, poi, transit_m ...)
+    Qaytarır: tipi dəyişən hücrə sayı.
+    """
     feats = geo["features"]
     sc = [f["properties"] for f in feats]
     flags = {c["id"]: flags_from_file(c) for c in sc}
     before_feats = json.loads(json.dumps(feats))
     before_flags = {k: set(v) for k, v in flags.items()}
 
-    if check:
-        old = json.loads(json.dumps(S))
-        aggregate(S, feats, flags)
-        for z in S["zones"]:
-            z.pop("ids", None)
-        d = diff(old, S)
-        print(f"baku_synth.json: {len(d)} fərq", *d[:15], sep="\n  ")
-        return 1 if d else 0
-
-    C = load("baku_analysis.json")["city"]
-    scene = C["landsat_scene"]
-    if S.get("landsat_scene") == scene:
-        raise SystemExit(f"Sintez artıq {scene} şəklindədir.")
-    grid = {f["properties"]["id"]: f["properties"] for f in load("baku_grid.geojson")["features"]}
-
-    old_lst, old_ndvi = [c["lst"] for c in sc], [c["ndvi"] for c in sc]
-    new_lst = [grid[c["id"]]["lst"] for c in sc]
-    new_ndvi = [grid[c["id"]]["ndvi"] for c in sc]
-
-    # 2. faizlər (sıra fərqi)
-    rh0, rh1 = ranks(old_lst), ranks(new_lst)
-    rg0, rg1 = ranks([-v for v in old_ndvi]), ranks([-v for v in new_ndvi])
-    mean0 = [sum(c["p_" + k] for k in KEYS) / len(KEYS) for c in sc]
-    p_new = {}
-    for i, c in enumerate(sc):
-        ph = min(100.0, max(0.0, c["p_heat"] + rh1[i] - rh0[i]))
-        pg = min(100.0, max(0.0, c["p_green_gap"] + rg1[i] - rg0[i]))
-        p_new[c["id"]] = (ph, pg)
-
     # 3-4. bayraqlar, overlap, need
     need0 = [c["need"] for c in sc]
+    mean0 = [sum(c["p_" + k] for k in KEYS) / len(KEYS) for c in sc]
     for i, c in enumerate(sc):
-        ph, pg = p_new[c["id"]]
         f = set(flags[c["id"]])
-        for k, v in (("heat", ph), ("green_gap", pg)):
-            if abs(v - c["p_" + k]) >= 0.5:  # faiz dəyişməyibsə köhnə bayraq qalır
+        for k, vals in changed.items():
+            if abs(vals[i] - c["p_" + k]) >= 0.5:  # faiz dəyişməyibsə köhnə bayraq qalır
                 f.discard(k)
-                if v >= WORST:
+                if vals[i] >= WORST:
                     f.add(k)
         flags[c["id"]] = f
-        c["lst"], c["ndvi"] = new_lst[i], new_ndvi[i]
-        c["p_heat"], c["p_green_gap"] = int(round(ph)), int(round(pg))
+        for col, vals in new_cols.items():
+            c[col] = vals[i]
+        mean1 = (sum(c["p_" + k] for k in KEYS if k not in changed) + sum(v[i] for v in changed.values())) / len(KEYS)
+        for k, vals in changed.items():
+            c["p_" + k] = int(round(vals[i]))
         c["overlap"] = len(f)
-        mean1 = sum(c["p_" + k] for k in KEYS if k not in ("heat", "green_gap")) / len(KEYS) + (ph + pg) / len(KEYS)
         c["need"] = round(c["need"] * mean1 / mean0[i], 1) if mean0[i] else c["need"]
 
     # 5. Gi*
@@ -317,21 +294,27 @@ def main(check):
     # 6. tiplər
     names = list(S["types"][0]["z"])
     centers = [(t["id"], [t["z"][n] for n in names]) for t in S["types"]]
-    before = [dict(c, lst=old_lst[i], ndvi=old_ndvi[i]) for i, c in enumerate(sc)]
+    before = [f["properties"] for f in before_feats]
     pred0, pred1 = nearest(type_features(before, names), centers), nearest(type_features(sc, names), centers)
     moved = 0
     for i, c in enumerate(sc):
         if pred1[i] != pred0[i]:
             c["type"] = pred1[i]
             moved += 1
-    Z = type_features(sc, names)
+    # tip mərkəzinin z-dəyəri: fərq üsulu (fayldakı + yeni orta - köhnə orta)
+    Z0, Z1 = type_features(before, names), type_features(sc, names)
     for t in S["types"]:
-        idx = [i for i, c in enumerate(sc) if c["type"] == t["id"]]
-        for n in ("lst", "ndvi"):
-            j = names.index(n)
-            t["z"][n] = round(sum(Z[i][j] for i in idx) / len(idx), 2)
+        idx0 = [i for i, c in enumerate(before) if c["type"] == t["id"]]
+        idx1 = [i for i, c in enumerate(sc) if c["type"] == t["id"]]
+        for n in names:
+            if COLS[n] in new_cols:
+                j = names.index(n)
+                m0 = sum(Z0[i][j] for i in idx0) / len(idx0)
+                m1 = sum(Z1[i][j] for i in idx1) / len(idx1)
+                if abs(m1 - m0) >= 0.005:
+                    t["z"][n] = round(t["z"][n] + m1 - m0, 2)
 
-    # tip ortaları və rayon cədvəli: fərq üsulu (fayldakı + yeni - köhnə hesab)
+    # 7. tip ortaları və rayon cədvəli: fərq üsulu (fayldakı + yeni - köhnə hesab)
     old_file = json.loads(json.dumps(S))
     base = json.loads(json.dumps(S))
     aggregate(base, before_feats, before_flags)
@@ -365,9 +348,48 @@ def main(check):
         if r["rayon"] in of:
             for k in ("need", "hot_pct", "cold_pct", "overlap4_pct"):
                 r[k] = round(of[r["rayon"]][k] + r[k] - ob[r["rayon"]][k], 1)
-    S["landsat_scene"] = scene
     for z in S["zones"]:
         z.pop("ids", None)
+    return moved
+
+
+def rank_delta(old_p, old_vals, new_vals):
+    """p_yeni = p_köhnə + (sıra_yeni - sıra_köhnə), 0..100."""
+    r0, r1 = ranks(old_vals), ranks(new_vals)
+    return [min(100.0, max(0.0, p + r1[i] - r0[i])) for i, p in enumerate(old_p)]
+
+
+def main(check):
+    S = load("baku_synth.json")
+    geo = load("baku_synth.geojson")
+    sc = [f["properties"] for f in geo["features"]]
+
+    if check:
+        flags = {c["id"]: flags_from_file(c) for c in sc}
+        old = json.loads(json.dumps(S))
+        aggregate(S, geo["features"], flags)
+        for z in S["zones"]:
+            z.pop("ids", None)
+        d = diff(old, S)
+        print(f"baku_synth.json: {len(d)} fərq", *d[:15], sep="\n  ")
+        return 1 if d else 0
+
+    C = load("baku_analysis.json")["city"]
+    scene = C["landsat_scene"]
+    if S.get("landsat_scene") == scene and "--self-test" not in sys.argv:
+        raise SystemExit(f"Sintez artıq {scene} şəklindədir.")
+    grid = {f["properties"]["id"]: f["properties"] for f in load("baku_grid.geojson")["features"]}
+    old_lst, old_ndvi = [c["lst"] for c in sc], [c["ndvi"] for c in sc]
+    new_lst = [grid[c["id"]]["lst"] for c in sc]
+    new_ndvi = [grid[c["id"]]["ndvi"] for c in sc]
+    changed = {
+        "heat": rank_delta([c["p_heat"] for c in sc], old_lst, new_lst),
+        "green_gap": rank_delta([c["p_green_gap"] for c in sc], [-v for v in old_ndvi], [-v for v in new_ndvi]),
+    }
+    moved = propagate(S, geo, changed, {"lst": new_lst, "ndvi": new_ndvi})
+    S["landsat_scene"] = scene
+    if "--self-test" in sys.argv:
+        return 0
     save("baku_synth.geojson", geo)
     save("baku_synth.json", S)
     print(f"Sintez → {scene}. Tipi dəyişən hücrə: {moved}. Qaynar: {S['hot_cells']} hücrə, {S['hot_pop']} nəfər. Zonalar: {len(S['zones'])}/{S['zones_total']}")
