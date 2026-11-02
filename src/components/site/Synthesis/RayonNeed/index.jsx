@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { glass, num, table } from "@/styles/common/mixins";
 
 const RayonNeed = ({ rayons }) => (
   <Wrap>
@@ -31,30 +32,27 @@ const RayonNeed = ({ rayons }) => (
 
 export default RayonNeed;
 
+// CRM cədvəli: şüşə kart içində, incə xətlər, sağa düzülmüş rəqəmlər
 export const Wrap = styled.div`
+  ${glass}
+  border-radius: var(--r);
+  padding: 6px 10px;
   overflow-x: auto;
 
   table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
+    ${table}
   }
-  th,
   td {
-    text-align: left;
-    padding: 8px 10px;
-    border-bottom: 1px solid var(--line-soft);
+    white-space: nowrap;
   }
-  th {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--text-3);
-    font-weight: 500;
+  td:first-child {
+    font-family: var(--font-semibold);
   }
   td.n {
-    font-family: var(--font-mono);
+    ${num}
     text-align: right;
+  }
+  tbody tr:hover td {
+    background: var(--bg-secondary);
   }
 `;

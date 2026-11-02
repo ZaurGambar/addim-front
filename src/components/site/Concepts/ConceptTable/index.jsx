@@ -45,7 +45,7 @@ const ConceptTable = ({ concepts, summary, onMap }) => {
                 <td style={{ fontSize: 13, color: "var(--text-2)" }}>{how}</td>
                 <td className="n">{txt}</td>
                 <td>{lv ? <Lvl $c={LVL[lv][1]}>{LVL[lv][0]}</Lvl> : <span style={{ fontSize: 12, color: "var(--text-3)" }}>sistem</span>}</td>
-                <td style={{ fontFamily: "var(--font-mono)", fontSize: 12 }}>{ai}</td>
+                <td style={{ fontFamily: "var(--font-semibold)", fontSize: 12 }}>{ai}</td>
                 <td>{CONCEPT_LABELS[k] && <MapBtn type="button" onClick={() => onMap(k)}>Xəritədə</MapBtn>}</td>
               </tr>
             );
@@ -60,11 +60,10 @@ export default ConceptTable;
 
 const Group = styled.tr`
   td {
-    background: var(--panel-2);
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    background: var(--bg-secondary);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
+    font-size: 11.5px;
     color: var(--text-3);
   }
 `;
@@ -85,10 +84,12 @@ const Lvl = styled.span`
 `;
 
 const MapBtn = styled.button`
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 13px;
+  font-family: var(--font-semibold);
   font-size: 12px;
-  color: var(--primary);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 3px 8px;
+  color: var(--accent);
+  background: var(--accent-soft);
   white-space: nowrap;
 `;

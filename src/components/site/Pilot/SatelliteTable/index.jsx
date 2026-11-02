@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Wrap } from "@/components/site/Synthesis/RayonNeed";
 
-const LBL = { no_zebra: ["zebra yoxdur", "var(--accent)"], zebra_nearby: ["yaxında zebra var", "var(--panel)"], unclear: ["aydın deyil", "var(--warn)"] };
+const LBL = { no_zebra: ["zebra yoxdur", "var(--critical)"], zebra_nearby: ["yaxında zebra var", "transparent"], unclear: ["aydın deyil", "var(--warn)"] };
 
 const SatelliteTable = ({ underpasses }) => {
   const rows = underpasses.features.filter((f) => f.properties.candidate).sort((a, b) => a.properties.rank - b.properties.rank);
@@ -58,7 +58,7 @@ const Stat = styled.span`
     height: 10px;
     border-radius: 50%;
     background: ${({ $c }) => $c};
-    border: ${({ $ring }) => ($ring ? "2px solid var(--accent)" : "none")};
+    border: ${({ $ring }) => ($ring ? "2px solid var(--critical)" : "none")};
     box-sizing: border-box;
   }
 `;

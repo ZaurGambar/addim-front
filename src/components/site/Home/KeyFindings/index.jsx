@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { card, kpiValue } from "@/styles/common/mixins";
 import { fmt } from "@/utils/helpers/format";
 import { overlap4Pop, typeInfo } from "@/utils/helpers/synth";
 
@@ -30,7 +31,7 @@ export default KeyFindings;
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
+  gap: 16px;
 
   @media (max-width: 980px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -41,25 +42,24 @@ const Grid = styled.div`
 `;
 
 const Item = styled.article`
-  border-top: 3px solid var(--accent);
-  background: var(--panel);
-  border-radius: 0 0 var(--radius) var(--radius);
-  padding: 16px;
+  ${card}
   display: flex;
   flex-direction: column;
   gap: 4px;
 
   b {
-    font-family: var(--font-mono);
-    font-size: 24px;
-    font-weight: 500;
+    ${kpiValue}
+    color: var(--accent);
+    overflow-wrap: anywhere;
   }
   h3 {
-    font-family: var(--font-semibold);
+    font-family: var(--font-bold);
     font-size: 15px;
+    margin-top: 2px;
   }
   p {
     font-size: 13px;
-    color: var(--text-2);
+    color: var(--text-3);
+    margin-top: 4px;
   }
 `;

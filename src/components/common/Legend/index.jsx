@@ -45,7 +45,7 @@ const LegendTitle = styled.h4`
 const Ramp = styled.div`
   display: flex;
   height: 10px;
-  border-radius: 3px;
+  border-radius: 99px;
   overflow: hidden;
   i {
     flex: 1;
@@ -55,8 +55,9 @@ const Ramp = styled.div`
 const Scale = styled.div`
   display: flex;
   justify-content: space-between;
-  font-family: var(--font-mono);
-  font-size: 10px;
+  font-family: var(--font-semibold);
+  font-variant-numeric: tabular-nums;
+  font-size: 11.5px;
   color: var(--text-3);
   margin-top: 4px;
 `;
@@ -76,7 +77,7 @@ const Items = styled.ul`
 const Swatch = styled.span`
   width: 14px;
   height: 10px;
-  border-radius: 2px;
+  border-radius: 4px;
   flex: none;
   border: 1px solid var(--line);
 `;

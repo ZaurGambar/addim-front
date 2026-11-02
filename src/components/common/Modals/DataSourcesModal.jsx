@@ -54,7 +54,8 @@ const Table = styled.table`
   }
   td:last-child {
     text-align: right;
-    font-family: var(--font-mono);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
     font-size: 12px;
     color: var(--text-3);
     white-space: nowrap;

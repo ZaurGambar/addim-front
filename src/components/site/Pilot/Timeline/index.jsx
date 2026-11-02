@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { card } from "@/styles/common/mixins";
 import { TIMELINE } from "@/utils/mock/pilot";
 
 const Timeline = () => (
@@ -33,13 +34,11 @@ const Grid = styled.div`
 `;
 
 const Step = styled.div`
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 14px;
+  ${card}
 
   span {
-    font-family: var(--font-mono);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
     font-size: 12px;
     color: var(--accent);
   }

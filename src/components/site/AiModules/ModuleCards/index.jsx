@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { card } from "@/styles/common/mixins";
 import { AI_MODULES } from "@/utils/mock/aiModules";
 
 const ModuleCards = () => (
@@ -39,20 +40,19 @@ const Mod = styled.article`
   display: grid;
   grid-template-columns: 44px minmax(0, 1fr);
   gap: 14px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 18px;
+  ${card}
 
   .code {
-    font-family: var(--font-mono);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
     font-size: 12px;
-    color: var(--primary);
-    border: 1px solid var(--primary);
+    color: #fff;
+    background: var(--grad);
+    box-shadow: 0 6px 18px var(--accent-soft);
     height: 44px;
     display: grid;
     place-items: center;
-    border-radius: 10px;
+    border-radius: 14px;
   }
   div {
     display: flex;
@@ -68,10 +68,9 @@ const Mod = styled.article`
     color: var(--text-2);
   }
   .kv b {
-    font-family: var(--font-mono);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
     font-size: 11px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
     color: var(--text-3);
     margin-right: 6px;
     font-weight: 500;

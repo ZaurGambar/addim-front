@@ -47,7 +47,7 @@ const Row = styled.div`
   cursor: ${({ $clickable }) => ($clickable ? "pointer" : "default")};
 
   &:hover span:first-child {
-    color: ${({ $clickable }) => ($clickable ? "var(--primary)" : "inherit")};
+    color: ${({ $clickable }) => ($clickable ? "var(--accent)" : "inherit")};
   }
 `;
 
@@ -59,16 +59,16 @@ const Name = styled.span`
 
 const Track = styled.span`
   position: relative;
-  height: 12px;
+  height: 10px;
   background: var(--panel-2);
-  border-radius: 3px;
+  border-radius: 99px;
 `;
 
 const Fill = styled.i`
   position: absolute;
   top: 0;
   bottom: 0;
-  border-radius: 3px;
+  border-radius: 99px;
 `;
 
 const Marker = styled.u`
@@ -79,7 +79,8 @@ const Marker = styled.u`
 `;
 
 const Value = styled.span`
-  font-family: var(--font-mono);
+  font-family: var(--font-semibold);
+  font-variant-numeric: tabular-nums;
   text-align: right;
   font-variant-numeric: tabular-nums;
 `;

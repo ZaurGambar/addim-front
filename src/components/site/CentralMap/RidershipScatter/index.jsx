@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { card } from "@/styles/common/mixins";
 import { fmt } from "@/utils/helpers/format";
 
 const W = 640;
@@ -94,13 +95,11 @@ const Grid = styled.div`
 
 const Box = styled.div`
   position: relative;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 8px;
+  ${card}
 
   text {
-    font-family: var(--font-mono);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
     font-size: 11px;
     fill: var(--text-3);
   }
@@ -113,18 +112,18 @@ const Box = styled.div`
     stroke: var(--line-soft);
   }
   .zone {
-    fill: var(--accent-soft);
+    fill: color-mix(in srgb, var(--critical) 12%, transparent);
   }
   .zone-t {
-    fill: var(--accent);
+    fill: var(--critical);
   }
   .dot {
     fill: var(--s4);
-    stroke: var(--panel);
+    stroke: var(--solid);
     stroke-width: 2;
   }
   .dot.hot {
-    fill: var(--accent);
+    fill: var(--critical);
   }
 `;
 
@@ -132,20 +131,23 @@ const Tip = styled.div`
   position: absolute;
   transform: translate(12px, -50%);
   pointer-events: none;
-  background: var(--panel);
+  background: var(--glass);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
   border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 8px 10px;
+  border-radius: 14px;
+  padding: 8px 12px;
   font-size: 12px;
   white-space: nowrap;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 `;
 
 const Read = styled.p`
   font-size: 15px;
   color: var(--text-2);
   b {
-    font-family: var(--font-mono);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
     color: var(--text);
   }
 `;

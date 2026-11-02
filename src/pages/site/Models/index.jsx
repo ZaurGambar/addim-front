@@ -33,7 +33,7 @@ const Models = () => (
 export default Models;
 
 const Section = styled.section`
-  padding: 40px 0 56px;
+  padding: 20px 0 56px;
   header {
     margin-top: 0;
   }

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { card } from "@/styles/common/mixins";
 import { Helmet } from "react-helmet-async";
 import Container from "@/styles/common/Container";
 import SectionHeading from "@/components/common/SectionHeading";
@@ -74,7 +75,7 @@ const Pilot = () => {
 export default Pilot;
 
 const Section = styled.section`
-  padding: 40px 0 56px;
+  padding: 20px 0 56px;
 `;
 
 const H2 = styled.h2`
@@ -93,8 +94,11 @@ const Note = styled.p`
 const Biz = styled.div`
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
+  gap: 16px;
   margin-top: 28px;
+  > div {
+    ${card}
+  }
 
   h3 {
     font-family: var(--font-bold);

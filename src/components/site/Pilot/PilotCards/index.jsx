@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { card, glow } from "@/styles/common/mixins";
 import { Link } from "react-router-dom";
 import Button from "@/components/common/Button";
 import { PILOTS } from "@/utils/mock/pilot";
@@ -40,18 +41,16 @@ const Grid = styled.div`
 `;
 
 const Card = styled.article`
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-top: 4px solid var(--primary);
-  border-radius: var(--radius);
-  padding: 18px;
+  ${card}
+  ${glow}
   display: flex;
   flex-direction: column;
   gap: 8px;
   align-items: flex-start;
 
   .where {
-    font-family: var(--font-mono);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
     font-size: 12px;
     color: var(--text-3);
   }
@@ -69,7 +68,8 @@ const Card = styled.article`
     padding-top: 8px;
   }
   .biz b {
-    font-family: var(--font-mono);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
     color: var(--text);
   }
   a {

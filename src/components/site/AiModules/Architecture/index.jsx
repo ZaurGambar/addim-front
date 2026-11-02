@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { card } from "@/styles/common/mixins";
 
 const SOURCES = ["OSM / GeoJSON xəritə", "BakıKart, metro turniketi", "Edge kamera (anonim say)", "BakuBus küçə görüntüləri", "Peyk: istilik, ağac örtüyü", "Hava proqnozu, yağış", "Vətəndaş müraciətləri"];
 const MODS = ["M1 Axın proqnozu", "M2 Adaptiv keçid", "M3 Səki auditi (CV)", "M4 İstilik və kölgə", "M5 Ssenari simulyatoru", "M6 Müraciət NLP (AZ)", "M7 Sel xəbərdarlığı", "M8 İnvestisiya prioriteti"];
@@ -56,10 +57,7 @@ export default Architecture;
 
 const Box = styled.div`
   overflow-x: auto;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 16px;
+  ${card}
 
   svg {
     min-width: 860px;
@@ -74,9 +72,9 @@ const Box = styled.div`
     font-family: var(--font-semibold);
   }
   .hdr {
-    font-family: var(--font-mono);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
     font-size: 11px;
-    letter-spacing: 0.1em;
     fill: var(--text-3);
   }
   .box {
@@ -88,8 +86,8 @@ const Box = styled.div`
     stroke: var(--primary);
   }
   .human {
-    fill: var(--accent-soft);
-    stroke: var(--accent);
+    fill: color-mix(in srgb, var(--serious) 15%, transparent);
+    stroke: var(--serious);
   }
   .edge {
     stroke: var(--text-3);

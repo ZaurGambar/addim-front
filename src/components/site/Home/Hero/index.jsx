@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { card, glow, kpiValue, label, pill } from "@/styles/common/mixins";
 import { Link } from "react-router-dom";
 import Button from "@/components/common/Button";
 import { fmt } from "@/utils/helpers/format";
@@ -46,14 +47,37 @@ const Hero = ({ city, synth, onHelp }) => {
 export default Hero;
 
 const Wrap = styled.div`
-  padding: 40px 0 32px;
-  border-bottom: 1px solid var(--line);
+  ${card}
+  ${glow}
+  padding: 32px;
+  margin-top: 8px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: var(--accent);
+    filter: blur(140px);
+    opacity: 0.14;
+    top: -420px;
+    left: -120px;
+    pointer-events: none;
+  }
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+  @media (max-width: 560px) {
+    padding: 20px;
+  }
 `;
 
 const Brand = styled.h1`
   font-family: var(--font-bold);
-  font-size: clamp(48px, 9vw, 96px);
-  letter-spacing: -0.04em;
+  font-size: clamp(44px, 7vw, 80px);
+  letter-spacing: -0.045em;
   line-height: 1;
   span {
     color: var(--accent);
@@ -61,10 +85,14 @@ const Brand = styled.h1`
 `;
 
 const Tag = styled.p`
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--text-3);
-  margin-top: 12px;
+  ${pill}
+  height: auto;
+  min-height: 24px;
+  padding: 3px 11px;
+  white-space: normal;
+  margin-top: 14px;
+  background: var(--accent-soft);
+  color: var(--accent);
 `;
 
 const Grid = styled.div`
@@ -80,8 +108,9 @@ const Grid = styled.div`
 `;
 
 const Thesis = styled.p`
-  font-size: clamp(18px, 2.2vw, 23px);
+  font-size: clamp(17px, 2vw, 21px);
   line-height: 1.45;
+  color: var(--text-2);
   max-width: 48ch;
 `;
 
@@ -98,21 +127,18 @@ const Facts = styled.div`
   gap: 10px;
 
   div {
-    background: var(--panel);
+    background: var(--bg-secondary);
     border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 14px;
+    border-radius: 20px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
   }
   b {
-    font-family: var(--font-mono);
-    font-size: 24px;
-    font-weight: 500;
+    ${kpiValue}
   }
   span {
-    font-size: 13px;
-    color: var(--text-2);
+    ${label}
   }
 `;

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { card } from "@/styles/common/mixins";
 import { RISKS } from "@/utils/mock/cities";
 
 const RiskList = () => (
@@ -26,21 +27,27 @@ const RiskList = () => (
 export default RiskList;
 
 const List = styled.div`
-  border-top: 1px solid var(--line);
+  ${card}
+  padding-top: 4px;
+  padding-bottom: 4px;
 `;
 
 const Risk = styled.div`
   display: grid;
   grid-template-columns: 200px minmax(0, 1fr) minmax(0, 1fr);
   gap: 24px;
-  padding: 20px 0;
-  border-bottom: 1px solid var(--line);
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line-soft);
+  &:last-child {
+    border-bottom: 0;
+  }
 
   .src {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    font-family: var(--font-mono);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
     font-size: 12px;
     color: var(--text-3);
   }
@@ -50,15 +57,14 @@ const Risk = styled.div`
     color: var(--text);
   }
   h5 {
-    font-family: var(--font-mono);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
     font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
     margin-bottom: 4px;
     font-weight: 500;
   }
   h5.p {
-    color: var(--accent);
+    color: var(--critical);
   }
   h5.s {
     color: var(--primary);

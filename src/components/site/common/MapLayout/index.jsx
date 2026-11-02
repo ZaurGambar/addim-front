@@ -13,9 +13,11 @@ export default MapLayout;
 export const MapBox = styled.div`
   height: ${({ $h }) => $h || 560}px;
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
   background: ${({ $bg }) => $bg || "var(--sea)"};
   overflow: hidden;
+  isolation: isolate;
 
   @media (max-width: 768px) {
     height: 440px;
@@ -46,7 +48,8 @@ export const InfoList = styled.dl`
   font-size: 13px;
   color: var(--text-2);
   dd {
-    font-family: var(--font-mono);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
     color: var(--text);
     text-align: right;
   }

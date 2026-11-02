@@ -40,5 +40,5 @@ const Swot = () => {
 export default Swot;
 
 const Section = styled.section`
-  padding: 40px 0 56px;
+  padding: 20px 0 56px;
 `;

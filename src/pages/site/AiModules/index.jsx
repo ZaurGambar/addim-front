@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { glass } from "@/styles/common/mixins";
 import { Helmet } from "react-helmet-async";
 import Container from "@/styles/common/Container";
 import SectionHeading from "@/components/common/SectionHeading";
@@ -31,15 +32,15 @@ const AiModules = () => (
 export default AiModules;
 
 const Section = styled.section`
-  padding: 40px 0 56px;
+  padding: 20px 0 56px;
 `;
 
 const Callout = styled.p`
   margin-top: 20px;
-  border-left: 3px solid var(--accent);
-  background: var(--accent-soft);
-  border-radius: 0 var(--radius) var(--radius) 0;
-  padding: 14px 16px;
+  ${glass}
+  background: linear-gradient(to right, var(--accent-soft), transparent 70%), var(--panel);
+  border-radius: 20px;
+  padding: 16px 18px;
   font-size: 15px;
   max-width: 80ch;
   b {

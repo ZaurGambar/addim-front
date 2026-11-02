@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { card } from "@/styles/common/mixins";
 import { CONCEPT_LABELS } from "@/utils/mock/concepts";
 import { cssVar, divColor } from "@/utils/helpers/format";
 import { useColorScheme } from "@/utils/hooks/useLeafletMap";
@@ -60,10 +61,7 @@ export default Heatmap;
 const Box = styled.div`
   position: relative;
   overflow-x: auto;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 10px;
+  ${card}
 
   svg {
     min-width: 620px;
@@ -71,8 +69,9 @@ const Box = styled.div`
     height: auto;
   }
   text {
-    font-family: var(--font-mono);
-    font-size: 10px;
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
+    font-size: 11.5px;
     fill: var(--text-2);
   }
 `;
@@ -81,20 +80,23 @@ const Tip = styled.div`
   position: absolute;
   transform: translateX(8px);
   pointer-events: none;
-  background: var(--panel);
+  background: var(--glass);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
   border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 8px 10px;
+  border-radius: 14px;
+  padding: 8px 12px;
   font-size: 12px;
   max-width: 240px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 `;
 
 const Legend = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  font-family: var(--font-mono);
+  font-family: var(--font-semibold);
+  font-variant-numeric: tabular-nums;
   font-size: 11px;
   color: var(--text-3);
   margin-top: 8px;

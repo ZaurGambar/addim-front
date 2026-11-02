@@ -76,7 +76,7 @@ const Synthesis = () => {
 export default Synthesis;
 
 const Section = styled.section`
-  padding: 40px 0 56px;
+  padding: 20px 0 56px;
 `;
 
 const H2 = styled.h2`

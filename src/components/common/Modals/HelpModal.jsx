@@ -40,7 +40,8 @@ const List = styled.ol`
     gap: 10px;
   }
   b {
-    font-family: var(--font-mono);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
     color: var(--accent);
   }
   strong {

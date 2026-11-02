@@ -6,8 +6,8 @@ export default ErrorText;
 
 const Text = styled.p`
   color: var(--critical);
-  padding: 16px;
-  border: 1px solid var(--critical);
-  border-radius: var(--radius);
-  background: var(--accent-soft);
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  background: color-mix(in srgb, var(--critical) 14%, transparent);
 `;

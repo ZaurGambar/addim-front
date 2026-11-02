@@ -25,20 +25,25 @@ export default PriorityZones;
 const List = styled.div`
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--line);
 `;
 
 const Zone = styled.button`
   display: grid;
   grid-template-columns: 28px minmax(0, 1fr) auto;
   gap: 2px 12px;
-  padding: 10px 0;
+  padding: 10px 8px;
   border-bottom: 1px solid var(--line-soft);
+  border-radius: 0;
+  transition: background 0.15s;
+  &:last-child {
+    border-bottom: 0;
+  }
   text-align: left;
   color: var(--text);
 
   .rk {
-    font-family: var(--font-mono);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
     font-size: 18px;
     color: var(--accent);
     grid-row: span 2;
@@ -53,7 +58,8 @@ const Zone = styled.button`
     font-size: 13px;
   }
   .pp {
-    font-family: var(--font-mono);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
     font-size: 13px;
     text-align: right;
   }
@@ -62,7 +68,11 @@ const Zone = styled.button`
     font-size: 12px;
     color: var(--text-2);
   }
+  &:hover {
+    background: var(--bg-secondary);
+    border-radius: 14px;
+  }
   &:hover b {
-    color: var(--primary);
+    color: var(--accent);
   }
 `;

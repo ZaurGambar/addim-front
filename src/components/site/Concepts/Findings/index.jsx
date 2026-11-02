@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { card, kpiValue, pill } from "@/styles/common/mixins";
 
 const buildFindings = (C, summary) => {
   const st = C.stats;
@@ -52,18 +53,14 @@ const Grid = styled.div`
 `;
 
 const Item = styled.article`
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 18px;
+  ${card}
   display: flex;
   flex-direction: column;
   gap: 6px;
 
   b {
-    font-family: var(--font-mono);
-    font-size: 26px;
-    font-weight: 500;
+    ${kpiValue}
+    color: var(--accent);
   }
   h3 {
     font-family: var(--font-bold);
@@ -80,11 +77,6 @@ const Tags = styled.div`
   flex-wrap: wrap;
   gap: 4px;
   span {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    border: 1px solid var(--line);
-    padding: 1px 8px;
-    border-radius: 10px;
-    color: var(--text-2);
+    ${pill}
   }
 `;

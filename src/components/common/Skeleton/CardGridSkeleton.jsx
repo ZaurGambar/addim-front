@@ -4,7 +4,7 @@ import Skeleton from "react-loading-skeleton";
 const CardGridSkeleton = ({ count = 4, height = 180 }) => (
   <Grid>
     {Array.from({ length: count }, (_, i) => (
-      <Skeleton key={i} height={height} borderRadius={12} baseColor="var(--panel-2)" highlightColor="var(--panel)" />
+      <Skeleton key={i} height={height} borderRadius={26} baseColor="var(--bg-secondary)" highlightColor="var(--panel-2)" />
     ))}
   </Grid>
 );

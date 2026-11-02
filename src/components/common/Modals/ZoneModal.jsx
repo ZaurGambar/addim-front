@@ -68,7 +68,8 @@ const Grid = styled.div`
     padding: 10px 12px;
   }
   b {
-    font-family: var(--font-mono);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
     font-size: 20px;
     color: var(--text);
   }
@@ -77,13 +78,13 @@ const Grid = styled.div`
 const Bar = styled.span`
   height: 8px;
   background: var(--panel-2);
-  border-radius: 4px;
+  border-radius: 99px;
   position: relative;
   i {
     position: absolute;
     inset: 0 auto 0 0;
     background: var(--g3);
-    border-radius: 4px;
+    border-radius: 99px;
   }
 `;
 
@@ -112,7 +113,8 @@ const Body = styled.div`
   }
   em {
     font-style: normal;
-    font-family: var(--font-mono);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
     text-align: right;
   }
 `;

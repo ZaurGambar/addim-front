@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import styled from "styled-components";
+import { glass, num, table as tableCss } from "@/styles/common/mixins";
 import { fmtN } from "@/utils/helpers/format";
 
 const COLS = [
@@ -60,29 +61,28 @@ export default RayonTable;
 
 const Wrap = styled.div`
   overflow-x: auto;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--panel);
+  ${glass}
+  border-radius: var(--r);
+  padding: 6px 10px;
 `;
 
 const Table = styled.table`
-  border-collapse: collapse;
-  width: 100%;
-  font-size: 13px;
+  ${tableCss}
 
   th,
   td {
-    padding: 8px 10px;
-    border-bottom: 1px solid var(--line-soft);
-    text-align: left;
     white-space: nowrap;
   }
   th button {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    font-family: var(--font-semibold);
+    font-size: 12px;
     color: var(--text-3);
+  }
+  th button:hover {
+    color: var(--text);
+  }
+  tbody tr:hover td {
+    background: var(--bg-secondary);
   }
   td:first-child {
     font-family: var(--font-semibold);
@@ -90,16 +90,15 @@ const Table = styled.table`
   td.n {
     position: relative;
     text-align: right;
-    font-family: var(--font-mono);
-    font-variant-numeric: tabular-nums;
+    ${num}
   }
   td.n i {
     position: absolute;
     left: 0;
     top: 5px;
     bottom: 5px;
-    background: var(--primary-soft);
-    border-radius: 0 3px 3px 0;
+    background: var(--accent-soft);
+    border-radius: 0 6px 6px 0;
   }
   td.n span {
     position: relative;

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { card, pill, tone } from "@/styles/common/mixins";
 import { BAKU_META } from "@/utils/mock/baku";
 import { fmt, fmtN } from "@/utils/helpers/format";
 
@@ -91,10 +92,7 @@ const Grid = styled.div`
 `;
 
 const Theme = styled.article`
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 18px;
+  ${card}
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -110,8 +108,9 @@ const Theme = styled.article`
     font-size: 19px;
   }
   header span {
-    font-family: var(--font-mono);
-    font-size: 10px;
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
+    font-size: 11.5px;
     color: var(--text-3);
     text-align: right;
   }
@@ -124,24 +123,22 @@ const Theme = styled.article`
   }
   li {
     display: grid;
-    grid-template-columns: 76px 1fr;
+    grid-template-columns: 84px 1fr;
+    align-items: start;
     gap: 8px;
   }
   li b {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding-top: 3px;
+    ${pill}
+    justify-content: center;
   }
   li.var b {
-    color: var(--good);
+    ${tone("var(--good)")}
   }
   li.yox b {
-    color: var(--critical);
+    ${tone("var(--critical)")}
   }
   li.dq b {
-    color: var(--primary);
+    ${tone("var(--accent)")}
   }
 `;
 
@@ -153,13 +150,17 @@ const Btns = styled.div`
   padding-top: 6px;
 
   button {
+    height: 30px;
+    padding: 0 12px;
+    border-radius: 15px;
+    font-family: var(--font-semibold);
     font-size: 12px;
-    color: var(--primary);
+    color: var(--text);
+    background: var(--bg-secondary);
     border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 4px 10px;
+    transition: background 0.15s;
   }
   button:hover {
-    border-color: var(--primary);
+    background: var(--panel-2);
   }
 `;

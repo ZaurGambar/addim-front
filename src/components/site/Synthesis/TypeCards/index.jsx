@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { card, label } from "@/styles/common/mixins";
 import { cssVar, fmt } from "@/utils/helpers/format";
 import { typeInfo } from "@/utils/helpers/synth";
 
@@ -51,10 +52,7 @@ const Grid = styled.div`
 `;
 
 const Type = styled.article`
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 18px;
+  ${card}
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -65,9 +63,9 @@ const Type = styled.article`
     gap: 10px;
   }
   header i {
-    width: 14px;
-    height: 14px;
-    border-radius: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
     flex: none;
   }
   h3 {
@@ -88,13 +86,18 @@ const Kpis = styled.div`
   div {
     display: flex;
     flex-direction: column;
-    font-size: 11px;
-    color: var(--text-3);
+    gap: 2px;
+    padding: 10px 12px;
+    border-radius: 16px;
+    background: var(--bg-secondary);
+    ${label}
+    font-size: 11.5px;
   }
   b {
-    font-family: var(--font-mono);
-    font-size: 16px;
-    font-weight: 500;
+    font-family: var(--font-bold);
+    font-variant-numeric: tabular-nums;
+    font-size: 18px;
+    letter-spacing: -0.02em;
     color: var(--text);
   }
   @media (max-width: 768px) {
@@ -107,10 +110,9 @@ const Rx = styled.p`
   padding-top: 8px;
   em {
     font-style: normal;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
+    font-size: 11.5px;
     color: var(--accent);
     display: block;
     margin-bottom: 2px;

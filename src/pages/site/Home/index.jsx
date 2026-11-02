@@ -27,7 +27,7 @@ const Home = () => {
       </Helmet>
       <Container>
         {error && <ErrorText />}
-        {loading && <Skeleton height={360} borderRadius={12} baseColor="var(--panel-2)" highlightColor="var(--panel)" />}
+        {loading && <Skeleton height={360} borderRadius={26} baseColor="var(--bg-secondary)" highlightColor="var(--panel-2)" />}
         {!loading && !error && (
           <>
             <Hero city={analysis.data.city} synth={synth.data} onHelp={() => openModal("HelpModal")} />

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { card } from "@/styles/common/mixins";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { toast } from "react-toastify";
@@ -73,10 +74,7 @@ const Form = styled.form`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px 14px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 18px;
+  ${card}
 
   .full {
     grid-column: 1 / -1;

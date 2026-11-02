@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { card, hoverLift } from "@/styles/common/mixins";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { NAV_ITEMS } from "@/utils/constants/ContractConstants";
@@ -35,7 +36,7 @@ export default QuickLinks;
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  gap: 16px;
 
   @media (max-width: 980px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -50,31 +51,37 @@ const Item = styled(Link)`
   grid-template-columns: 22px 1fr 18px;
   gap: 12px;
   align-items: center;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
+  ${card}
+  ${hoverLift}
+  grid-template-columns: 40px 1fr 18px;
   padding: 16px;
-  color: var(--primary);
+  color: var(--accent);
+
+  > svg:first-child {
+    width: 40px;
+    height: 40px;
+    padding: 9px;
+    border-radius: 13px;
+    background: var(--accent-soft);
+  }
 
   div {
     display: flex;
     flex-direction: column;
   }
   b {
-    font-family: var(--font-semibold);
+    font-family: var(--font-bold);
+    font-size: 15px;
     color: var(--text);
   }
   span {
-    font-size: 13px;
-    color: var(--text-2);
+    font-size: 12.5px;
+    color: var(--text-3);
   }
   .arrow {
     color: var(--text-3);
   }
-  &:hover {
-    border-color: var(--primary);
-  }
   &:hover .arrow {
-    color: var(--primary);
+    color: var(--accent);
   }
 `;

@@ -38,7 +38,8 @@ const Wrapper = styled.div`
 `;
 
 const Code = styled.span`
-  font-family: var(--font-mono);
+  font-family: var(--font-semibold);
+  font-variant-numeric: tabular-nums;
   font-size: 64px;
   color: var(--accent);
 `;

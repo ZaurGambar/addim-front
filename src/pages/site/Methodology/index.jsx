@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { card } from "@/styles/common/mixins";
 import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
 import { Copy } from "lucide-react";
@@ -102,12 +103,12 @@ const Methodology = () => {
 export default Methodology;
 
 const Section = styled.section`
-  padding: 40px 0 56px;
+  padding: 20px 0 56px;
   header + div {
     margin-top: 0;
   }
   h2 {
-    margin-top: 48px;
+    margin-top: 40px;
   }
 `;
 
@@ -119,10 +120,7 @@ const Note = styled.p`
 `;
 
 const Pitch = styled.div`
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 20px;
+  ${card}
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -140,13 +138,16 @@ const Pitch = styled.div`
 const QaGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px 32px;
+  gap: 16px;
   margin-top: 28px;
+  > div {
+    ${card}
+  }
 
   h3 {
-    font-family: var(--font-semibold);
-    font-size: 16px;
-    margin-bottom: 4px;
+    font-family: var(--font-bold);
+    font-size: 15px;
+    margin-bottom: 6px;
   }
   p {
     font-size: 14px;

@@ -271,7 +271,7 @@ const GapLegend = () => (
         <i key={v} style={{ flex: 1, background: cssVar(v) }} />
       ))}
     </div>
-    <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--text-3)", marginTop: 4 }}>
+    <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11.5, fontFamily: "var(--font-semibold)", color: "var(--text-3)", marginTop: 4 }}>
       <span>5</span>
       <span>15</span>
       <span>30</span>
@@ -312,12 +312,14 @@ const Small = styled.p`
 
 const Delta = styled.p`
   margin-top: 10px;
-  font-family: var(--font-mono);
+  font-family: var(--font-semibold);
+  font-variant-numeric: tabular-nums;
   font-size: 13px;
   color: var(--text-2);
   b {
-    font-size: 18px;
-    color: var(--text);
-    font-weight: 500;
+    font-family: var(--font-bold);
+    font-size: 20px;
+    letter-spacing: -0.02em;
+    color: var(--accent);
   }
 `;

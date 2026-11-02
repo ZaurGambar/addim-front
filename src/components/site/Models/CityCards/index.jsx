@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { card, hoverLift } from "@/styles/common/mixins";
 import { CITIES } from "@/utils/mock/cities";
 
 const CityCards = () => (
@@ -41,10 +42,8 @@ const Grid = styled.div`
 `;
 
 const City = styled.article`
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 20px;
+  ${card}
+  ${hoverLift}
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -59,7 +58,8 @@ const City = styled.article`
     font-size: 21px;
   }
   header span {
-    font-family: var(--font-mono);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
     font-size: 11px;
     color: var(--text-3);
   }
@@ -85,10 +85,9 @@ const Take = styled.p`
   padding-top: 10px;
   em {
     font-style: normal;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
+    font-size: 11.5px;
     color: var(--accent);
     display: block;
     margin-bottom: 2px;

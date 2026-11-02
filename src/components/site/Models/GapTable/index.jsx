@@ -55,10 +55,11 @@ const Chip = styled.span`
 `;
 
 const Prio = styled.span`
-  font-family: var(--font-mono);
+  font-family: var(--font-semibold);
+  font-variant-numeric: tabular-nums;
   font-size: 12px;
-  padding: 2px 8px;
-  border-radius: 8px;
+  padding: 2px 9px;
+  border-radius: 11px;
   border: 1px solid ${({ $p1 }) => ($p1 ? "var(--accent)" : "var(--line)")};
   background: ${({ $p1 }) => ($p1 ? "var(--accent-soft)" : "transparent")};
 `;

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { card } from "@/styles/common/mixins";
 import { fmt } from "@/utils/helpers/format";
 import { overlap4Pop } from "@/utils/helpers/synth";
 
@@ -74,11 +75,25 @@ const Grid = styled.div`
 `;
 
 const Quad = styled.div`
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-top: 4px solid ${({ $c }) => COLORS[$c]};
-  border-radius: var(--radius);
-  padding: 20px;
+  ${card}
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -80px auto auto -60px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: ${({ $c }) => COLORS[$c]};
+    filter: blur(70px);
+    opacity: 0.18;
+    pointer-events: none;
+  }
+  > * {
+    position: relative;
+  }
 
   h3 {
     font-family: var(--font-bold);
@@ -89,7 +104,8 @@ const Quad = styled.div`
     margin-bottom: 12px;
   }
   h3 span {
-    font-family: var(--font-mono);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
     font-size: 12px;
     color: var(--text-3);
   }
@@ -103,7 +119,8 @@ const Quad = styled.div`
     color: var(--text-2);
   }
   b {
-    font-family: var(--font-mono);
+    font-family: var(--font-semibold);
+    font-variant-numeric: tabular-nums;
     font-weight: 500;
     color: var(--text);
   }
