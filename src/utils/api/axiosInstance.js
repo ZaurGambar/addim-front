@@ -11,11 +11,21 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use((config) => {
+  // Statik data: hər deploy-da yeni ünvan, brauzer keşi köhnə faylı qaytarmır
+  if (config.url?.startsWith("/data/")) {
+    config.params = { ...config.params, v: __BUILD_ID__ };
+  }
   const token = Cookies.get("accessToken");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  config.headers["Accept-Language"] = localStorage.getItem("lang") || "az";
+  let lang = "az";
+  try {
+    lang = localStorage.getItem("lang") || "az";
+  } catch {
+    /* gizli rejimdə localStorage olmaya bilər */
+  }
+  config.headers["Accept-Language"] = lang;
   return config;
 });
 
