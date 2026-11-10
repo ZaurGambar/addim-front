@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { card, pill, tone } from "@/styles/common/mixins";
 import { BAKU_META } from "@/utils/mock/baku";
 import { fmt, fmtN } from "@/utils/helpers/format";
+import HourCurve from "./HourCurve";
 
 const buildThemes = (R, C) => {
   const r = (n) => R.find((x) => x.rayon === n) || {};
@@ -18,6 +19,14 @@ const buildThemes = (R, C) => {
       var: `Bakıda ${fmt(C.ps.count)} ictimai açıq məkan qeydə alınıb, cəmi ${C.ps.km2} km². Real piyada yolu ilə əhalinin yalnız ${C.ps.net?.pct_400 ?? C.ps.pct_400}%-i ən azı 0.25 ha olan məkana 5 dəqiqədə (400 m), ${C.ps.net?.pct_800 ?? "–"}%-i 10 dəqiqədə çatır. Səbaildə adambaşına ${r("Səbail").ps_m2_pc} m² düşür.`,
       yox: `Sıx rayonlarda adambaşına ictimai məkan WHO tövsiyəsindən (≥ 9 m²) xeyli azdır: Binəqədi ${r("Binəqədi").ps_m2_pc}, Nizami ${r("Nizami").ps_m2_pc}, Yasamal ${r("Yasamal").ps_m2_pc}, Nəsimi ${r("Nəsimi").ps_m2_pc} m². Meydan və piyada sahələri cəmi ${C.ps.by_kind_km2["Meydan və piyada sahəsi"] ?? 0} km²-dir.${C.furniture ? ` Küçə mebeli demək olar ki qeydə alınmayıb: OSM-də bütün Bakıda ${C.furniture.counts.bench} oturacaq var, ${C.furniture.central_bench}-sı mərkəzdə; içməli su ${C.furniture.counts.drinking_water}, tualet ${C.furniture.counts.toilets}. Bu, data boşluğudur və sahə auditi (Gehl formu) ilə doldurulur.` : ""}`,
       dq: `Açıq məkanın yaşayış ərazisindəki payı ${C.ps.share}%-dir, UN-Habitat isə 15–20% tövsiyə edir. Şəhər orta göstəricisi (${C.ps.m2_pc} m²) Pirallahı (${r("Pirallahı").ps_m2_pc}), Qaradağ və Xəzərin çimərlik və boş əraziləri hesabına yüksək görünür. Problem insanın gündəlik yaşadığı məhəllədədir. Düz xəttlə ölçəndə əlçatanlıq ${C.ps.pct_400}% görünür, piyada yolu ilə ${C.ps.net?.pct_400 ?? "–"}%: dalanlar və hasarlı həyətlər üzündən piyada orta hesabla ${C.ps.net ? Math.round((C.ps.net.detour - 1) * 100) : "–"}% çox yol gedir (dolama əmsalı ${C.ps.net?.detour ?? "–"}).` }] : []),
+    ...(C.coast ? [{ t: "Sahil və bulvar", src: "OSM sahil xətti və piyada şəbəkəsi", m: ["coast_10min_pct", "coast_800_straight_pct"],
+      var: `Mərkəzi sahildə (${C.coast.central_coast_km} km) bulvara ${C.coast.bulvar_crossings} yerüstü keçid var: orta hesabla hər ${C.coast.bulvar_cross_m} m-də bir. Səbaildə əhalinin ${r("Səbail").coast_10min_pct}%-i dənizə 10 dəqiqəyə piyada çatır.`,
+      yox: `Bakının ${C.coast.coast_km} km sahilinin cəmi ${C.coast.promenade_share_pct}%-i boyunca piyada yolu var, ən uzun fasiləsiz promenad ${C.coast.longest_km} km-dir (OSM). Sahilin ${C.coast.public_share_pct}%-i park və ya çimərliklə ictimaidir.`,
+      dq: `Dənizə yaxın yaşamaq dənizə çatmaq demək deyil: düz xəttlə əhalinin ${C.coast.pop_800_straight_pct ?? "–"}%-i sahilə 800 m-dədir, piyada yolu ilə isə cəmi ${C.coast.pop_10min_pct}%-i 10 dəqiqəyə çatır. Liman, sənaye zonası və sahil magistralı şəhəri dənizdən kəsir (Xətai: ${r("Xətai").coast_800_straight_pct ?? "–"}% → ${r("Xətai").coast_10min_pct}%).` }] : []),
+    ...(C.activity ? [{ t: "Küçə həyatı: 24 saat", src: "OSM opening_hours (nümunə)", m: ["late_pct", "open24_10k"], chart: C.activity.hourly,
+      var: `İş saatı məlum olan ${fmt(C.activity.n)} obyektin ${C.activity.late_pct}%-i 22:00-dan sonra da açıqdır, ${fmt(C.activity.open24)}-i 24/7 işləyir. Etibarlı nümunəsi (≥ 150 obyekt) olan rayonlar arasında axşam həyatı ən güclü ${[...R].filter((x) => x.late_pct != null && x.hours_n >= 150).sort((a, b) => b.late_pct - a.late_pct).slice(0, 2).map((x) => `${x.rayon} (${x.late_pct}%)`).join(" və ")} rayonlarındadır.`,
+      yox: `OSM-də obyektlərin yalnız ~13%-ində iş saatı var, real piyada axını isə ölçülmür. 24 saatlıq canlılıq üçün 2GIS iş saatları və sahə sayımı lazımdır.`,
+      dq: "Gecə açıq kafe, aptek və market küçəni “gözlü” edir (Jacobs): CPTED baxımından bunlar işıqlandırma qədər vacibdir. Periferiyada gecə açıq yer az olduğu üçün piyada gecə təhlükəsizlik hissini itirir." }] : []),
     { t: "Topoqrafiya", src: "SRTM 30 m", m: ["elev_mean", "steep_pct", "g:slope"],
       var: `Nərimanov və Nizami düzənlikdir: orta meyl ${r("Nərimanov").slope_mean}% və ${r("Nizami").slope_mean}%. Piyada və velosiped üçün ən uyğun relyef buradadır.`,
       yox: `Səbailin ${r("Səbail").steep_pct}%-i dikdir (meyl > 15%). Amfiteatr relyefi yuxarı məhəllələri sahildən ayırır.`,
@@ -69,6 +78,7 @@ const ThemeCards = ({ analysis, onMetric }) => {
               <span>{t.dq}</span>
             </li>
           </ul>
+          {t.chart && <HourCurve values={t.chart} />}
           <Btns>
             {t.m.map((k) => (
               <button key={k} type="button" onClick={() => onMetric(k)}>
