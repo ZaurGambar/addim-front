@@ -55,7 +55,10 @@
    "pond_pct": 8.5,
    "ps_400_net_pct": 18.8,
    "ps_800_net_pct": 41.5,
-   "ps_detour": 1.54
+   "ps_detour": 1.54,
+   "furn_bench": 7,
+   "furn_bench_10k": 0.23,
+   "furn_water_toilet": 8
   },
   {
    "rayon": "Qaradağ",
@@ -112,7 +115,10 @@
    "pond_pct": 7.1,
    "ps_400_net_pct": 5.3,
    "ps_800_net_pct": 13.0,
-   "ps_detour": 2.26
+   "ps_detour": 2.26,
+   "furn_bench": 0,
+   "furn_bench_10k": 0.0,
+   "furn_water_toilet": 16
   },
   {
    "rayon": "Yasamal",
@@ -169,7 +175,10 @@
    "pond_pct": 8.4,
    "ps_400_net_pct": 53.7,
    "ps_800_net_pct": 79.8,
-   "ps_detour": 1.64
+   "ps_detour": 1.64,
+   "furn_bench": 7,
+   "furn_bench_10k": 0.36,
+   "furn_water_toilet": 5
   },
   {
    "rayon": "Səbail",
@@ -226,7 +235,10 @@
    "pond_pct": 6.0,
    "ps_400_net_pct": 35.9,
    "ps_800_net_pct": 60.1,
-   "ps_detour": 1.71
+   "ps_detour": 1.71,
+   "furn_bench": 42,
+   "furn_bench_10k": 4.13,
+   "furn_water_toilet": 35
   },
   {
    "rayon": "Nəsimi",
@@ -283,7 +295,10 @@
    "pond_pct": 8.4,
    "ps_400_net_pct": 62.4,
    "ps_800_net_pct": 91.7,
-   "ps_detour": 1.72
+   "ps_detour": 1.72,
+   "furn_bench": 63,
+   "furn_bench_10k": 2.87,
+   "furn_water_toilet": 15
   },
   {
    "rayon": "Nərimanov",
@@ -340,7 +355,10 @@
    "pond_pct": 9.8,
    "ps_400_net_pct": 42.0,
    "ps_800_net_pct": 76.8,
-   "ps_detour": 1.85
+   "ps_detour": 1.85,
+   "furn_bench": 2,
+   "furn_bench_10k": 0.11,
+   "furn_water_toilet": 6
   },
   {
    "rayon": "Nizami",
@@ -397,7 +415,10 @@
    "pond_pct": 8.0,
    "ps_400_net_pct": 39.9,
    "ps_800_net_pct": 68.3,
-   "ps_detour": 1.8
+   "ps_detour": 1.8,
+   "furn_bench": 1,
+   "furn_bench_10k": 0.05,
+   "furn_water_toilet": 6
   },
   {
    "rayon": "Xətai",
@@ -454,7 +475,10 @@
    "pond_pct": 8.5,
    "ps_400_net_pct": 43.8,
    "ps_800_net_pct": 72.2,
-   "ps_detour": 1.68
+   "ps_detour": 1.68,
+   "furn_bench": 37,
+   "furn_bench_10k": 1.34,
+   "furn_water_toilet": 2
   },
   {
    "rayon": "Sabunçu",
@@ -511,7 +535,10 @@
    "pond_pct": 9.0,
    "ps_400_net_pct": 17.1,
    "ps_800_net_pct": 37.9,
-   "ps_detour": 1.7
+   "ps_detour": 1.7,
+   "furn_bench": 0,
+   "furn_bench_10k": 0.0,
+   "furn_water_toilet": 1
   },
   {
    "rayon": "Suraxanı",
@@ -568,7 +595,10 @@
    "pond_pct": 7.3,
    "ps_400_net_pct": 17.6,
    "ps_800_net_pct": 31.6,
-   "ps_detour": 1.83
+   "ps_detour": 1.83,
+   "furn_bench": 0,
+   "furn_bench_10k": 0.0,
+   "furn_water_toilet": 2
   },
   {
    "rayon": "Xəzər",
@@ -625,7 +655,10 @@
    "pond_pct": 6.8,
    "ps_400_net_pct": 16.4,
    "ps_800_net_pct": 41.3,
-   "ps_detour": 1.73
+   "ps_detour": 1.73,
+   "furn_bench": 0,
+   "furn_bench_10k": 0.0,
+   "furn_water_toilet": 11
   },
   {
    "rayon": "Pirallahı",
@@ -682,7 +715,10 @@
    "pond_pct": 7.3,
    "ps_400_net_pct": 23.2,
    "ps_800_net_pct": 35.5,
-   "ps_detour": 1.66
+   "ps_detour": 1.66,
+   "furn_bench": 0,
+   "furn_bench_10k": 0.0,
+   "furn_water_toilet": 2
   }
  ],
  "city": {
@@ -762,6 +798,28 @@
     "Pirallahı": 4
    },
    "method": "300 m-də magistral (çəkili), 400 m-də keçidsiz magistral, 300 m-də işıqforsuz keçid və yeraltı keçid; keçid datası yalnız mərkəzdə"
+  },
+  "furniture": {
+   "counts": {
+    "drinking_water": 34,
+    "street_lamp": 560,
+    "toilets": 75,
+    "bench": 159,
+    "fountain": 107,
+    "shelter": 22,
+    "waste_basket": 28
+   },
+   "bench_per_10k": 0.68,
+   "central_bench": 146,
+   "central_ped_km": 7.7,
+   "central_bench_need": 77,
+   "central_bench_gap": 0,
+   "lit_ways": {
+    "yes": 639,
+    "no": 32
+   },
+   "standard": "piyada küçəsinin hər 100 m-də 1 oturacaq",
+   "note": "OSM-də küçə mebeli çox az qeydə alınıb: rəqəmlər real sayı yox, data boşluğunu göstərir. Sahə auditi (Gehl formu) ilə doldurulmalıdır."
   }
  }
 }
