@@ -1,0 +1,199 @@
+{
+ "walk": {
+  "n_cells": 808,
+  "iterations": 1000,
+  "perturb": "±30%",
+  "spearman_median": 0.989,
+  "spearman_p5": 0.974,
+  "mean_abs_change_median": 2.8,
+  "base_check_corr": 1.0
+ },
+ "zones": {
+  "n_zones": 237,
+  "iterations": 1000,
+  "perturb": "Dirichlet(α=8), ≈ ±35%",
+  "top": 20,
+  "top20_kept_median": 90,
+  "top20_kept_p5": 80,
+  "stable_count": 17,
+  "top20": [
+   {
+    "rank": 1,
+    "name": "Zığ 1",
+    "rayon": "Xətai",
+    "pop": 22769,
+    "need": 60.2,
+    "top20_prob": 100
+   },
+   {
+    "rank": 2,
+    "name": "Şubanı",
+    "rayon": "Qaradağ",
+    "pop": 17197,
+    "need": 67.0,
+    "top20_prob": 100
+   },
+   {
+    "rank": 3,
+    "name": "Balaxanı 1",
+    "rayon": "Sabunçu",
+    "pop": 15352,
+    "need": 71.9,
+    "top20_prob": 100
+   },
+   {
+    "rank": 4,
+    "name": "Əhmədli 1",
+    "rayon": "Xətai",
+    "pop": 16473,
+    "need": 64.5,
+    "top20_prob": 100
+   },
+   {
+    "rank": 5,
+    "name": "Dədə Qorqud 1",
+    "rayon": "Suraxanı",
+    "pop": 15094,
+    "need": 69.9,
+    "top20_prob": 100
+   },
+   {
+    "rank": 6,
+    "name": "Qobustan",
+    "rayon": "Qaradağ",
+    "pop": 13367,
+    "need": 75.2,
+    "top20_prob": 100
+   },
+   {
+    "rank": 7,
+    "name": "Binəqədi 1",
+    "rayon": "Binəqədi",
+    "pop": 14083,
+    "need": 69.8,
+    "top20_prob": 100
+   },
+   {
+    "rank": 8,
+    "name": "Badamdar 1",
+    "rayon": "Səbail",
+    "pop": 15229,
+    "need": 64.2,
+    "top20_prob": 100
+   },
+   {
+    "rank": 9,
+    "name": "Keşlə 1",
+    "rayon": "Nizami",
+    "pop": 14983,
+    "need": 61.0,
+    "top20_prob": 100
+   },
+   {
+    "rank": 10,
+    "name": "Bayıl 1",
+    "rayon": "Səbail",
+    "pop": 14337,
+    "need": 63.2,
+    "top20_prob": 98
+   },
+   {
+    "rank": 11,
+    "name": "Xətai 1",
+    "rayon": "Xətai",
+    "pop": 14277,
+    "need": 62.4,
+    "top20_prob": 100
+   },
+   {
+    "rank": 12,
+    "name": "Ulduz ətrafı 2",
+    "rayon": "Nərimanov",
+    "pop": 14720,
+    "need": 60.0,
+    "top20_prob": 95
+   },
+   {
+    "rank": 13,
+    "name": "Lökbatan",
+    "rayon": "Qaradağ",
+    "pop": 13101,
+    "need": 67.4,
+    "top20_prob": 100
+   },
+   {
+    "rank": 14,
+    "name": "Hövsan 1",
+    "rayon": "Suraxanı",
+    "pop": 13763,
+    "need": 63.2,
+    "top20_prob": 90
+   },
+   {
+    "rank": 15,
+    "name": "Xaşaxuna",
+    "rayon": "Xəzər",
+    "pop": 13975,
+    "need": 61.0,
+    "top20_prob": 86
+   },
+   {
+    "rank": 16,
+    "name": "Suraxanı 1",
+    "rayon": "Suraxanı",
+    "pop": 13700,
+    "need": 61.8,
+    "top20_prob": 87
+   },
+   {
+    "rank": 17,
+    "name": "Yeni Suraxanı",
+    "rayon": "Suraxanı",
+    "pop": 14104,
+    "need": 59.9,
+    "top20_prob": 86
+   },
+   {
+    "rank": 18,
+    "name": "Atyalı",
+    "rayon": "Binəqədi",
+    "pop": 13083,
+    "need": 63.4,
+    "top20_prob": 60
+   },
+   {
+    "rank": 19,
+    "name": "Şıxlar",
+    "rayon": "Qaradağ",
+    "pop": 11647,
+    "need": 71.0,
+    "top20_prob": 57
+   },
+   {
+    "rank": 20,
+    "name": "Ulduz ətrafı 1",
+    "rayon": "Nizami",
+    "pop": 15462,
+    "need": 53.4,
+    "top20_prob": 58
+   }
+  ],
+  "challengers": [
+   {
+    "name": "Nizami 1",
+    "rank": 21,
+    "top20_prob": 56
+   },
+   {
+    "name": "Əhmədli 2",
+    "rank": 22,
+    "top20_prob": 45
+   },
+   {
+    "name": "Korgöz",
+    "rank": 23,
+    "top20_prob": 24
+   }
+  ]
+ }
+}

@@ -13,6 +13,7 @@ import Button from "@/components/common/Button";
 import { Wrap } from "@/components/site/Synthesis/RayonNeed";
 import { useModal } from "@/contexts/ModalContext";
 import { PITCH } from "@/utils/mock/pilot";
+import Sensitivity from "@/components/site/Methodology/Sensitivity";
 
 const INDEX_ROWS = [
   ["Metroya yaxınlıq", "+25", "ən yaxın metro çıxışına: 0 m-də tam bal, 1200 m-də sıfır"],
@@ -84,6 +85,8 @@ const Methodology = () => {
         <Button variant="outline" onClick={() => openModal("DataSourcesModal")}>
           Data mənbələri
         </Button>
+
+        <Sensitivity />
 
         <SectionHeading as="h2" eyebrow="11 · Qeydiyyat forması · son tarix 08.11.2026" title="Müraciət mətni" />
         <Pitch>

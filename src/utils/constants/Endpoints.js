@@ -29,6 +29,7 @@ export const ENDPOINTS = {
   BAKU_ANALYSIS: "/data/baku_analysis.json",
   PUBLIC_SPACES: "/data/public_spaces.geojson",
   SCHOOLS_SAFETY: "/data/schools_safety.geojson",
+  SENSITIVITY: "/data/sensitivity.json",
   BAKU_SYNTH: "/data/baku_synth.geojson",
   BAKU_SYNTH_SUMMARY: "/data/baku_synth.json",
 };
