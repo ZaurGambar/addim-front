@@ -28,6 +28,7 @@ export const ENDPOINTS = {
   TWOGIS_CELLS: "/data/twogis_cells.geojson",
   BAKU_ANALYSIS: "/data/baku_analysis.json",
   PUBLIC_SPACES: "/data/public_spaces.geojson",
+  SCHOOLS_SAFETY: "/data/schools_safety.geojson",
   BAKU_SYNTH: "/data/baku_synth.geojson",
   BAKU_SYNTH_SUMMARY: "/data/baku_synth.json",
 };

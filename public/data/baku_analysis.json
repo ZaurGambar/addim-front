@@ -695,6 +695,29 @@
    "source": "OSM (Overpass, 10.11.2026), 12 rayon; məsafələr düz xətt"
   },
   "pond_pct": 7.4,
-  "pond_method": "SRTM, TPI 300 m < -1.5 m və meyl < 3.0%"
+  "pond_method": "SRTM, TPI 300 m < -1.5 m və meyl < 3.0%",
+  "school_safety": {
+   "n": 940,
+   "schools": 579,
+   "high": 269,
+   "mid": 169,
+   "low": 502,
+   "near_major_300": 574,
+   "by_rayon_high": {
+    "Xətai": 61,
+    "Sabunçu": 32,
+    "Nəsimi": 28,
+    "Xəzər": 26,
+    "Nizami": 25,
+    "Nərimanov": 23,
+    "Yasamal": 18,
+    "Səbail": 18,
+    "Binəqədi": 14,
+    "Qaradağ": 13,
+    "Suraxanı": 7,
+    "Pirallahı": 4
+   },
+   "method": "300 m-də magistral (çəkili), 400 m-də keçidsiz magistral, 300 m-də işıqforsuz keçid və yeraltı keçid; keçid datası yalnız mərkəzdə"
+  }
  }
 }

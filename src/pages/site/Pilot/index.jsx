@@ -12,6 +12,7 @@ import PilotCards from "@/components/site/Pilot/PilotCards";
 import SatelliteTable from "@/components/site/Pilot/SatelliteTable";
 import FieldCheckForm from "@/components/site/Pilot/FieldCheckForm";
 import Timeline from "@/components/site/Pilot/Timeline";
+import SchoolSafety from "@/components/site/Pilot/SchoolSafety";
 import { useGet } from "@/utils/hooks/useCustomQuery";
 import { ENDPOINTS } from "@/utils/constants/Endpoints";
 
@@ -24,6 +25,8 @@ const BIZ = [
 const Pilot = () => {
   const underpasses = useGet("central-underpasses", ENDPOINTS.UNDERPASSES);
   const business = useGet("business", ENDPOINTS.BUSINESS);
+  const schools = useGet("schoolsSafety", ENDPOINTS.SCHOOLS_SAFETY);
+  const analysis = useGet("bakuAnalysis", ENDPOINTS.BAKU_ANALYSIS);
   const loading = underpasses.isLoading || business.isLoading;
   const error = underpasses.isError || business.isError;
 
@@ -58,6 +61,13 @@ const Pilot = () => {
             <H2>Top-15 namizədin peyk yoxlaması</H2>
             <Note>Esri peyk görüntüsündə (z19) baxılıb, çəkiliş tarixi məlum deyil. Yekun qərar sahə yoxlamasından sonra verilir.</Note>
             <SatelliteTable underpasses={underpasses.data} />
+            {schools.data && analysis.data?.city?.school_safety && (
+              <>
+                <H2>Təhlükəsiz məktəb yolu</H2>
+                <Note>Hər məktəb və bağçanın ətrafında uşağın keçməli olduğu yol mühiti. “Təhlükəsiz məktəb yolu” həlli və 30 km/saat qaydası ilk növbədə bu məktəblərdən başlamalıdır.</Note>
+                <SchoolSafety schools={schools.data} summary={analysis.data.city.school_safety} />
+              </>
+            )}
             <H2>Sahə yoxlaması</H2>
             <Note>Komanda telefondan doldurur. Hər nöqtədə 15 dəqiqə keçən piyadaları sayın və keçidin şəklini çəkin. Cavablar Netlify Forms panelində toplanır.</Note>
             <FieldCheckForm points={points} />
