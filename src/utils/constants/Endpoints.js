@@ -27,6 +27,7 @@ export const ENDPOINTS = {
   ZONING_BLOCKS: "/data/zoning_blocks.geojson",
   TWOGIS_CELLS: "/data/twogis_cells.geojson",
   BAKU_ANALYSIS: "/data/baku_analysis.json",
+  PUBLIC_SPACES: "/data/public_spaces.geojson",
   BAKU_SYNTH: "/data/baku_synth.geojson",
   BAKU_SYNTH_SUMMARY: "/data/baku_synth.json",
 };

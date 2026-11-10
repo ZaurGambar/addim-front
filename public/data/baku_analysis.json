@@ -46,7 +46,12 @@
    "disabled": 11827,
    "disabled_per1000": 38.4,
    "walk_score": 36.5,
-   "walk_cells": 101
+   "walk_cells": 101,
+   "ps_km2": 0.76,
+   "ps_m2_pc": 2.5,
+   "ps_share": 0.8,
+   "ps_400_pct": 32.0,
+   "ps_count": 130
   },
   {
    "rayon": "Qaradağ",
@@ -94,7 +99,12 @@
    "disabled": 5614,
    "disabled_per1000": 48.0,
    "walk_score": null,
-   "walk_cells": 6
+   "walk_cells": 6,
+   "ps_km2": 5.69,
+   "ps_m2_pc": 48.6,
+   "ps_share": 0.6,
+   "ps_400_pct": 15.0,
+   "ps_count": 129
   },
   {
    "rayon": "Yasamal",
@@ -142,7 +152,12 @@
    "disabled": 9813,
    "disabled_per1000": 50.6,
    "walk_score": 34.9,
-   "walk_cells": 181
+   "walk_cells": 181,
+   "ps_km2": 0.75,
+   "ps_m2_pc": 3.9,
+   "ps_share": 4.8,
+   "ps_400_pct": 74.4,
+   "ps_count": 125
   },
   {
    "rayon": "Səbail",
@@ -190,7 +205,12 @@
    "disabled": 3713,
    "disabled_per1000": 36.5,
    "walk_score": 32.5,
-   "walk_cells": 83
+   "walk_cells": 83,
+   "ps_km2": 2.5,
+   "ps_m2_pc": 24.6,
+   "ps_share": 8.5,
+   "ps_400_pct": 57.4,
+   "ps_count": 166
   },
   {
    "rayon": "Nəsimi",
@@ -238,7 +258,12 @@
    "disabled": 7580,
    "disabled_per1000": 34.6,
    "walk_score": 44.4,
-   "walk_cells": 139
+   "walk_cells": 139,
+   "ps_km2": 0.86,
+   "ps_m2_pc": 3.9,
+   "ps_share": 8.6,
+   "ps_400_pct": 91.6,
+   "ps_count": 99
   },
   {
    "rayon": "Nərimanov",
@@ -286,7 +311,12 @@
    "disabled": 7957,
    "disabled_per1000": 44.0,
    "walk_score": 35.9,
-   "walk_cells": 183
+   "walk_cells": 183,
+   "ps_km2": 1.32,
+   "ps_m2_pc": 7.3,
+   "ps_share": 6.2,
+   "ps_400_pct": 66.6,
+   "ps_count": 110
   },
   {
    "rayon": "Nizami",
@@ -334,7 +364,12 @@
    "disabled": 7534,
    "disabled_per1000": 40.7,
    "walk_score": 22.0,
-   "walk_cells": 37
+   "walk_cells": 37,
+   "ps_km2": 0.53,
+   "ps_m2_pc": 2.9,
+   "ps_share": 2.6,
+   "ps_400_pct": 66.5,
+   "ps_count": 97
   },
   {
    "rayon": "Xətai",
@@ -382,7 +417,12 @@
    "disabled": 12015,
    "disabled_per1000": 43.5,
    "walk_score": 35.9,
-   "walk_cells": 77
+   "walk_cells": 77,
+   "ps_km2": 1.33,
+   "ps_m2_pc": 4.8,
+   "ps_share": 3.9,
+   "ps_400_pct": 66.6,
+   "ps_count": 132
   },
   {
    "rayon": "Sabunçu",
@@ -430,7 +470,12 @@
    "disabled": 12420,
    "disabled_per1000": 37.6,
    "walk_score": null,
-   "walk_cells": 0
+   "walk_cells": 0,
+   "ps_km2": 4.84,
+   "ps_m2_pc": 14.6,
+   "ps_share": 2.8,
+   "ps_400_pct": 32.6,
+   "ps_count": 193
   },
   {
    "rayon": "Suraxanı",
@@ -478,7 +523,12 @@
    "disabled": 10515,
    "disabled_per1000": 50.5,
    "walk_score": null,
-   "walk_cells": 0
+   "walk_cells": 0,
+   "ps_km2": 0.9,
+   "ps_m2_pc": 4.3,
+   "ps_share": 0.7,
+   "ps_400_pct": 31.5,
+   "ps_count": 137
   },
   {
    "rayon": "Xəzər",
@@ -526,7 +576,12 @@
    "disabled": 6829,
    "disabled_per1000": 33.2,
    "walk_score": null,
-   "walk_cells": 0
+   "walk_cells": 0,
+   "ps_km2": 7.93,
+   "ps_m2_pc": 38.6,
+   "ps_share": 2.9,
+   "ps_400_pct": 32.9,
+   "ps_count": 258
   },
   {
    "rayon": "Pirallahı",
@@ -574,7 +629,12 @@
    "disabled": 469,
    "disabled_per1000": 24.9,
    "walk_score": null,
-   "walk_cells": 0
+   "walk_cells": 0,
+   "ps_km2": 4.22,
+   "ps_m2_pc": 224.4,
+   "ps_share": 5.7,
+   "ps_400_pct": 33.2,
+   "ps_count": 37
   }
  ],
  "city": {
@@ -602,6 +662,25 @@
   "landsat_scene": "LC08_L2SP_166032_20260801_02_T1",
   "worldpop_year": 2020,
   "pop_source": "DSK 2024 (ilin əvvəlinə); hücrə paylanması WorldPop 2020",
-  "pop_year": 2024
+  "pop_year": 2024,
+  "ps": {
+   "km2": 31.63,
+   "m2_pc": 13.5,
+   "share": 1.8,
+   "pct_400": 51.9,
+   "count": 1613,
+   "by_kind_km2": {
+    "Park və bağ": 27.37,
+    "Meydan və piyada sahəsi": 0.37,
+    "Oyun meydançası": 0.02,
+    "Çimərlik": 4.14
+   },
+   "who_m2_pc": 9,
+   "unhabitat_share": [
+    15,
+    20
+   ],
+   "source": "OSM (Overpass, 10.11.2026), 12 rayon; məsafələr düz xətt"
+  }
  }
 }

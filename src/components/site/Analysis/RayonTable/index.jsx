@@ -6,7 +6,7 @@ import { fmtN } from "@/utils/helpers/format";
 
 const COLS = [
   ["pop", "Əhali"], ["density", "Sıxlıq"], ["metro_ride", "Metro/gün"], ["transit500_pct", "500 m %"], ["intersections_km2", "Kəsişmə/km²"],
-  ["deadend_pct", "Dalan %"], ["poi_km2", "Obyekt/km²"], ["lst_mean", "Səth °C"], ["green_pct", "Yaşıl %"], ["steep_pct", "Dik %"],
+  ["deadend_pct", "Dalan %"], ["poi_km2", "Obyekt/km²"], ["lst_mean", "Səth °C"], ["green_pct", "Yaşıl %"], ["ps_m2_pc", "İctimai m²/nəf"], ["ps_400_pct", "Məkana 400 m %"], ["steep_pct", "Dik %"],
   ["below_m20_pct", "Alçaq %"], ["disabled_per1000", "Əlil/1000"], ["walk_score", "Piyada"],
 ];
 

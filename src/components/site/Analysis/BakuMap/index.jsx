@@ -11,7 +11,10 @@ import { binColor, cssVar, fmt, fmtN, quantileBreaks } from "@/utils/helpers/for
 
 const BOUNDS = [[40.18, 49.45], [40.62, 50.45]];
 
-const BakuMap = ({ rayons, grid, metric, onMetricChange }) => {
+const PS_COLOR = { park: "--good", square: "--accent", playground: "--warn", beach: "--serious" };
+const PS_LABEL = { park: "Park və bağ", square: "Meydan, piyada sahəsi", playground: "Oyun meydançası", beach: "Çimərlik" };
+
+const BakuMap = ({ rayons, grid, metric, onMetricChange, publicSpaces }) => {
   const { ref, map, renderer } = useLeafletMap({ bounds: BOUNDS, maxZoom: 15, attribution: "© OpenStreetMap · WorldPop · Landsat · SRTM" });
   const dark = useColorScheme();
   const [info, setInfo] = useState(null);
@@ -46,9 +49,18 @@ const BakuMap = ({ rayons, grid, metric, onMetricChange }) => {
         }),
       );
     }
+    // İctimai məkan mövzusunda real poliqonlar da göstərilir
+    if (meta.theme === "İctimai məkan" && publicSpaces) {
+      layers.push(
+        L.geoJSON(publicSpaces, {
+          style: (f) => ({ renderer, color: cssVar(PS_COLOR[f.properties.kind]), weight: 0.6, fillColor: cssVar(PS_COLOR[f.properties.kind]), fillOpacity: 0.85 }),
+          onEachFeature: (f, l) => l.bindTooltip(`${f.properties.name || PS_LABEL[f.properties.kind]} · ${f.properties.ha} ha`, { sticky: true }),
+        }),
+      );
+    }
     layers.forEach((l) => l.addTo(map));
     return () => layers.forEach((l) => map.removeLayer(l));
-  }, [map, renderer, rayons, grid, isGrid, key, breaks, meta.unit, dark]);
+  }, [map, renderer, rayons, grid, isGrid, key, breaks, meta.unit, meta.theme, publicSpaces, dark]);
 
   const options = BAKU_METRICS.map(([theme, ms]) => ({ group: theme, options: ms.map(([value, label]) => ({ value, label })) }));
 

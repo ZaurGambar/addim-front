@@ -1,6 +1,8 @@
 // 2GIS API: yerlər (Places), axtarış (Geocoder), piyada marşrutu (Routing).
-// Açar brauzerdə işləyir, ona görə gizli deyil: 2GIS Platform Manager-də domenlə məhdudlaşdırılmalıdır.
-export const TWOGIS_KEY = import.meta.env.VITE_2GIS_KEY || "f14dcfce-047f-463a-9779-fccf4c21df7e";
+// Açar koda yazılmır: lokalda .env.local, deploy-da hostinqin mühit dəyişəni (VITE_2GIS_KEY).
+// Açar brauzerə yenə də gedir, ona görə 2GIS Platform Manager-də saytın domeni ilə məhdudlaşdırılmalıdır.
+export const TWOGIS_KEY = import.meta.env.VITE_2GIS_KEY || "";
+export const TWOGIS_ENABLED = Boolean(TWOGIS_KEY);
 const CATALOG = "https://catalog.api.2gis.com/3.0/items";
 const ROUTING = "https://routing.api.2gis.com/routing/7.0.0/global";
 const cache = new Map();
@@ -15,8 +17,9 @@ const once = (key, fn) => {
     );
   return cache.get(key);
 };
+const noKey = () => Promise.reject(new Error("2GIS açarı yoxdur (VITE_2GIS_KEY)"));
 const get = (url) =>
-  fetch(url).then((r) => {
+  !TWOGIS_ENABLED ? noKey() : fetch(url).then((r) => {
     if (!r.ok) throw new Error(`2GIS ${r.status}`);
     return r.json();
   });
@@ -46,7 +49,7 @@ const parseWkt = (wkt) =>
     .map(([lon, lat]) => [lat, lon]);
 export const walkRoute = ([lat1, lon1], [lat2, lon2]) =>
   once(`r:${r5(lat1)}:${r5(lon1)}:${r5(lat2)}:${r5(lon2)}`, () =>
-    fetch(`${ROUTING}?key=${TWOGIS_KEY}`, {
+    !TWOGIS_ENABLED ? noKey() : fetch(`${ROUTING}?key=${TWOGIS_KEY}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ points: [{ type: "stop", lon: lon1, lat: lat1 }, { type: "stop", lon: lon2, lat: lat2 }], transport: "walking" }),

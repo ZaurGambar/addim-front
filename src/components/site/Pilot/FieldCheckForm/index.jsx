@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import Button from "@/components/common/Button";
 import InputField from "@/components/common/InputField";
 import Dropdown from "@/components/common/Dropdown";
+import AuditBlock from "./AuditBlock";
+import { ACCESS, ACCESS_KEYS, ACCESS_SCALE, accessScore, GEHL, GEHL_KEYS, GEHL_SCALE, gehlScore } from "@/utils/mock/audits";
 
 const schema = yup.object({
   point: yup.string().required("Nöqtə seçin"),
@@ -18,11 +20,19 @@ const schema = yup.object({
 // Netlify Forms: "field-check" forması index.html-də gizli şəkildə elan olunub
 const FieldCheckForm = ({ points }) => {
   const formik = useFormik({
-    initialValues: { point: points[0]?.value || "", works: "", lift: "", zebra_m: "", signal: "", ped_under: "", ped_over: "", note: "", photo: null },
+    initialValues: {
+      point: points[0]?.value || "", works: "", lift: "", zebra_m: "", signal: "", ped_under: "", ped_over: "", note: "", photo: null,
+      ...Object.fromEntries([...GEHL_KEYS, ...ACCESS_KEYS].map((k) => [k, ""])),
+    },
     validationSchema: schema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       const fd = new FormData();
       fd.append("form-name", "field-check");
+      // Yekun ballar da göndərilir ki, Netlify panelində dərhal görünsün
+      const g = gehlScore(values);
+      const a = accessScore(values);
+      if (g.answered) fd.append("gehl_score", `${g.total}/${g.max}`);
+      if (a.pct != null) fd.append("access_pct", String(a.pct));
       Object.entries(values).forEach(([k, v]) => {
         if (v !== null && v !== "") fd.append(k, v);
       });
@@ -41,6 +51,8 @@ const FieldCheckForm = ({ points }) => {
   const f = formik;
   const err = (k) => f.touched[k] && f.errors[k];
   const yesNo = (opts) => [{ value: "", label: "–" }, ...opts.map((o) => ({ value: o, label: o }))];
+  const g = gehlScore(f.values);
+  const a = accessScore(f.values);
 
   return (
     <Form onSubmit={f.handleSubmit} noValidate>
@@ -53,6 +65,28 @@ const FieldCheckForm = ({ points }) => {
       <Dropdown id="fc-signal" label="Svetofor var?" value={f.values.signal} onChange={(v) => f.setFieldValue("signal", v)} options={yesNo(["bəli", "xeyr"])} />
       <InputField id="fc-under" name="ped_under" type="number" inputMode="numeric" label="15 dəq. yeraltından keçən" value={f.values.ped_under} onChange={f.handleChange} onBlur={f.handleBlur} error={err("ped_under")} />
       <InputField id="fc-over" name="ped_over" type="number" inputMode="numeric" label="15 dəq. yolun üstündən keçən" value={f.values.ped_over} onChange={f.handleChange} onBlur={f.handleBlur} error={err("ped_over")} />
+      <div className="full">
+        <AuditBlock
+          prefix="gehl"
+          title="İctimai məkanın keyfiyyəti (Gehl, 12 meyar)"
+          summary={g.answered ? `${g.total} / ${g.max} bal` : "0–36 bal"}
+          groups={GEHL}
+          scale={GEHL_SCALE}
+          values={f.values}
+          onChange={(k, v) => f.setFieldValue(k, v)}
+        />
+      </div>
+      <div className="full">
+        <AuditBlock
+          prefix="acc"
+          title="Əlçatanlıq çeklisti (20 bənd)"
+          summary={a.pct == null ? "uyğunluq %" : `${a.pct}% uyğun · ${a.no} maneə`}
+          groups={ACCESS}
+          scale={ACCESS_SCALE}
+          values={f.values}
+          onChange={(k, v) => f.setFieldValue(k, v)}
+        />
+      </div>
       <div className="full">
         <InputField id="fc-photo" name="photo" type="file" accept="image/*" capture="environment" label="Şəkil" onChange={(e) => f.setFieldValue("photo", e.currentTarget.files[0] || null)} />
       </div>

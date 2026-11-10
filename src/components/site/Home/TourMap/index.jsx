@@ -695,6 +695,7 @@ const FLOW = ["Ölçürük", "8 sual", "Bal", "Ocaq", "Sınaq", "Qayda"];
 // Qayda təklifləri (/qaydalar səhifəsi ilə eyni sıra) və xəritədə harada kömək etdikləri
 const RULE_MS = 3200;
 const RULE_HELP = { swatches: [["--critical", "qayda burada kömək edər"], ["--text-3", "az lazımdır"]] };
+const PROBLEM_LEGEND = { swatches: [["--accent", "yaxşı"], ["--text-3", "orta"], ["--critical", "problem çox"]] };
 const RULES = [
   { label: "Piyada keçidi standartı", note: "Keçidlər arası məsafə həddi, yeraltı keçidin yanında zebra. Qırmızı xətlər: keçidsiz geniş yollar.", kinds: ["barriers"] },
   { label: "Məhəllədə 30 km/saat", note: "Böyük maşın yollarının yanındakı məhəllələrdə sürət azalır.", kinds: ["q:car"], legend: RULE_HELP },
@@ -708,7 +709,6 @@ const RULES = [
   { label: "Açıq məlumat, əvvəl/sonra ölçmə", note: "Hər layihədən əvvəl və sonra ölçülür: sistem hər il yenilənir.", kinds: ["problems"], legend: PROBLEM_LEGEND },
 ];
 
-const PROBLEM_LEGEND = { swatches: [["--accent", "yaxşı"], ["--text-3", "orta"], ["--critical", "problem çox"]] };
 const EXPLORE = [
   { key: "rayons", label: "Rayonlar", icon: MapIcon, text: "Bakının 12 rayonu. İstənilən yerə klikləyin: orada neçə insan yaşadığını və nə problem olduğunu görəcəksiniz." },
   { key: "pop", label: "Əhali", icon: Users, text: "Hər kvadrat 1 km × 1 km-dir. Tünd rəng: daha çox insan yaşayır.", legend: ["az insan", "çox insan", RAMP] },

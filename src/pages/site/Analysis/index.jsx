@@ -25,6 +25,7 @@ const Analysis = () => {
   const rayons = useGet("bakuRayons", ENDPOINTS.BAKU_RAYONS);
   const grid = useGet("bakuGrid", ENDPOINTS.BAKU_GRID);
   const analysis = useGet("bakuAnalysis", ENDPOINTS.BAKU_ANALYSIS);
+  const publicSpaces = useGet("publicSpaces", ENDPOINTS.PUBLIC_SPACES);
   const loading = rayons.isLoading || grid.isLoading || analysis.isLoading;
   const error = rayons.isError || grid.isError || analysis.isError;
 
@@ -55,7 +56,7 @@ const Analysis = () => {
         {loading && <MapSkeleton />}
         {!loading && !error && (
           <>
-            <BakuMap rayons={rayons.data} grid={grid.data} metric={metric} onMetricChange={setMetric} />
+            <BakuMap rayons={rayons.data} grid={grid.data} metric={metric} onMetricChange={setMetric} publicSpaces={publicSpaces.data} />
             <ThemeCards analysis={analysis.data} onMetric={pickMetric} />
             <SubHead>
               <h2>Rayonların müqayisəsi</h2>
