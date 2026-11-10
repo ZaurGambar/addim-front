@@ -7,7 +7,7 @@ export const BAKU_METRICS = [
   ["Küçə şəbəkəsi", [["road_km_km2", "Yol sıxlığı", "km/km²", "r"], ["intersections_km2", "Kəsişmə sıxlığı", "kəsişmə/km²", "r"], ["deadend_pct", "Dalan küçə payı", "%", "r"], ["major_share", "Magistral payı", "yolların %-i", "r"], ["ped_km_km2", "Piyada yolu sıxlığı", "km/km²", "r"], ["g:inter", "Kəsişmələr (1 km hücrə)", "say", "g"]]],
   ["Nəqliyyat", [["transit500_pct", "Dayanacağa 500 m (SDG 11.2.1)", "əhalinin %-i", "r"], ["metro_ride", "Metro sərnişini", "gündə", "r"], ["bus_stops_km2", "Avtobus dayanacağı sıxlığı", "dayanacaq/km²", "r"], ["g:stops", "Dayanacaqlar (1 km hücrə)", "say", "g"]]],
   ["İqlim və yaşıllıq", [["lst_mean", "Yer səthinin temperaturu", "°C, 01.08.2026", "r"], ["uhi", "Şəhər ortasından fərq", "°C", "r"], ["green_pct", "Yaşıl örtük (NDVI > 0.3)", "%", "r"], ["g:lst", "Səth temperaturu (1 km hücrə)", "°C", "g"], ["g:ndvi", "NDVI (1 km hücrə)", "indeks", "g"]]],
-  ["Risk", [["below_m20_pct", "Alçaq sahil (−20 m-dən aşağı)", "ərazinin %-i", "r"], ["steep_pct", "Sürüşmə riski: dik yamac", "ərazinin %-i", "r"]]],
+  ["Risk", [["below_m20_pct", "Alçaq sahil (−20 m-dən aşağı)", "ərazinin %-i", "r"], ["steep_pct", "Sürüşmə riski: dik yamac", "ərazinin %-i", "r"], ["pond_pct", "Yağış suyu yığılma ehtimalı (çökəklik)", "ərazinin %-i", "r"], ["g:pond", "Su yığılma ehtimalı (1 km hücrə)", "%", "g"]]],
   ["Tarixi-mədəni", [["heritage", "Tarixi obyektlər", "say", "r"], ["culture", "Mədəniyyət obyektləri", "say", "r"]]],
   ["Piyada (mərkəz)", [["walk_score", "Piyada indeksi (mərkəzi zona)", "0–100", "r"]]],
 ];
@@ -21,6 +21,7 @@ export const BAKU_SOURCES = {
   road_km_km2: "OSM", intersections_km2: "OSM", deadend_pct: "OSM", major_share: "OSM", ped_km_km2: "OSM", transit500_pct: "BakuBus, metro / WorldPop",
   metro_ride: "Bakı Metropoliteni 2026", bus_stops_km2: "BakuBus", lst_mean: "Landsat 8, 01.08.2026", uhi: "Landsat 8, 01.08.2026", green_pct: "Landsat 8 NDVI, 01.08.2026",
   ps_m2_pc: "OSM (park, bağ, meydan, piyada sahəsi, oyun meydançası, çimərlik), 10.11.2026 / DSK 2024", ps_400_pct: "OSM / yaşayış blokları (DSK 2024); düz xətt məsafəsi", ps_share: "OSM / yaşayış bloklarının sahəsi", ps_km2: "OSM, birləşdirilmiş poliqonlar",
+  pond_pct: "SRTM: TPI 300 m < −1.5 m və meyl < 3%; səth modeli binaları da ölçür, nisbi göstəricidir",
   below_m20_pct: "SRTM", heritage: "OSM", culture: "OSM", walk_score: "ADDIM indeksi, yalnız mərkəzi zona",
 };
 

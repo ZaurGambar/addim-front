@@ -14,6 +14,7 @@ const SatelliteTable = ({ underpasses }) => {
             <th>Yer</th>
             <th>Peyk nəticəsi</th>
             <th>Qeyd</th>
+            <th>Sel riski</th>
             <th />
           </tr>
         </thead>
@@ -30,6 +31,7 @@ const SatelliteTable = ({ underpasses }) => {
                   <Stat $c={color} $ring={p.sat === "zebra_nearby"}>{label}</Stat>
                 </td>
                 <td style={{ fontSize: 13, color: "var(--text-2)" }}>{p.sat_note}</td>
+                <td style={{ fontSize: 13, whiteSpace: "nowrap" }} title="Relyef çökəkliyinə görə leysanda su basma riski (keçidlər arasında nisbi)">{p.flood_cls ? `${p.flood_cls} · ${p.flood}` : "–"}</td>
                 <td>
                   <a href={`https://maps.google.com/?q=${lat},${lon}`} target="_blank" rel="noopener noreferrer" style={{ color: "var(--primary)", fontSize: 13, whiteSpace: "nowrap" }}>
                     xəritədə aç

@@ -102,7 +102,7 @@ const WalkMap = ({ d, focus }) => {
           const p = f.properties;
           const near = p.sat === "zebra_nearby";
           return L.circleMarker(ll, { renderer, radius: p.candidate ? 7 : 4, color: cssVar(near ? "--accent" : "--panel"), weight: 2, fillColor: p.candidate ? cssVar(near ? "--panel" : "--accent") : cssVar("--text-3"), fillOpacity: 1 })
-            .bindPopup(`<strong>${p.candidate ? `#${p.rank} yerüstü keçid namizədi` : "Yeraltı keçid"}</strong><br>${p.road || `${p.metro} yaxınlığı`}<br>Prioritet: <b>${p.priority}</b>/100<br>400 m-də məktəb/xəstəxana: <b>${p.poi_400m}</b>${p.sat ? `<br><b>${satTxt[p.sat]}</b>` : ""}`);
+            .bindPopup(`<strong>${p.candidate ? `#${p.rank} yerüstü keçid namizədi` : "Yeraltı keçid"}</strong><br>${p.road || `${p.metro} yaxınlığı`}<br>Prioritet: <b>${p.priority}</b>/100<br>400 m-də məktəb/xəstəxana: <b>${p.poi_400m}</b>${p.sat ? `<br><b>${satTxt[p.sat]}</b>` : ""}${p.flood != null ? `<br>Leysanda su basma riski: <b>${p.flood_cls}</b> (${p.flood}/100)` : ""}`);
         },
       }),
       metro: L.geoJSON(d.metro, {

@@ -51,7 +51,8 @@
    "ps_m2_pc": 2.5,
    "ps_share": 0.8,
    "ps_400_pct": 32.0,
-   "ps_count": 130
+   "ps_count": 130,
+   "pond_pct": 8.5
   },
   {
    "rayon": "Qaradağ",
@@ -104,7 +105,8 @@
    "ps_m2_pc": 48.6,
    "ps_share": 0.6,
    "ps_400_pct": 15.0,
-   "ps_count": 129
+   "ps_count": 129,
+   "pond_pct": 7.1
   },
   {
    "rayon": "Yasamal",
@@ -157,7 +159,8 @@
    "ps_m2_pc": 3.9,
    "ps_share": 4.8,
    "ps_400_pct": 74.4,
-   "ps_count": 125
+   "ps_count": 125,
+   "pond_pct": 8.4
   },
   {
    "rayon": "Səbail",
@@ -210,7 +213,8 @@
    "ps_m2_pc": 24.6,
    "ps_share": 8.5,
    "ps_400_pct": 57.4,
-   "ps_count": 166
+   "ps_count": 166,
+   "pond_pct": 6.0
   },
   {
    "rayon": "Nəsimi",
@@ -263,7 +267,8 @@
    "ps_m2_pc": 3.9,
    "ps_share": 8.6,
    "ps_400_pct": 91.6,
-   "ps_count": 99
+   "ps_count": 99,
+   "pond_pct": 8.4
   },
   {
    "rayon": "Nərimanov",
@@ -316,7 +321,8 @@
    "ps_m2_pc": 7.3,
    "ps_share": 6.2,
    "ps_400_pct": 66.6,
-   "ps_count": 110
+   "ps_count": 110,
+   "pond_pct": 9.8
   },
   {
    "rayon": "Nizami",
@@ -369,7 +375,8 @@
    "ps_m2_pc": 2.9,
    "ps_share": 2.6,
    "ps_400_pct": 66.5,
-   "ps_count": 97
+   "ps_count": 97,
+   "pond_pct": 8.0
   },
   {
    "rayon": "Xətai",
@@ -422,7 +429,8 @@
    "ps_m2_pc": 4.8,
    "ps_share": 3.9,
    "ps_400_pct": 66.6,
-   "ps_count": 132
+   "ps_count": 132,
+   "pond_pct": 8.5
   },
   {
    "rayon": "Sabunçu",
@@ -475,7 +483,8 @@
    "ps_m2_pc": 14.6,
    "ps_share": 2.8,
    "ps_400_pct": 32.6,
-   "ps_count": 193
+   "ps_count": 193,
+   "pond_pct": 9.0
   },
   {
    "rayon": "Suraxanı",
@@ -528,7 +537,8 @@
    "ps_m2_pc": 4.3,
    "ps_share": 0.7,
    "ps_400_pct": 31.5,
-   "ps_count": 137
+   "ps_count": 137,
+   "pond_pct": 7.3
   },
   {
    "rayon": "Xəzər",
@@ -581,7 +591,8 @@
    "ps_m2_pc": 38.6,
    "ps_share": 2.9,
    "ps_400_pct": 32.9,
-   "ps_count": 258
+   "ps_count": 258,
+   "pond_pct": 6.8
   },
   {
    "rayon": "Pirallahı",
@@ -634,7 +645,8 @@
    "ps_m2_pc": 224.4,
    "ps_share": 5.7,
    "ps_400_pct": 33.2,
-   "ps_count": 37
+   "ps_count": 37,
+   "pond_pct": 7.3
   }
  ],
  "city": {
@@ -681,6 +693,8 @@
     20
    ],
    "source": "OSM (Overpass, 10.11.2026), 12 rayon; məsafələr düz xətt"
-  }
+  },
+  "pond_pct": 7.4,
+  "pond_method": "SRTM, TPI 300 m < -1.5 m və meyl < 3.0%"
  }
 }
