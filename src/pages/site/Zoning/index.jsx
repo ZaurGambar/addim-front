@@ -18,6 +18,7 @@ import { RampLegend, SwatchLegend } from "@/components/common/Legend";
 import MapLayout, { MapBox } from "@/components/site/common/MapLayout";
 import { card, table } from "@/styles/common/mixins";
 import { useGet } from "@/utils/hooks/useCustomQuery";
+import BudgetCalculator from "@/components/site/Zoning/BudgetCalculator";
 import { useColorScheme, useLeafletMap } from "@/utils/hooks/useLeafletMap";
 import { ENDPOINTS } from "@/utils/constants/Endpoints";
 import { binColor, cssVar, fmt } from "@/utils/helpers/format";
@@ -178,6 +179,7 @@ const Zoning = () => {
                 );
               })}
             </Catalog>
+            <BudgetCalculator solutions={S.solutions} />
 
             <H2>Zonalar prioritetə görə</H2>
             <Note>Sıra: insan sayı × ehtiyac balı. Sətrə klikləyin: zona xəritədə açılacaq.</Note>
