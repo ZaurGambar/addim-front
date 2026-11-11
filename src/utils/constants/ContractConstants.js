@@ -1,4 +1,4 @@
-import { BarChart3, BrainCircuit, Building2, Bus, Compass, Database, Grid3x3, Footprints, Home, Layers, Lightbulb, MapPinned, Ruler, Scale, Target } from "lucide-react";
+import { Accessibility, BarChart3, BrainCircuit, Building2, Bus, Compass, Database, Grid3x3, Footprints, Home, Layers, Lightbulb, MapPinned, Ruler, Scale, Target } from "lucide-react";
 
 export const SITE_NAME = "SmartUrban Bakı";
 export const SITE_URL = import.meta.env.VITE_SITE_URL || "";
@@ -7,11 +7,12 @@ export const NAV_ITEMS = [
   { path: "/", label: "Ana səhifə", short: "Ana", icon: Home, tab: true },
   { path: "/analiz", label: "Bakı analizi", short: "Analiz", icon: BarChart3, tab: true },
   { path: "/sintez", label: "Sintez", short: "Sintez", icon: Layers, tab: true },
-  { path: "/dayanacaq", label: "Dayanacağa 5 dəqiqə", short: "Dayanacaq", icon: Bus, tab: true },
+  { path: "/marsrut", label: "Hər kəs üçün marşrut", short: "Marşrut", icon: Accessibility, tab: true },
+  { path: "/dayanacaq", label: "Dayanacağa 5 dəqiqə", short: "Dayanacaq", icon: Bus },
   { path: "/planlama", label: "İnklüziv planlama", short: "Planlama", icon: Compass },
   { path: "/bolgeleme", label: "Bölgələmə", short: "Zonalar", icon: Grid3x3 },
   { path: "/swot", label: "SWOT", short: "SWOT", icon: Target },
-  { path: "/xerite", label: "Mərkəzi xəritə", short: "Xəritə", icon: MapPinned, tab: true },
+  { path: "/xerite", label: "Mərkəzi xəritə", short: "Xəritə", icon: MapPinned },
   { path: "/modeller", label: "Şəhər modelləri", short: "Modellər", icon: Building2 },
   { path: "/anlayislar", label: "29 anlayış", short: "Anlayışlar", icon: Lightbulb },
   { path: "/ai", label: "AI modulları", short: "AI", icon: BrainCircuit },
@@ -22,6 +23,6 @@ export const NAV_ITEMS = [
 ];
 
 // SiteRoot üçün route qrupları (":param" dəstəklənir)
-export const pagesWithHeaderAndTab = ["/", "/analiz", "/sintez", "/swot", "/xerite", "/pilot", "/dayanacaq"];
+export const pagesWithHeaderAndTab = ["/", "/analiz", "/sintez", "/swot", "/xerite", "/pilot", "/dayanacaq", "/marsrut"];
 export const pagesWithHeaderWebBackMobile = ["/planlama", "/modeller", "/anlayislar", "/ai", "/qaydalar", "/2gis", "/bolgeleme"];
 export const pagesWithOnlyBack = ["/metodologiya"];

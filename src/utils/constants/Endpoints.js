@@ -31,6 +31,8 @@ export const ENDPOINTS = {
   SCHOOLS_SAFETY: "/data/schools_safety.geojson",
   SENSITIVITY: "/data/sensitivity.json",
   BAKU_SYNTH: "/data/baku_synth.geojson",
+  INCLUSIVE_ACCESS: "/data/inclusive_access.json",
+  BARRIERS_ACCESS: "/data/barriers_access.json",
   PLANNING_LENS: "/data/planning_lens.json",
   TRANSIT_ACCESS: "/data/transit_access.json",
   TRANSIT_BLOCKS: "/data/transit_blocks.json",

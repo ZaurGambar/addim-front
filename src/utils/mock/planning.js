@@ -52,6 +52,7 @@ export const PAGE_LENS = {
   "/sintez": { I: ["I1", "I3"], K: ["K1", "K2", "K3"], note: "Sintez problemləri sektorlar üzrə birləşdirir və həssas qrupların çox olduğu zonaları önə çəkir." },
   "/bolgeleme": { I: ["I1", "I2", "I3"], K: ["K1", "K2", "K9"], note: "Həll blokda, proqram zonada, qayda şəhərdə: çoxmiqyaslı və sektorlararası." },
   "/dayanacaq": { I: ["I1", "I8", "I3"], K: ["K4", "K9", "K1"], note: "Periferiya ədaləti: alqoritm yeni dayanacaqları ən çox kənarda qalan insana görə yerləşdirir." },
+  "/marsrut": { I: ["I2", "I3", "I5"], K: ["K1", "K7"], note: "Sakin öz profili ilə yol seçir və maneəni bildirir: universal dizayn yoxlaması və iştirakçılıq bir yerdə." },
   "/qaydalar": { I: ["I2", "I6", "I9"], K: ["K5", "K7", "K9"], note: "Hər qayda həm bir qrupu qoruyur, həm də bir neçə sahəni birlikdə tənzimləyir." },
   "/ai": { I: ["I5", "I6", "I2"], K: ["K3", "K4", "K7"], note: "AI ölçür və təklif edir; ədalət auditi və insan nəzarəti ilə." },
   "/pilot": { I: ["I2", "I5", "I9"], K: ["K5", "K7"], note: "Pilot sakinlə birlikdə sınayır və nəticəni ölçür." },

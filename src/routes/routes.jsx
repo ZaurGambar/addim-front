@@ -16,6 +16,7 @@ const Pilot = lazy(() => import("@/pages/site/Pilot"));
 const Zoning = lazy(() => import("@/pages/site/Zoning"));
 const Transit = lazy(() => import("@/pages/site/Transit"));
 const Planning = lazy(() => import("@/pages/site/Planning"));
+const RoutePage = lazy(() => import("@/pages/site/Route"));
 const TwoGis = lazy(() => import("@/pages/site/TwoGis"));
 const Policy = lazy(() => import("@/pages/site/Policy"));
 const Methodology = lazy(() => import("@/pages/site/Methodology"));
@@ -47,6 +48,7 @@ export const ROUTES = [
       { path: "bolgeleme", element: page(Zoning) },
       { path: "dayanacaq", element: page(Transit) },
       { path: "planlama", element: page(Planning) },
+      { path: "marsrut", element: page(RoutePage) },
       { path: "2gis", element: page(TwoGis) },
       { path: "qaydalar", element: page(Policy) },
       { path: "metodologiya", element: page(Methodology) },

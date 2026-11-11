@@ -19,14 +19,15 @@ const stepDot = keyframes`
   90% { translate: 6px 0; }
 `;
 
-// Fokus: periferiya sakinləri (MVP "Dayanacağa 5 dəqiqə"); rəqəmlər transit_access.json-dan
-const Hero = ({ transit, onHelp }) => {
-  const S = transit.summary;
+// Fokus: inklüziv əlçatanlıq — eyni şəhər fərqli insanlar üçün (inclusive_access.json)
+const Hero = ({ inc, onHelp }) => {
+  const P = inc.profiles;
+  const G = inc.groups;
   const facts = [
-    [S.far_pop, "insan dayanacağa 10 dəqiqədən çox yeriyir", 0, ""],
-    [S.pct_5min, "sakin dayanacağa 5 dəqiqəyə çatır", 1, "%"],
-    [S.under_walk_m, "orta piyada yolu (5 dəqiqədən uzaq yaşayanlar)", 0, " m"],
-    [S.under_lst, "həmin məhəllələrdə yayda yerin səthi", 1, "°C"],
+    [P.adult.full, "orta piyada 5 gündəlik xidmətə 10 dəqiqədə çatır", 1, "%"],
+    [P.wheel.full, "əlil arabası istifadəçisi — eyni şəhərdə", 1, "%"],
+    [G.disabled.no_full, "əlilliyi olan şəxs gündəlik xidmətlərə 10 dəqiqədə çatmır", 0, ""],
+    [G.elderly.no_pharmacy, "yaşlı aptekə 10 dəqiqədə çatmır", 0, ""],
   ];
   return (
     <Wrap>
@@ -46,16 +47,16 @@ const Hero = ({ transit, onHelp }) => {
       <Brand>
         SmartUrban<span>.</span>
       </Brand>
-      <Tag>Hər kəs üçün şəhər · periferiya sakinləri üçün · “İnsanyönümlü şəhərlər” hakatonu · 11–13.11.2026</Tag>
+      <Tag>Hər kəs üçün şəhər · inklüzivlik və əlçatanlıq · “İnsanyönümlü şəhərlər” hakatonu · 11–13.11.2026</Tag>
       <Grid>
         <div>
           <Thesis>
-            Mərkəzdə avtobus hər küncdədir. Qəsəbədə isə insan dayanacağa 1–3 km, 43°C istidə, çox vaxt səkisiz yolla yeriyir, halbuki avtobus çox vaxt elə evin yanından keçir, sadəcə orada dayanmır. SmartUrban hər evdən dayanacağa real piyada yolunu ölçür və
-            yeni dayanacaqların ən çox insana fayda verən yerini seçir.
+            Bakı orta yaşlı, sağlam piyada üçün planlanıb. Yaşlı, əlil arabası istifadəçisi və uşaq arabalı valideyn üçün eyni şəhər iki dəfə kiçikdir: onlar yavaş yeriyir, yeraltı keçidin pilləkəni və dik yamac yolu bağlayır. SmartUrban bunu hər məhəllə üçün ölçür,
+            SmartFlow marşrutlarını hər profil üçün yoxlayır və maneələri aradan qaldırmağın ən faydalı ardıcıllığını göstərir.
           </Thesis>
           <Actions>
-            <Button as={Link} to="/dayanacaq" size="lg">
-              Simulyatoru aç
+            <Button as={Link} to="/marsrut" size="lg">
+              Marşrutu profilimlə yoxla
             </Button>
             <Button variant="secondary" size="lg" onClick={onHelp}>
               Necə oxumalı

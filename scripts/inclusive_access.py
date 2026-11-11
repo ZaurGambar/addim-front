@@ -24,7 +24,9 @@ baza ilə); yeraltı keçid: 83 məlum keçid nöqtəsindən 35 m radiusdakı qo
 Giriş:  data-raw/osm/walk_ways.json.gz, health_baku.json, grocery_baku.json, data-raw/dem_srtm_3857.tif,
         public/data/transit_stops.geojson, public_spaces.geojson, schools_safety.geojson, underpasses.geojson,
         zoning_blocks.geojson, zoning.json, zoning_zones.geojson, baku_analysis.json
-Çıxış:  public/data/inclusive_access.json, inclusive_blocks.json
+Çıxış:  public/data/inclusive_access.json, inclusive_blocks.json, barriers_access.json
+
+Ssenarilər (hədəflər üçün): yeraltı keçidlər əlçatan → + yamaclarda pandus → + 40 prioritet zonada əlçatan məhəllə hub-u.
 
   python3 scripts/inclusive_access.py
 """
@@ -119,25 +121,30 @@ for a, b, d in G.edges(data=True):
         steep58 += L
 
 
-def weight_fn(profile):
+def weight_fn(profile, under_on=True, ramps=False):
+    """ramps=True: yamaclarda pandus/məhəccər ssenarisi (> 8% keçilir ×1.5, 5–8% ×1.15)."""
     if profile == "adult":
         return lambda a, b, d: d["len"]
     if profile == "elderly":
         def w(a, b, d):
             f = 1.0
             if d["grade"] > 0.08:
-                f = 2.0
+                f = 1.5 if ramps else 2.0
             elif d["grade"] > 0.05:
-                f = 1.3
-            if d["under"]:
+                f = 1.15 if ramps else 1.3
+            if under_on and d["under"]:
                 f *= 3.0
             return d["len"] * f
         return w
 
     def w(a, b, d):  # wheel, stroller
-        if d["under"] or d["grade"] > 0.08:
+        if under_on and d["under"]:
             return None
-        return d["len"] * (1.5 if d["grade"] > 0.05 else 1.0)
+        if d["grade"] > 0.08:
+            if not ramps:
+                return None
+            return d["len"] * 1.5
+        return d["len"] * ((1.15 if ramps else 1.5) if d["grade"] > 0.05 else 1.0)
     return w
 
 
@@ -371,11 +378,86 @@ for i, z in enumerate(zones):
     z["pos"] = i + 1
 pri_top = zones[:20]
 
+# ---------- Ssenarilər: hədəflər üçün ----------
+def evaluate(under_on=True, ramps=False, extra=None):
+    """Profil üzrə tam səbət payı və qrup sayları; extra: {svc: set(node)} əlavə xidmət nöqtələri."""
+    res = {}
+    for prof in ("elderly", "wheel", "stroller"):
+        P = PROFILES[prof]
+        w = weight_fn(prof, under_on, ramps)
+        cut = P["speed"] * MIN
+        rr = {}
+        for svc in set(P["basket"]):
+            s0 = set(src[svc]) | set((extra or {}).get(svc, ()))
+            if prof != "elderly" and under_on:
+                s0 = {n for n in s0 if n not in under_nodes}
+            rr[svc] = nx.multi_source_dijkstra_path_length(G, s0, cutoff=cut, weight=w)
+        full_pop = full_dis = full_old = avg = 0.0
+        per = defaultdict(float)
+        for b in blocks:
+            n = b["_node"]
+            blocked = n is None or (prof != "elderly" and under_on and n in under_nodes)
+            got = [(not blocked) and rr[svc].get(n) is not None and rr[svc][n] + b["_snap"] <= cut for svc in P["basket"]]
+            for svc, g in zip(P["basket"], got):
+                per[svc] += b["pop"] * g
+            avg += b["pop"] * sum(got)
+            if all(got):
+                full_pop += b["pop"]
+                full_dis += b["disabled"]
+                full_old += b["pop"] * OLD
+        res[prof] = {"full": round(100 * full_pop / pop_total, 1), "avg": round(avg / pop_total, 2), "disabled_ok": round(full_dis), "elderly_ok": round(full_old),
+                     "services": {k: round(100 * v / pop_total, 1) for k, v in per.items()}}
+    return res
+
+
+# blokların qovşağı (bir dəfə)
+for b, f in zip(blocks, json.load(open(DATA / "zoning_blocks.geojson"))["features"]):
+    c = scale(shape(f["geometry"]).centroid, xfact=KX, yfact=KY, origin=(0, 0))
+    i = tree.nearest(c)
+    b["_snap"] = c.distance(npts[i])
+    b["_node"] = nodes[i] if b["_snap"] <= SNAP_BLOCK else None
+
+# Əlçatan məhəllə hub-u: prioritet zonanın əhali mərkəzinə ən yaxın qovşaqda bütün gündəlik xidmətlər bir nöqtədə
+extra_nodes = set()
+HUB_ZONES = 40
+for z in zones[:HUB_ZONES]:
+    bs = [b for b in zb[z["rank"]] if b["_node"] is not None]
+    if not bs:
+        continue
+    cx = sum(b["_node"][0] * b["pop"] for b in bs) / sum(b["pop"] for b in bs)
+    cy = sum(b["_node"][1] * b["pop"] for b in bs) / sum(b["pop"] for b in bs)
+    extra_nodes.add(nodes[tree.nearest(Point(xy(cx, cy)))])
+scen_defs = [
+    ("base", "İndiki vəziyyət", dict()),
+    ("under", "83 yeraltı keçid əlçatan (yanında zebra və ya lift)", dict(under_on=False)),
+    ("ramps", "+ yamaclarda pandus və məhəccər", dict(under_on=False, ramps=True)),
+    ("hubs", f"+ {HUB_ZONES} prioritet zonada əlçatan məhəllə hub-u (dayanacaq, aptek, feldşer, ərzaq, kölgəli meydança, bağça)",
+     dict(under_on=False, ramps=True, extra={k: extra_nodes for k in ("transit", "pharmacy", "health", "grocery", "park", "kinder")})),
+]
+scenarios = []
+for key, name, kw in scen_defs:
+    r = evaluate(**kw)
+    scenarios.append({"key": key, "name": name, **r})
+    print("ssenari", key, r)
+
+# Maneə qatı (marşrut yoxlaması üçün): yeraltı keçidlər və > 8% yamaclı kənarların orta nöqtələri
+steep_pts = []
+for a, b, d in G.edges(data=True):
+    if d["grade"] > 0.08 and d["len"] >= 15:
+        steep_pts.append([round((a[0] + b[0]) / 2, 5), round((a[1] + b[1]) / 2, 5), round(d["grade"] * 100)])
+json.dump({
+    "underpasses": [[round(c[0], 5), round(c[1], 5)] for c in (f["geometry"]["coordinates"] for f in json.load(open(DATA / "underpasses.geojson"))["features"])],
+    "steep": steep_pts,
+    "radius_m": UNDER_R,
+}, open(DATA / "barriers_access.json", "w"), separators=(",", ":"))
+print("dik nöqtə:", len(steep_pts))
+
 out = {
     "profiles": profiles_out,
     "gap": gap,
     "groups": groups,
     "barriers": barriers,
+    "scenarios": scenarios,
     "rayons": rays,
     "zones": zones,
     "summary": {

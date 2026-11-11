@@ -1,77 +1,121 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { ArrowRight, BrainCircuit, Bus, MapPin, Ruler } from "lucide-react";
-import { card, hoverLift } from "@/styles/common/mixins";
+import { Accessibility, ArrowRight, Baby, BarChart3, Megaphone, PersonStanding, Route, Target, UserRound } from "lucide-react";
+import { card } from "@/styles/common/mixins";
 import { fmt } from "@/utils/helpers/format";
 
-// Ana səhifədə MVP: kim üçün, necə işləyir, nəticə nədir
-const MvpFocus = ({ transit }) => {
-  const far = transit.scenarios.far;
-  const all = transit.scenarios.all;
-  const S = transit.summary;
-  const k = 10;
-  const cost = k * S.stop_cost;
-  const first = far.proposals.slice(0, 3);
+// Ana səhifə: Problem → Həll → Hədəf (inclusive_access.json, SmartFlow inteqrasiyası)
+const PROF = [
+  ["adult", "Orta piyada", PersonStanding],
+  ["elderly", "Yaşlı", UserRound],
+  ["wheel", "Əlil arabası", Accessibility],
+  ["stroller", "Uşaq arabalı valideyn", Baby],
+];
+
+const MvpFocus = ({ inc }) => {
+  const P = inc.profiles;
+  const G = inc.groups;
+  const S = inc.scenarios;
+  const base = S[0].wheel;
+  const last = S[S.length - 1].wheel;
+  const yas = inc.rayons.find((r) => r.rayon === "Yasamal");
+  const qar = inc.rayons.find((r) => r.rayon === "Qaradağ");
   return (
     <Wrap>
-      <Steps>
-        <li>
-          <Ruler size={20} />
-          <b>1. Ölçür</b>
-          <span>
-            {fmt(S.pop_total)} sakinin hər məhəllə blokundan ən yaxın avtobus və metro dayanacağına ({fmt(S.stops_n)} nöqtə) real piyada yolu, 420 min qovşaqlı şəbəkədə.
-          </span>
-        </li>
-        <li>
-          <BrainCircuit size={20} />
-          <b>2. Seçir</b>
-          <span>
-            AI optimallaşdırma {S.routes_n} mövcud marşrutun üzərində {fmt(S.candidates_n)} nöqtəni yoxlayır və hər dəfə ən çox insanı 5 dəqiqəlik məsafəyə gətirən yeri seçir.
-          </span>
-        </li>
-        <li>
-          <Bus size={20} />
-          <b>3. Təklif edir</b>
-          <span>Hər dayanacaq üçün: hansı marşrut, hansı məhəllə, neçə insan, nə qədər xərc. Yeni avtobus və yeni marşrut lazım deyil.</span>
-        </li>
-      </Steps>
-
-      <Result>
-        <div className="big">
-          <span>{k} yeni dayanacaq</span>
-          <b>+{fmt(far.curve[k])} insan</b>
-          <em>
-            dayanacağa 10 dəqiqədən çox yeriyənlərdən 5 dəqiqəlik məsafəyə düşür · {fmt(cost)} ₼ · nəfərə {(cost / far.curve[k]).toFixed(1)} ₼ · gündə {fmt(Math.round(far.saved[k] / 60))} saat qənaət
-          </em>
-        </div>
-        <div>
-          <span>Bütün şəhər ssenarisi</span>
-          <b>+{fmt(all.curve[k])}</b>
-          <em>insan, nəfərə {(cost / all.curve[k]).toFixed(1)} ₼</em>
-        </div>
-      </Result>
-
-      <Firsts>
-        {first.map((p) => (
-          <li key={p.k}>
-            <MapPin size={16} />
-            <div>
-              <b>
-                {p.k}. {p.zone}
-              </b>
+      <Block>
+        <h3>
+          <BarChart3 size={18} /> Problem: eyni şəhər, fərqli imkan
+        </h3>
+        <p>10 dəqiqədə 5 gündəlik xidmətin hamısına (dayanacaq, aptek, səhiyyə, ərzaq, park) çatan əhali payı, profil üzrə:</p>
+        <Bars>
+          {PROF.map(([k, label, Icon]) => (
+            <li key={k}>
               <span>
-                {p.rayon} · marşrut {p.routes.join(", ")}
+                <Icon size={15} /> {label}
               </span>
-              <em>
-                {fmt(p.walk_before_m)} m → ≤ 400 m · +{fmt(p.gain)} insan
-              </em>
-            </div>
+              <div>
+                <i style={{ width: `${(P[k].full / P.adult.full) * 100}%` }} className={k === "adult" ? "ref" : ""} />
+              </div>
+              <b>{P[k].full}%</b>
+            </li>
+          ))}
+        </Bars>
+        <Facts>
+          <li>
+            <b>{P.wheel.none}%</b> əlil arabası istifadəçisi heç bir gündəlik xidmətə 10 dəqiqədə çatmır
           </li>
-        ))}
-        <CTA as={Link} to="/dayanacaq">
-          Bütün təkliflər və simulyator <ArrowRight size={16} />
+          <li>
+            <b>Mərkəzdə maneə:</b> Yasamalda orta piyada {yas.adult}%, əlil arabası {yas.wheel}% ({inc.barriers.underpasses} yeraltı keçid)
+          </li>
+          <li>
+            <b>Periferiyada məsafə:</b> Qaradağda hamı üçün {qar.wheel}–{qar.adult}%
+          </li>
+          <li>
+            <b>{fmt(G.children.risky_school)}</b> uşağın ən yaxın məktəbi riskli yol mühitindədir
+          </li>
+        </Facts>
+      </Block>
+
+      <Block>
+        <h3>
+          <Route size={18} /> Həll: üç hissə, bir sistem
+        </h3>
+        <Steps>
+          <li>
+            <b>1. SmartUrban — ölçür</b>
+            <span>2 685 məhəllə blokunda 4 profil üçün 10 dəqiqəlik çatım; maneələr (yeraltı keçid, yamac), həssas qruplar, prioritet zonalar və tədbir paketləri.</span>
+            <Link to="/planlama?addim=3">Analiz →</Link>
+          </li>
+          <li>
+            <b>2. SmartFlow × SmartUrban — yol göstərir</b>
+            <span>SmartFlow-un marşrutları sakinin profili ilə yoxlanır: pilləkən, dik yamac, liftsiz metro və real vaxt göstərilir, maneəsiz variant önə çıxır.</span>
+            <Link to="/marsrut">Marşrut →</Link>
+          </li>
+          <li>
+            <b>3. AYNA paneli — bildiriş → qərar</b>
+            <span>
+              <Megaphone size={13} /> Sakin maneəni bir kliklə bildirir; bildiriş AYNA-nın panelinə düşür, SmartUrban prioritet zonaları və tədbir siyahısını yeniləyir.
+            </span>
+            <Link to="/bolgeleme">Tədbirlər →</Link>
+          </li>
+        </Steps>
+      </Block>
+
+      <Block>
+        <h3>
+          <Target size={18} /> Hədəf: ölçülə bilən nəticə
+        </h3>
+        <p>Ssenarilər eyni modeldə hesablanıb (əlil arabası profili, 10 dəqiqədə 5 xidmət):</p>
+        <Ladder>
+          {S.map((s, i) => (
+            <li key={s.key}>
+              <em>{i === 0 ? "İndi" : `Addım ${i}`}</em>
+              <span>{s.name}</span>
+              <b>{s.wheel.full}%</b>
+              <small>{fmt(s.wheel.disabled_ok)} əlilliyi olan şəxs</small>
+            </li>
+          ))}
+        </Ladder>
+        <Goal>
+          <li>
+            Əlil arabası üçün tam səbət: <b>{base.full}% → {last.full}%</b> (+{fmt(last.disabled_ok - base.disabled_ok)} əlilliyi olan, +{fmt(S[S.length - 1].elderly.elderly_ok - S[0].elderly.elderly_ok)} yaşlı)
+          </li>
+          <li>
+            Uşaq arabalı valideyn: <b>
+              {S[0].stroller.full}% → {S[S.length - 1].stroller.full}%
+            </b>
+          </li>
+          <li>
+            Aptekə 10 dəqiqə (yaşlı): <b>
+              {S[0].elderly.services.pharmacy}% → {S[S.length - 1].elderly.services.pharmacy}%
+            </b>
+          </li>
+          <li>Pilot: 3 zonada 12 ay, “əvvəl/sonra” sahə auditi və SmartFlow bildirişləri ilə yoxlanır.</li>
+        </Goal>
+        <CTA as={Link} to="/marsrut">
+          Marşrutu profilimlə yoxla <ArrowRight size={16} />
         </CTA>
-      </Firsts>
+      </Block>
     </Wrap>
   );
 };
@@ -79,106 +123,154 @@ const MvpFocus = ({ transit }) => {
 export default MvpFocus;
 
 const Wrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`;
-const Steps = styled.ol`
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
-  li {
-    ${card}
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  svg {
-    color: var(--accent);
-  }
-  b {
-    font-family: var(--font-bold);
-    font-size: 17px;
-  }
-  span {
-    font-size: 13.5px;
-    line-height: 1.5;
-    color: var(--text-2);
-  }
-  @media (max-width: 860px) {
+  @media (max-width: 1100px) {
     grid-template-columns: 1fr;
   }
 `;
-const Result = styled.div`
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-  gap: 12px;
-  > div {
-    ${card}
+const Block = styled.section`
+  ${card}
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-bold);
+    font-size: 17px;
+    svg {
+      color: var(--accent);
+    }
+  }
+  > p {
+    font-size: 13px;
+    color: var(--text-2);
+  }
+`;
+const Bars = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  li {
+    display: grid;
+    grid-template-columns: 150px 1fr 48px;
+    gap: 8px;
+    align-items: center;
+    font-size: 13px;
+  }
+  span {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+  }
+  div {
+    height: 12px;
+    background: var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  i {
+    display: block;
+    height: 100%;
+    background: var(--critical);
+  }
+  i.ref {
+    background: var(--text-3);
+  }
+  b {
+    text-align: right;
+  }
+`;
+const Facts = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-2);
+  li {
+    padding-left: 10px;
+    border-left: 3px solid var(--line);
+  }
+  b {
+    color: var(--text);
+  }
+`;
+const Steps = styled.ol`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  li {
     display: flex;
     flex-direction: column;
     gap: 4px;
-  }
-  .big {
-    border-left: 4px solid var(--accent);
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
   }
   span {
     font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.5;
+  }
+  a {
+    font-size: 13px;
+    color: var(--accent);
+  }
+`;
+const Ladder = styled.ol`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  li {
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    column-gap: 8px;
+    align-items: center;
+    padding: 8px 10px;
+    border-radius: 12px;
+    background: var(--bg-secondary);
+  }
+  li:last-child {
+    background: color-mix(in srgb, var(--good) 14%, transparent);
+  }
+  em {
+    font-style: normal;
+    font-size: 11.5px;
     color: var(--text-3);
+    grid-row: span 2;
+  }
+  span {
+    font-size: 12.5px;
   }
   b {
     font-family: var(--font-bold);
-    font-size: clamp(26px, 4vw, 38px);
-    color: var(--accent);
+    font-size: 18px;
+    grid-row: span 2;
   }
-  div:not(.big) b {
-    font-size: 26px;
-    color: var(--text);
-  }
-  em {
-    font-style: normal;
-    font-size: 13.5px;
-    color: var(--text-2);
-  }
-  @media (max-width: 860px) {
-    grid-template-columns: 1fr;
+  small {
+    font-size: 11.5px;
+    color: var(--text-3);
   }
 `;
-const Firsts = styled.ul`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
-  li {
-    ${card}
-    display: flex;
-    gap: 10px;
-    padding: 14px 16px;
-  }
-  li > svg {
-    flex: none;
-    color: var(--accent);
-    margin-top: 2px;
-  }
-  div {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  span,
-  em {
-    font-size: 12.5px;
-    color: var(--text-2);
-    font-style: normal;
+const Goal = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  padding-left: 16px;
+  list-style: disc;
+  b {
+    color: var(--good);
   }
 `;
 const CTA = styled.a`
-  ${card}
-  ${hoverLift}
-  display: flex;
+  margin-top: auto;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
+  gap: 6px;
   font-family: var(--font-bold);
   color: var(--accent);
-  text-decoration: none;
 `;
