@@ -5,6 +5,9 @@ import { AlertTriangle, ArrowRight, Bus, Car, Database, FlaskConical, Footprints
 import { card, hoverLift } from "@/styles/common/mixins";
 import Container from "@/styles/common/Container";
 import PageIntro from "@/components/common/PageIntro";
+import LensStrip from "@/components/common/LensStrip";
+import LensTags from "@/components/common/LensTags";
+import { RULE_LENS } from "@/utils/mock/planning";
 import { Checklist } from "@/components/common/Illustrations";
 import SectionHeading from "@/components/common/SectionHeading";
 import PageMobilSafeArea from "@/components/common/PageMobilSafeArea";
@@ -136,6 +139,7 @@ const Policy = () => {
           steps={["Əvvəl tez nəticə verən 3 qaydaya baxın.", "Hər kartda: nə dəyişir və niyə lazımdır.", "Rəngli etiket qaydanın hansı problemə aid olduğunu göstərir."]}
           idea="Qısası: ölçürük → sınayırıq → işləyəni qayda edirik."
         />
+        <LensStrip page="/qaydalar" step={6} />
         <ZoneLink to="/bolgeleme">
           <b>Hər zona üçün ayrıca təkliflər</b>
           <span>Rayon qərar üçün çox böyükdür. Şəhəri 237 planlama zonasına böldük: hər zonanın öz problemləri və ona uyğun qaydaları var.</span>
@@ -196,6 +200,9 @@ const Policy = () => {
                         </>
                       )}
                     </dl>
+                    <LensRow>
+                      <LensTags ids={RULE_LENS[START[gi] + ri + 1]} />
+                    </LensRow>
                     {r.link && (
                       <More to={r.link[0]}>
                         {r.link[1]} <ArrowRight size={15} />
@@ -408,4 +415,8 @@ const Warn = styled.div`
     line-height: 1.55;
     color: var(--text-2);
   }
+`;
+
+const LensRow = styled.div`
+  margin-top: 10px;
 `;

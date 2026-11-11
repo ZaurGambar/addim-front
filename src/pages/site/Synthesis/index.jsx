@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import Container from "@/styles/common/Container";
 import PageIntro from "@/components/common/PageIntro";
+import LensStrip from "@/components/common/LensStrip";
+import { InclusivePriority } from "@/components/site/Planning/LensBrief";
 import { Hotspot } from "@/components/common/Illustrations";
 import SectionHeading from "@/components/common/SectionHeading";
 import PageMobilSafeArea from "@/components/common/PageMobilSafeArea";
@@ -49,6 +51,7 @@ const Synthesis = () => {
           steps={["Qırmızı yerlərdə problemlər toplanıb.", "Göy yerlərdə vəziyyət yaxşıdır.", "Siyahıda zonaya klikləyin: xəritədə onu görəcəksiniz."]}
           idea="Siyahıda 1-ci yerdə olan zona köməyin ilk lazım olduğu yerdir."
         />
+        <LensStrip page="/sintez" step={5} />
         {error && <ErrorText />}
         {loading && <MapSkeleton />}
         {!loading && !error && (
@@ -59,6 +62,7 @@ const Synthesis = () => {
               Dəyişənlər: sıxlıq, obyektlər, kəsişmələr, dalan küçə payı, səth temperaturu, NDVI, meyl, dayanacağa məsafə, magistral uzunluğu. k = 4–7 arasında ən yüksək silhouette ({S.silhouette[S.k]}) seçilib: mülayim ayrılma, tiplər arasında keçid zonaları var.
             </Note>
             <TypeCards summary={S} />
+            <InclusivePriority />
             <Two>
               <div>
                 <H2>Prioritet zonalar</H2>

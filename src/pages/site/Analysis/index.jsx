@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 import Container from "@/styles/common/Container";
 import PageIntro from "@/components/common/PageIntro";
+import LensStrip from "@/components/common/LensStrip";
+import { EquityBrief } from "@/components/site/Planning/LensBrief";
 import { MapLayers } from "@/components/common/Illustrations";
 import SectionHeading from "@/components/common/SectionHeading";
 import PageMobilSafeArea from "@/components/common/PageMobilSafeArea";
@@ -52,11 +54,13 @@ const Analysis = () => {
           steps={["Yuxarıdan bir mövzu seçin, məsələn “istilik”.", "Xəritədə rəng tündləşdikcə problem böyüyür.", "Aşağıdakı cədvəldə rayonları bir-biri ilə müqayisə edin."]}
           idea="Mərkəzdəki parklar şəhəri sərinləşdirir. Kənar rayonlar daha istidir."
         />
+        <LensStrip page="/analiz" step={3} />
         {error && <ErrorText />}
         {loading && <MapSkeleton />}
         {!loading && !error && (
           <>
             <BakuMap rayons={rayons.data} grid={grid.data} metric={metric} onMetricChange={setMetric} publicSpaces={publicSpaces.data} />
+            <EquityBrief />
             <ThemeCards analysis={analysis.data} onMetric={pickMetric} />
             <SubHead>
               <h2>Rayonların müqayisəsi</h2>

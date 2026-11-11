@@ -3,6 +3,7 @@ import { card } from "@/styles/common/mixins";
 import { Helmet } from "react-helmet-async";
 import Container from "@/styles/common/Container";
 import PageIntro from "@/components/common/PageIntro";
+import LensStrip from "@/components/common/LensStrip";
 import { Steps } from "@/components/common/Illustrations";
 import SectionHeading from "@/components/common/SectionHeading";
 import PageMobilSafeArea from "@/components/common/PageMobilSafeArea";
@@ -53,6 +54,7 @@ const Pilot = () => {
           answer="Fikri əvvəlcə kiçik bir yerdə sınayırıq. Model 3 yer seçib: insanı çox, piyada üçün rahatlığı az olan yerlər."
           steps={["Hər kartda bir pilot yer və orada nə ediləcəyi var.", "Peyk şəkli ilə 15 yer yoxlanıb: zebra var, yoxsa yox.", "Formanı doldurun: siz də yerdə yoxlaya bilərsiniz."]}
         />
+        <LensStrip page="/pilot" step={8} />
         {error && <ErrorText />}
         {loading && <CardGridSkeleton count={3} />}
         {!loading && !error && (

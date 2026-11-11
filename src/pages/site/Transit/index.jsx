@@ -3,11 +3,12 @@ import L from "leaflet";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { BrainCircuit, Bus, Clock, Info, MapPin, Thermometer, Users, Wallet } from "lucide-react";
+import { BrainCircuit, Bus, Clock, HeartHandshake, Info, MapPin, Users, Wallet } from "lucide-react";
 import Card from "@/components/common/Card";
 import Tabs from "@/components/common/Tabs";
 import Container from "@/styles/common/Container";
 import PageIntro from "@/components/common/PageIntro";
+import LensStrip from "@/components/common/LensStrip";
 import { MapLayers } from "@/components/common/Illustrations";
 import SectionHeading from "@/components/common/SectionHeading";
 import PageMobilSafeArea from "@/components/common/PageMobilSafeArea";
@@ -40,7 +41,8 @@ const Transit = () => {
     if (!sc) return null;
     const people = sc.curve[kk];
     const cost = kk * D.summary.stop_cost;
-    return { people, cost, perPerson: people ? cost / people : 0, hours: Math.round(sc.saved[kk] / 60) };
+    const hi = sc.proposals.slice(0, kk).reduce((a, p) => a + (p.hi_svi || 0), 0);
+    return { people, cost, perPerson: people ? cost / people : 0, hours: Math.round(sc.saved[kk] / 60), hi };
   }, [sc, kk, D]);
 
   return (
@@ -61,6 +63,7 @@ const Transit = () => {
           steps={["Ssenarini seçin: periferiya və ya bütün şəhər.", "Sürgünü çəkin: neçə insan 5 dəqiqəlik məsafəyə düşür, xərc nə qədərdir.", "Nömrəli nöqtəyə klikləyin: hansı marşrut, hansı məhəllə, əvvəl neçə metr idi."]}
           idea="Bir örtüklü dayanacaq təxminən 15 min ₼-dir və bir neçə həftəyə qurulur. Bu, şəhərin ən ucuz və ən tez ədalət alətidir."
         />
+        <LensStrip page="/dayanacaq" step={5} />
         {T.isError && <ErrorText />}
         {D && (
           <>
@@ -120,12 +123,21 @@ const Transit = () => {
                   <span>gündə qənaət olunan piyada vaxtı (gediş-dönüş)</span>
                 </li>
                 <li>
-                  <Thermometer size={18} />
-                  <b>{SCEN[scen].short}</b>
-                  <span>alqoritm yalnız bu insanları sayır</span>
+                  <HeartHandshake size={18} />
+                  <b>{fmt(res.hi)}</b>
+                  <span>
+                    onlardan həssas zonalarda (SVI ≥ 60) ·{" "}
+                    <Link to="/planlama?addim=5" style={{ color: "var(--accent)" }}>
+                      inklüziv baxış
+                    </Link>
+                  </span>
                 </li>
               </Kpis>
             )}
+            <Note>
+              Ssenari müqayisəsi: “bütün şəhər” daha çox insana çatır, amma faydanın demək olar ki hamısı yaxşı təmin olunmuş zonalara gedir. İlk 10 dayanacaqda “periferiya” ssenarisi həssas zonalara 57 dəfə çox fayda çatdırır (6 092 və 107 nəfər). Bu, səmərəlilik ilə ədalət arasındakı
+              seçimdir.
+            </Note>
             {sc && <Curve curve={sc.curve} k={kk} cost={D.summary.stop_cost} />}
             <TransitMap D={D} proposals={sc ? sc.proposals.slice(0, kk) : []} />
 

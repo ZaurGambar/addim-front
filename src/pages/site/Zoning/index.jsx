@@ -9,6 +9,9 @@ import Tabs from "@/components/common/Tabs";
 import Dropdown from "@/components/common/Dropdown";
 import Container from "@/styles/common/Container";
 import PageIntro from "@/components/common/PageIntro";
+import LensStrip from "@/components/common/LensStrip";
+import LensTags from "@/components/common/LensTags";
+import { SOL_LENS } from "@/utils/mock/planning";
 import { MapLayers } from "@/components/common/Illustrations";
 import SectionHeading from "@/components/common/SectionHeading";
 import PageMobilSafeArea from "@/components/common/PageMobilSafeArea";
@@ -104,6 +107,7 @@ const Zoning = () => {
           steps={["Zonaya klikləyin, sonra “Bu zonanın bloklarına baxın”.", "Bloka klikləyin: orada neçə insan yaşayır, piyadaya nə mane olur və nə etmək lazımdır.", "Aşağıda: 9 piyada həlli və onların zona proqramı, şəhər qaydası."]}
           idea="Blok insan miqyasıdır (keçid, kölgə, oturacaq). Zona 15 dəqiqəlik məhəllədir (proqram). Şəhər qayda və büdcə verir."
         />
+        <LensStrip page="/bolgeleme" step={6} />
         {(summary.isError || zones.isError) && <ErrorText />}
         {stats && (
           <Ladder>
@@ -161,6 +165,7 @@ const Zoning = () => {
                     <X.icon size={22} />
                     <h3>{v.title}</h3>
                     <p>{X.what}</p>
+                    <LensTags ids={SOL_LENS[k]} />
                     <dl>
                       <dt>Blok</dt>
                       <dd>

@@ -6,7 +6,7 @@
    namizədlər mövcud avtobus marşrutlarının üzərindədir (yeni marşrut tələb etmir), hər 150 m-də bir.
    Acgöz alqoritm hər addımda 400 m-dən (≈ 5 dəq) uzaqda yaşayan ən çox insanı 5 dəqiqəlik məsafəyə
    gətirən nöqtəni seçir; submodulyar funksiya üçün nəticə optimalın ən azı (1 − 1/e) ≈ 63%-idir.
-   İki ssenari: "all" (5 dəq-dən uzaq hər kəs) və "far" (yalnız 10 dəq-dən çox yeriyənlər, periferiya fokusu).
+   Ssenarilər: "inc" (inklüziv: "all" + zonanın sosial zəiflik indeksi ilə çəki), "all" (5 dəq-dən uzaq hər kəs) və "far" (yalnız 10 dəq-dən çox yeriyənlər, periferiya fokusu).
    Qənaət: gündə gediş-dönüş üzrə (köhnə məsafə − 400 m) / 80 m/dəq × 2, konservativ.
 3) Marşrutdan da uzaq qalan məhəllələr: yeni marşrut və ya mikroavtobus (feeder) lazım olan zonalar.
 
@@ -141,19 +141,30 @@ print("faydalı namizəd:", len(cover))
 # "all": 5 dəqiqədən uzaq hər kəs; "far": yalnız 10 dəqiqədən çox yeriyənlər (periferiya fokusu)
 cover_all = cover
 
-def greedy(eligible):
+# İnklüziv ssenari: zonanın sosial zəiflik indeksi (planning_lens.py) ilə çəkili; əvvəlcə planning_lens.py işlədilməlidir
+svi = {}
+lens_path = DATA / "planning_lens.json"
+if lens_path.exists():
+    svi = {z["rank"]: z["svi"] for z in json.load(open(lens_path))["zones"]}
+w_inc = lambda i: 1 + svi.get(blocks[i]["zone"], 0) / 100  # noqa: E731
+
+
+def greedy(eligible, weight=None):
+    """weight: blok indeksi → çəki (inklüziv ssenari: 1 + SVI/100). Seçim çəkili, hesabat real insanla."""
+    wt = weight or (lambda i: 1.0)
     pool = {n: c & eligible for n, c in cover_all.items()}
     pool = {n: c for n, c in pool.items() if c}
     covered, chosen, curve, saved = set(), [], [0], [0]
     for k in range(K_MAX):
         best, gain = None, 0
         for node, cov in pool.items():
-            g = sum(blocks[i]["pop"] for i in cov - covered)
+            g = sum(blocks[i]["pop"] * wt(i) for i in cov - covered)
             if g > gain:
                 best, gain = node, g
         if not best or gain < 50:
             break
         new = pool.pop(best) - covered
+        gain = sum(blocks[i]["pop"] for i in new)
         covered |= new
         top = max(new, key=lambda i: blocks[i]["pop"])
         zn, _ = zone_name.get(blocks[top]["zone"], ("", blocks[top]["rayon"]))
@@ -164,6 +175,7 @@ def greedy(eligible):
             "k": k + 1, "lon": round(best[0], 5), "lat": round(best[1], 5), "gain": round(gain),
             "routes": sorted(cand_routes[best], key=lambda s: (len(s), s))[:6], "rayon": blocks[top]["rayon"], "zone": zn,
             "cover": sorted(blocks[i]["bid"] for i in new), "walk_before_m": round(before), "min_saved_day": round(mins),
+            "hi_svi": round(sum(blocks[i]["pop"] for i in new if svi.get(blocks[i]["zone"], 0) >= 60)),
         })
         curve.append(curve[-1] + round(gain))
         saved.append(saved[-1] + round(mins))
@@ -173,9 +185,12 @@ def greedy(eligible):
 elig_all = {i for i, b in enumerate(blocks) if b["walk"] > WALK5}
 elig_far = {i for i, b in enumerate(blocks) if b["walk"] > WALK10}
 scen = {}
-for key, el in (("all", elig_all), ("far", elig_far)):
-    ch, cv, sv, cov = greedy(el)
-    scen[key] = {"proposals": ch, "curve": cv, "saved": sv}
+runs = [("all", elig_all, None), ("far", elig_far, None)] + ([("inc", elig_all, w_inc)] if svi else [])
+for key, el, wf in runs:
+    ch, cv, sv, cov = greedy(el, wf)
+    hi = sum(blocks[i]["pop"] for i in cov if svi.get(blocks[i]["zone"], 0) >= 60)
+    tot = sum(blocks[i]["pop"] for i in cov)
+    scen[key] = {"proposals": ch, "curve": cv, "saved": sv, "hi_svi_pct": round(100 * hi / tot, 1) if tot and svi else None}
     print(key, "seçilən:", len(ch), "əhatə:", cv[-1], "dəqiqə/gün:", sv[-1])
 # "all" ssenarisinin bütün dayanacaqlarından sonra da 10 dəqiqədən uzaq qalan bloklar
 covered_bids = {x for c in scen["all"]["proposals"] for x in c["cover"]}
