@@ -5,35 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>SmartUrban · Business Model Canvas</title>
 <style>
-  @page { size: A4 landscape; margin: 8mm; }
+  @page { size: A4 landscape; margin: 7mm; }
   :root { --ink: #1b2a3a; --muted: #4a5b6c; --line: #2f5d8a; --head: #e7f0f7; --accent: #1f6fb2; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: "Helvetica Neue", Arial, sans-serif; color: var(--ink); background: #fff; padding: 10px; }
-  header { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 8px; }
-  h1 { font-size: 22px; letter-spacing: .02em; }
-  .sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .meta { font-size: 11.5px; line-height: 1.6; text-align: left; min-width: 330px; }
-  .meta b { display: inline-block; width: 92px; }
-  .meta span { border-bottom: 1px solid #999; display: inline-block; min-width: 230px; }
-  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-  .box { border: 1.4px solid var(--line); border-radius: 8px; overflow: hidden; min-height: 168px; }
-  .box h2 { font-size: 12.5px; color: var(--accent); background: var(--head); padding: 4px 8px; }
-  .box .q { font-size: 9px; color: var(--muted); padding: 3px 8px 0; font-style: italic; }
-  .box ul { padding: 3px 8px 6px 20px; font-size: 9.6px; line-height: 1.38; }
-  .box li { margin-top: 2px; }
-  .box p { font-size: 9.6px; line-height: 1.38; padding: 3px 8px 0; }
+  body { font-family: "Helvetica Neue", Arial, sans-serif; color: var(--ink); background: #fff; padding: 8px; }
+  header { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 6px; }
+  h1 { font-size: 21px; letter-spacing: .02em; }
+  .sub { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+  .meta { font-size: 11px; line-height: 1.6; min-width: 380px; }
+  .meta b { display: inline-block; width: 90px; }
+  .meta span { border-bottom: 1px solid #999; display: inline-block; min-width: 285px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+  .box { border: 1.4px solid var(--line); border-radius: 8px; overflow: hidden; min-height: 172px; }
+  .box h2 { font-size: 12px; color: var(--accent); background: var(--head); padding: 3px 8px; }
+  .box .q { font-size: 8.6px; color: var(--muted); padding: 2px 8px 0; font-style: italic; }
+  .box ul { padding: 2px 8px 5px 18px; font-size: 9.1px; line-height: 1.34; }
+  .box li { margin-top: 1.5px; }
+  .box p { font-size: 9.1px; line-height: 1.34; padding: 2px 8px 0; }
   b.n { color: var(--accent); }
-  footer { font-size: 8.5px; color: var(--muted); margin-top: 5px; }
+  footer { font-size: 8px; color: var(--muted); margin-top: 4px; }
 </style>
 </head>
 <body>
 <header>
   <div>
     <h1>BUSINESS MODEL CANVAS — SIMPLE</h1>
-    <div class="sub">“İnsanyönümlü şəhərlər” hakatonu | Sadələşdirilmiş biznes modeli · Mövzu: Hər kəs üçün şəhər</div>
+    <div class="sub">“İnsanyönümlü şəhərlər” hakatonu | Sadələşdirilmiş biznes modeli · Mövzu: Hər kəs üçün şəhər (inklüzivlik və əlçatanlıq)</div>
   </div>
   <div class="meta">
-    <div><b>Layihənin adı:</b> <span>SmartUrban — Dayanacağa 5 dəqiqə</span></div>
+    <div><b>Layihənin adı:</b> <span>SmartUrban — Hər kəs üçün 10 dəqiqə</span></div>
     <div><b>Komanda:</b> <span>&nbsp;</span></div>
   </div>
 </header>
@@ -42,12 +42,11 @@
   <section class="box">
     <h2>1. Problem</h2>
     <div class="q">Hansı şəhər problemini həll edirik? Niyə vacibdir?</div>
-    <p>Bakıda ictimai nəqliyyata çatım ədalətsiz paylanıb: mərkəzdə dayanacaq hər küncdədir, qəsəbədə insan ona 1–3 km, istidə, səkisiz yolla yeriyir.</p>
+    <p>Bakı orta yaşlı, sağlam piyada üçün planlanıb. Yaşlı, əlil arabası istifadəçisi və uşaq arabalı valideyn üçün eyni şəhər iki dəfə kiçikdir: onlar yavaş yeriyir, yeraltı keçidin pilləkəni və dik yamac yolu bağlayır.</p>
     <ul>
-      <li>Sakinlərin yalnız <b class="n">43%</b>-i dayanacağa 5 dəqiqəyə çatır; <b class="n">525 min</b> nəfər 10 dəqiqədən çox yeriyir.</li>
-      <li>Rayonlar arası uçurum <b class="n">6 dəfə</b>: Nəsimi 76%, Qaradağ 12%.</li>
-      <li>Ən pis təmin olunmuş 20% metroya 37, aptekə 16 dəfə uzaqdır; yayda səth 43°C.</li>
-      <li>Çox vaxt avtobus evin yanından keçir, amma orada dayanmır.</li>
+      <li>10 dəqiqədə 5 gündəlik xidmət (dayanacaq, aptek, səhiyyə, ərzaq, park): orta piyada <b class="n">31%</b>, yaşlı <b class="n">18%</b>, əlil arabası <b class="n">15.5%</b>, uşaq arabalı valideyn <b class="n">12%</b>.</li>
+      <li>Əlil arabası istifadəçilərinin <b class="n">30%</b>-i bu xidmətlərin heç birinə 10 dəqiqədə çatmır.</li>
+      <li><b>Mərkəzdə maneə:</b> Yasamalda orta piyada 62%, əlil arabası 29% (83 yeraltı keçid). <b>Periferiyada məsafə:</b> Qaradağda hamı üçün 2–3%.</li>
     </ul>
   </section>
 
@@ -55,9 +54,10 @@
     <h2>2. Hədəf auditoriya</h2>
     <div class="q">Problem kimlərə təsir edir? Həll kimlər üçündür?</div>
     <ul>
-      <li><b>Faydalananlar:</b> periferiya qəsəbələrinin sakinləri (Sabunçu, Xəzər, Qaradağ, Suraxanı, Binəqədi), ilk növbədə yaşlılar, məktəbə gedən uşaqlar, uşaq arabalı valideynlər, əlilliyi olan şəxslər (96 min).</li>
-      <li><b>İstifadəçilər (müştəri):</b> Bakı Nəqliyyat Agentliyi, BakuBus, rayon icra hakimiyyətləri, şəhərsalma qurumları.</li>
-      <li><b>Sakinlər</b> həm də data mənbəyidir: “burada dayanacaq lazımdır” bildirişi.</li>
+      <li><b>Yaşlılar</b> (~143 min): 117 min tam səbətə çatmır, <b class="n">103 min</b> aptekə 10 dəqiqədə çatmır.</li>
+      <li><b>Əlilliyi olan şəxslər</b> (96 min): <b class="n">82 min</b> tam səbətə çatmır, 42 min dayanacağa.</li>
+      <li><b>Uşaqlar və uşaq arabalı valideynlər</b> (~423 min uşaq): 247 min uşağın məktəbi 10 dəqiqədə deyil, <b class="n">113 min</b> uşağın ən yaxın məktəbi riskli yol mühitindədir; bağçaya arabayla 10 dəqiqə — yalnız 19%.</li>
+      <li><b>Müştəri:</b> icra hakimiyyətləri, Şəhərsalma Komitəsi, BNA, Əmək və Əhalinin Sosial Müdafiəsi Nazirliyi.</li>
     </ul>
   </section>
 
@@ -65,22 +65,22 @@
     <h2>3. Dəyər təklifi</h2>
     <div class="q">Hansı faydanı yaradacaq? Mövcud hallardan nə ilə fərqlənir?</div>
     <ul>
-      <li><b>Sakin üçün:</b> avtobusa 5 dəqiqə; 10 yeni dayanacaq → <b class="n">18 min</b> nəfər, gündə ~4 500 saat az piyada yolu.</li>
-      <li><b>Şəhər üçün:</b> nəfərə <b class="n">~8 ₼</b>; yeni avtobus və marşrut tələb etmir, həftələrlə qurulur.</li>
-      <li><b>Fərq:</b> qərar intuisiya ilə yox, hər evdən real piyada yolu ilə verilir; fayda kimə çatır — ayrıca ölçülür (inklüziv planlama).</li>
-      <li>Yalnız “ən çox insan” üçün seçim həssas zonalara 107 nəfər fayda verir, bizim periferiya fokusu — <b class="n">6 092</b> (57×).</li>
+      <li><b>Sakin üçün:</b> “mənim məhəlləm mənim üçün nə qədər əlçatandır?” — öz profili (yaşlı, əlil arabası, uşaq arabası) ilə marşrut və xidmətlər.</li>
+      <li><b>Şəhər üçün:</b> hər məhəllədə kim, hansı xidmətə, hansı maneə səbəbindən çata bilmir və hansı tədbir ən çox insanı qaytarır.</li>
+      <li><b>Fərq:</b> standart analiz “orta insan” üçün ölçür; SmartUrban hər qrup üçün ayrıca ölçür və bərabərsizliyi rəqəmlə göstərir (inklüziv planlama). Nəqliyyat, səhiyyə, ticarət, park və təhlükəsizliyi bir yerdə görür (kompleks planlama).</li>
+      <li>İlk 20 prioritet zona: <b class="n">288 min</b> insan, onlardan 86 min həssas qrup.</li>
     </ul>
   </section>
 
   <section class="box">
     <h2>4. Təklif olunan həll</h2>
     <div class="q">Problemi necə həll edəcəyik? Praktikada necə işləyəcək?</div>
-    <p><b>Ölç → seç → təklif et → sına → standart et.</b></p>
+    <p><b>Ölç → maneəni tap → tədbir seç → sakinlə sına → standart et.</b></p>
     <ul>
-      <li>Platforma 2,2 mln sakinin hər məhəllə blokundan 5 441 dayanacağa real piyada yolunu ölçür.</li>
-      <li>Planlayıcı rayon və büdcə seçir: alqoritm mövcud 243 marşrut üzərində yeni dayanacaq yerlərini sıralayır, hər biri üçün marşrut, insan sayı, xərc, əsaslandırma.</li>
-      <li>Planlayıcı təsdiq / rədd edir; marşrutdan uzaq məhəllələr (Şubanı, Qobustan) üçün mikroavtobus təklifi.</li>
-      <li>3 pilot zonada sınaq, “əvvəl/sonra” ölçmə, sonra “nəqliyyat əlçatanlığı standartı”.</li>
+      <li><b>Əlçatanlıq xəritəsi:</b> 2 685 blokda 4 profil üçün 10 dəqiqəlik çatım.</li>
+      <li><b>Tədbir paketləri</b> zona üzrə: yeraltı keçid yanında yerüstü zebra və ya lift, pandus və məhəccər, əlçatan dayanacaq, birinci mərtəbədə aptek və səhiyyə məntəqəsi, kölgə və oturacaq, təhlükəsiz məktəb yolu.</li>
+      <li><b>Sakin bildirişi:</b> qırıq pandus, səkidə maşın, işləməyən lift — xəritəyə düşür.</li>
+      <li>3 pilot zonada sahə auditi, 6–12 aylıq sınaq, “əvvəl/sonra” ölçmə → şəhər standartı.</li>
     </ul>
   </section>
 
@@ -88,9 +88,9 @@
     <h2>5. AI və texnologiya</h2>
     <div class="q">Hansı AI alətlərindən istifadə olunacaq? AI həllə necə töhfə verəcək?</div>
     <ul>
-      <li><b>İşləyir:</b> maksimal əhatə optimallaşdırması (MCLP), 420 min qovşaqlı piyada şəbəkəsində Dijkstra; sosial zəiflik indeksi (SVI); məkan analitikası (Getis-Ord Gi*, k-means, SKATER); Monte Carlo həssaslıq (ρ 0.989); peyk datası (Landsat).</li>
-      <li><b>Növbəti:</b> sakin müraciətlərinin LLM ilə təsnifatı (Azərbaycan dili); kompüter görmə ilə səki və pandus auditi; alqoritmik ədalət auditi.</li>
-      <li>AI təklif edir, qərarı insan verir.</li>
+      <li><b>İşləyir:</b> 420 min qovşaqlı piyada şəbəkəsində profil üzrə marşrutlama (sürət, yamac, pilləkən); sosial zəiflik indeksi; ədalət yönümlü optimallaşdırma (məs. yeni dayanacaqların yeri); məkan analitikası (Gi*, k-means, SKATER); peyk datası (Landsat, SRTM).</li>
+      <li><b>Növbəti:</b> kompüter görmə ilə pandus, səki eni, maneə auditi (telefon şəkli); sakin müraciətlərinin LLM ilə təsnifatı (Azərbaycan dili); alqoritmik ədalət auditi.</li>
+      <li>AI təklif edir, qərarı insan verir; hər təklifin hansı qrupa çatdığı göstərilir.</li>
     </ul>
   </section>
 
@@ -98,9 +98,9 @@
     <h2>6. Əsas tərəfdaşlar</h2>
     <div class="q">Hansı dövlət qurumları, şirkətlər və təşkilatlarla əməkdaşlıq lazımdır?</div>
     <ul>
-      <li><b>Dövlət:</b> Bakı Nəqliyyat Agentliyi, Bakı Şəhər İcra Hakimiyyəti və rayon icra hakimiyyətləri, Şəhərsalma və Arxitektura Komitəsi, Bakı Metropoliteni, DİN Dövlət Yol Polisi, Əmək və Əhalinin Sosial Müdafiəsi Nazirliyi, Elm və Təhsil Nazirliyi, DSK.</li>
-      <li><b>Şirkətlər:</b> BakuBus MMC, 2GIS, mobil operatorlar (anonim hərəkət datası).</li>
-      <li><b>Təşkilatlar:</b> Milli Süni İntellekt Mərkəzi, Gənclər Fondu, universitetlər, əlilliyi olan şəxslərin təşkilatları.</li>
+      <li><b>Dövlət:</b> Bakı Şəhər İcra Hakimiyyəti və rayon icra hakimiyyətləri, Şəhərsalma və Arxitektura Komitəsi, Əmək və Əhalinin Sosial Müdafiəsi Nazirliyi, Səhiyyə Nazirliyi, Elm və Təhsil Nazirliyi, Bakı Nəqliyyat Agentliyi, Bakı Metropoliteni, DİN Dövlət Yol Polisi, DSK.</li>
+      <li><b>Şirkətlər:</b> BakuBus, 2GIS (xidmət obyektləri), aptek şəbəkələri, developerlər.</li>
+      <li><b>Təşkilatlar:</b> əlilliyi olan şəxslərin və yaşlıların ictimai birlikləri, Milli Süni İntellekt Mərkəzi, Gənclər Fondu, universitetlər, könüllülər.</li>
     </ul>
   </section>
 
@@ -108,9 +108,9 @@
     <h2>7. Əsas resurslar</h2>
     <div class="q">Hansı texniki, insan və maliyyə resurslarına ehtiyac var?</div>
     <ul>
-      <li><b>Texniki:</b> açıq data (OSM, opendata.az, WorldPop, Landsat, SRTM), BakuBus marşrut və dayanacaq datası, veb platforma, bulud server.</li>
-      <li><b>İnsan:</b> şəhərsalmaçı, data/AI mütəxəssisi, frontend proqramçı, sahə auditorları və könüllülər.</li>
-      <li><b>Maliyyə:</b> pilot üçün qrant; ilk dayanacaqlar üçün qurumun büdcəsi.</li>
+      <li><b>Texniki:</b> açıq data (OSM, opendata.az, WorldPop, Landsat, SRTM), DSK əlillik və yaş datası, xidmət obyektləri bazası (2GIS), veb platforma, bulud server.</li>
+      <li><b>İnsan:</b> şəhərsalmaçı, data/AI mütəxəssisi, proqramçı, sahə auditorları; əlil arabası istifadəçiləri və yaşlılar test iştirakçısı kimi.</li>
+      <li><b>Maliyyə:</b> pilot və sahə auditi üçün qrant; tədbirlər üçün qurum büdcəsi.</li>
     </ul>
   </section>
 
@@ -119,7 +119,8 @@
     <div class="q">Layihənin hazırlanması və tətbiqi hansı xərcləri tələb edir?</div>
     <ul>
       <li><b>Hazırlıq:</b> MVP açıq data ilə qurulub, data xərci yoxdur; komanda əmək haqqı, server və hostinq.</li>
-      <li><b>Pilot:</b> sahə sayımı və əlçatanlıq auditi; 10 örtüklü dayanacaq ≈ <b class="n">150 000 ₼</b> (1 dayanacaq ≈ 15 000 ₼, ekspert təxmini).</li>
+      <li><b>Pilot:</b> 3 zonada sahə auditi (pandus, lift, səki eni, oturacaq), test iştirakçılarına kompensasiya.</li>
+      <li><b>Tədbirlər (qurum büdcəsi):</b> vahid xərclərlə hesablanır: yerüstü keçid, pandus və məhəccər, əlçatan dayanacaq (≈ 15 000 ₼), kölgə, oturacaq; rəqəmlər ekspert təxminidir, smeta ilə dəqiqləşir.</li>
       <li><b>Tətbiq:</b> qurumla inteqrasiya, illik data yenilənməsi, dəstək.</li>
     </ul>
   </section>
@@ -128,13 +129,13 @@
     <h2>9. Maliyyələşmə və davamlılıq</h2>
     <div class="q">Layihə necə maliyyələşdiriləcək? Uzunmüddətli fəaliyyət necə təmin olunacaq?</div>
     <ul>
-      <li><b>Əsas gəlir (B2G):</b> nəqliyyat agentliyi və icra hakimiyyətləri üçün illik platforma lisenziyası.</li>
-      <li><b>Əlavə (B2B):</b> developerlər və əmlak saytları üçün “dayanacağa neçə dəqiqə” API-si.</li>
-      <li><b>Başlanğıc:</b> Gənclər Fondu, İRİA və beynəlxalq donor qrantları.</li>
-      <li><b>Davamlılıq:</b> açıq data, hər il avtomatik yenilənmə və “əvvəl/sonra” hesabatı; model Gəncə, Sumqayıt və digər şəhərlərə köçürülür.</li>
+      <li><b>Əsas gəlir (B2G):</b> icra hakimiyyətləri və şəhərsalma qurumları üçün illik platforma lisenziyası; layihə üzrə “əlçatanlıq ekspertizası”.</li>
+      <li><b>Əlavə (B2B):</b> developerlər üçün əlçatanlıq hesabatı və “hər kəs üçün 10 dəqiqə” API-si.</li>
+      <li><b>Başlanğıc:</b> Gənclər Fondu, İRİA, beynəlxalq donor qrantları (inklüzivlik, əlillik, iqlim).</li>
+      <li><b>Davamlılıq:</b> açıq data, illik avtomatik yenilənmə, sakin bildirişləri ilə canlı xəritə; model digər şəhərlərə köçürülür.</li>
     </ul>
   </section>
 </div>
-<footer>Rəqəmlər SmartUrban platformasının hesablamalarıdır (OSM, opendata.az BakuBus, WorldPop → DSK 2024, Landsat 01.08.2026). Dayanacaq xərci ekspert təxminidir.</footer>
+<footer>Rəqəmlər SmartUrban hesablamalarıdır: OSM piyada şəbəkəsi, SRTM, opendata.az (BakuBus), WorldPop → DSK 2024, DSK əlillik 2026. Profil sürətləri tipik ədəbiyyat dəyərləridir; maneələr proksidir; OSM-də aptek və səhiyyə obyektləri natamamdır (real çatım bir qədər yüksək ola bilər).</footer>
 </body>
 </html>
