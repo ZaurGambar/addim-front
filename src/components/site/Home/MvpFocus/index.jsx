@@ -4,7 +4,7 @@ import { Accessibility, ArrowRight, Baby, BarChart3, Megaphone, PersonStanding, 
 import { card } from "@/styles/common/mixins";
 import { fmt } from "@/utils/helpers/format";
 
-// Ana səhifə: Problem → Həll → Hədəf (inclusive_access.json, SmartFlow inteqrasiyası)
+// Ana səhifə: Problem → Həll → Hədəf (inclusive_access.json, marşrut modulu)
 const PROF = [
   ["adult", "Orta piyada", PersonStanding],
   ["elderly", "Yaşlı", UserRound],
@@ -62,17 +62,17 @@ const MvpFocus = ({ inc }) => {
         </h3>
         <Steps>
           <li>
-            <b>1. SmartUrban — ölçür</b>
+            <b>1. SmartUrban Analiz — ölçür</b>
             <span>2 685 məhəllə blokunda 4 profil üçün 10 dəqiqəlik çatım; maneələr (yeraltı keçid, yamac), həssas qruplar, prioritet zonalar və tədbir paketləri.</span>
             <Link to="/planlama?addim=3">Analiz →</Link>
           </li>
           <li>
-            <b>2. SmartFlow × SmartUrban — yol göstərir</b>
-            <span>SmartFlow-un marşrutları sakinin profili ilə yoxlanır: pilləkən, dik yamac, liftsiz metro və real vaxt göstərilir, maneəsiz variant önə çıxır.</span>
+            <b>2. SmartUrban Marşrut — yol göstərir</b>
+            <span>Multimodal marşrutlar (avtobus, metro, piyada) sakinin profili ilə yoxlanır: pilləkən, dik yamac, liftsiz metro və real vaxt göstərilir, maneəsiz variant önə çıxır.</span>
             <Link to="/marsrut">Marşrut →</Link>
           </li>
           <li>
-            <b>3. AYNA paneli — bildiriş → qərar</b>
+            <b>3. SmartUrban Panel — bildiriş → qərar</b>
             <span>
               <Megaphone size={13} /> Sakin maneəni bir kliklə bildirir; bildiriş AYNA-nın panelinə düşür, SmartUrban prioritet zonaları və tədbir siyahısını yeniləyir.
             </span>
@@ -110,7 +110,7 @@ const MvpFocus = ({ inc }) => {
               {S[0].elderly.services.pharmacy}% → {S[S.length - 1].elderly.services.pharmacy}%
             </b>
           </li>
-          <li>Pilot: 3 zonada 12 ay, “əvvəl/sonra” sahə auditi və SmartFlow bildirişləri ilə yoxlanır.</li>
+          <li>Pilot: 3 zonada 12 ay, “əvvəl/sonra” sahə auditi və sakin bildirişləri ilə yoxlanır.</li>
         </Goal>
         <CTA as={Link} to="/marsrut">
           Marşrutu profilimlə yoxla <ArrowRight size={16} />

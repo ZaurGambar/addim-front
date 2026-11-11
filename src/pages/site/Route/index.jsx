@@ -17,9 +17,9 @@ import { useGet } from "@/utils/hooks/useCustomQuery";
 import { useLeafletMap } from "@/utils/hooks/useLeafletMap";
 import { ENDPOINTS } from "@/utils/constants/Endpoints";
 import { cssVar, fmt } from "@/utils/helpers/format";
-import { SF_PROFILE, deviceId, planJourney, searchPlaces, sendReport } from "@/utils/api/smartflow";
+import { SF_PROFILE, deviceId, planJourney, searchPlaces, sendReport } from "@/utils/api/routing";
 
-// SmartFlow marşrutu + SmartUrban əlçatanlıq yoxlaması: hər variant profilin sürəti və maneələrlə yenidən qiymətləndirilir
+// SmartUrban Marşrut: multimodal marşrut + əlçatanlıq yoxlaması: hər variant profilin sürəti və maneələrlə yenidən qiymətləndirilir
 const BOUNDS = [[40.33, 49.75], [40.47, 49.98]];
 const KX = 111320 * Math.cos((40.4 * Math.PI) / 180);
 const KY = 111320;
@@ -163,18 +163,18 @@ const RoutePage = () => {
     <Section>
       <Helmet>
         <title>Hər kəs üçün marşrut · SmartUrban Bakı</title>
-        <meta name="description" content="SmartFlow marşrutları SmartUrban əlçatanlıq yoxlaması ilə: yaşlı, əlil arabası və uşaq arabası üçün maneələr və real vaxt." />
+        <meta name="description" content="SmartUrban Marşrut: multimodal marşrutlar əlçatanlıq yoxlaması ilə: yaşlı, əlil arabası və uşaq arabası üçün maneələr və real vaxt." />
       </Helmet>
       <Container>
         <SectionHeading
-          eyebrow="SmartFlow × SmartUrban"
+          eyebrow="SmartUrban Marşrut"
           title="Hər kəs üçün marşrut"
-          lede="SmartFlow ən yaşıl, ən sürətli və ən ucuz yolu tapır. SmartUrban isə hər variantı sizin profilinizlə yoxlayır: yolda pilləkənli yeraltı keçid, dik yamac, liftsiz metro varmı, sizin sürətinizlə yol neçə dəqiqə çəkir. Maneəni görən sakin onu bir kliklə AYNA-nın panelinə göndərir."
+          lede="SmartUrban avtobus, metro və piyada ilə ən yaşıl, ən sürətli və ən ucuz yolu tapır və hər variantı sizin profilinizlə yoxlayır: yolda pilləkənli yeraltı keçid, dik yamac, liftsiz metro varmı, sizin sürətinizlə yol neçə dəqiqə çəkir. Maneəni görən sakin onu bir kliklə AYNA-nın panelinə göndərir."
         />
         <PageIntro
           art={<StepsArt />}
           answer="Haradan və hara getdiyinizi yazın, profilinizi seçin. Variantlar maneəsizdən maneəliyə sıralanır."
-          steps={["Başlanğıc və təyinat seçin, profili seçin.", "Variant kartında: real vaxt və yoldakı maneələr.", "Maneəni bildirin: SmartFlow vasitəsilə AYNA-ya düşür, SmartUrban prioritet xəritəsini yeniləyir."]}
+          steps={["Başlanğıc və təyinat seçin, profili seçin.", "Variant kartında: real vaxt və yoldakı maneələr.", "Maneəni bildirin: AYNA-nın panelinə düşür, SmartUrban prioritet xəritəsini yeniləyir."]}
           idea="Eyni yol orta piyada üçün 9 dəqiqə, əlil arabası üçün keçilməz ola bilər. Marşrut tətbiqləri bunu adətən göstərmir."
         />
         <LensStrip page="/marsrut" step={3} />
@@ -193,7 +193,7 @@ const RoutePage = () => {
             {state.loading ? "Axtarılır…" : "Yol tap"}
           </Go>
         </Form>
-        {state.error && <Err>SmartFlow cavab vermədi: {state.error}</Err>}
+        {state.error && <Err>Marşrut xidməti cavab vermədi: {state.error}</Err>}
         {state.data && (
           <MapLayout
             map={<RouteMap option={cur?.o} audit={cur?.a} from={state.data.from || from} to={state.data.to || to} />}
@@ -207,7 +207,7 @@ const RoutePage = () => {
                       <em>{Math.round(a.minutes)} dəq</em>
                     </header>
                     <small>
-                      SmartFlow: {Math.round(o.minutes)} dəq (orta piyada) · {PROFILES.find((p) => p.id === state.key)?.label}: {Math.round(a.minutes)} dəq · piyada {fmt(Math.round(a.walkM))} m
+                      Standart: {Math.round(o.minutes)} dəq (orta piyada) · {PROFILES.find((p) => p.id === state.key)?.label}: {Math.round(a.minutes)} dəq · piyada {fmt(Math.round(a.walkM))} m
                     </small>
                     {a.issues.length ? (
                       <ul>
@@ -224,7 +224,7 @@ const RoutePage = () => {
                 ))}
                 <Card>
                   <Small>
-                    <Footprints size={13} /> Yoxlama: SmartFlow-un piyada hissələri {B ? B.underpasses.length : "…"} yeraltı keçid və {B ? fmt(B.steep.length) : "…"} dik (&gt; 8%) şəbəkə nöqtəsi ilə müqayisə olunur. Pandus və lift datası yoxdur: bildirişlər bu boşluğu doldurur.
+                    <Footprints size={13} /> Yoxlama: marşrutun piyada hissələri {B ? B.underpasses.length : "…"} yeraltı keçid və {B ? fmt(B.steep.length) : "…"} dik (&gt; 8%) şəbəkə nöqtəsi ilə müqayisə olunur. Pandus və lift datası yoxdur: bildirişlər bu boşluğu doldurur.
                   </Small>
                   <ReportBtn type="button" onClick={() => setReport({ point: state.data.to || to })}>
                     <Megaphone size={16} /> Maneəni bildir
@@ -236,7 +236,7 @@ const RoutePage = () => {
         )}
         {report && <ReportBox point={report.point} profile={state.key || profile} onClose={() => setReport(null)} />}
         <Note>
-          Marşrut mühərriki: SmartFlow (AYNA açıq datası, Bakı Metropoliteni, OSM). Əlçatanlıq yoxlaması və profillər: SmartUrban. Şəhər miqyasında nəticələr: <Link to="/planlama?addim=3">İnklüziv planlama</Link>.
+          Data: AYNA açıq datası, Bakı Metropoliteni, OpenStreetMap. Şəhər miqyasında nəticələr: <Link to="/planlama?addim=3">İnklüziv planlama</Link>.
         </Note>
       </Container>
       <PageMobilSafeArea />
@@ -247,7 +247,7 @@ const RoutePage = () => {
 export default RoutePage;
 
 const RouteMap = ({ option, audit: a, from, to }) => {
-  const { ref, map, renderer } = useLeafletMap({ bounds: BOUNDS, maxZoom: 18, attribution: "© OpenStreetMap · SmartFlow" });
+  const { ref, map, renderer } = useLeafletMap({ bounds: BOUNDS, maxZoom: 18, attribution: "© OpenStreetMap · SmartUrban" });
   const fitted = useRef(null);
   useEffect(() => {
     if (!map || !option) return undefined;
@@ -288,7 +288,7 @@ const ReportBox = ({ point, profile, onClose }) => {
     <Report>
       <h3>Burada nə maneədir?</h3>
       <p>
-        Bildiriş SmartFlow vasitəsilə AYNA-nın monitorinq panelinə düşür (nöqtə: {point.name || `${point.lat.toFixed(4)}, ${point.lon.toFixed(4)}`}). Şəxsi məlumat göndərilmir.
+        Bildiriş AYNA-nın monitorinq panelinə düşür (nöqtə: {point.name || `${point.lat.toFixed(4)}, ${point.lon.toFixed(4)}`}). Şəxsi məlumat göndərilmir.
       </p>
       <div className="grid" role="radiogroup" aria-label="Maneə növü">
         {REPORT_TYPES.map((t) => (

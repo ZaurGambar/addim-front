@@ -28,7 +28,7 @@ const Home = () => {
     <Section>
       <Helmet>
         <title>SmartUrban Bakı · Hər kəs üçün 10 dəqiqə</title>
-        <meta name="description" content="İnklüziv əlçatanlıq platforması: yaşlı, əlil arabası və uşaq arabası üçün Bakının 10 dəqiqəlik məhəlləsi; SmartFlow marşrutlarının əlçatanlıq yoxlaması." />
+        <meta name="description" content="İnklüziv əlçatanlıq platforması: yaşlı, əlil arabası və uşaq arabası üçün Bakının 10 dəqiqəlik məhəlləsi; marşrutların profil üzrə əlçatanlıq yoxlaması." />
       </Helmet>
       <Container>
         {error && <ErrorText />}
@@ -39,7 +39,7 @@ const Home = () => {
             <Block>
               <SectionHeading
                 as="h2"
-                eyebrow="MVP · Hər kəs üçün 10 dəqiqə · SmartFlow inteqrasiyası"
+                eyebrow="MVP · Hər kəs üçün 10 dəqiqə"
                 title="Problem → həll → hədəf"
                 lede="Məqsəd: yaşlı, əlil arabası istifadəçisi və uşaq arabalı valideyn də gündəlik xidmətlərə orta piyada qədər asan çatsın. Rəqəmlər SmartUrban modelinin hesablamasıdır."
               />

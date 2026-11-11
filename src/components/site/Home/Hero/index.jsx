@@ -52,7 +52,7 @@ const Hero = ({ inc, onHelp }) => {
         <div>
           <Thesis>
             Bakı orta yaşlı, sağlam piyada üçün planlanıb. Yaşlı, əlil arabası istifadəçisi və uşaq arabalı valideyn üçün eyni şəhər iki dəfə kiçikdir: onlar yavaş yeriyir, yeraltı keçidin pilləkəni və dik yamac yolu bağlayır. SmartUrban bunu hər məhəllə üçün ölçür,
-            SmartFlow marşrutlarını hər profil üçün yoxlayır və maneələri aradan qaldırmağın ən faydalı ardıcıllığını göstərir.
+            marşrutları hər profil üçün yoxlayır və maneələri aradan qaldırmağın ən faydalı ardıcıllığını göstərir.
           </Thesis>
           <Actions>
             <Button as={Link} to="/marsrut" size="lg">
