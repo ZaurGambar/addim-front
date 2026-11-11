@@ -12,7 +12,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((config) => {
   // Statik data: hər deploy-da yeni ünvan, brauzer keşi köhnə faylı qaytarmır
-  if (config.url?.startsWith("/data/")) {
+  if (config.url?.includes("/data/")) {
     config.params = { ...config.params, v: __BUILD_ID__ };
   }
   const token = Cookies.get("accessToken");

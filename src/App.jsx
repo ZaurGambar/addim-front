@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
 import { ROUTES } from "@/routes/routes";
+import { ROUTER_BASENAME } from "@/utils/embed";
 import { ModalProvider } from "@/contexts/ModalContext";
 import ModalRoot from "@/components/common/ModalRoot";
 import ConfirmModal from "@/components/common/Modals/ConfirmModal";
@@ -18,7 +19,7 @@ const queryClient = new QueryClient({
   },
 });
 
-const router = createBrowserRouter(ROUTES);
+const router = createBrowserRouter(ROUTES, { basename: ROUTER_BASENAME });
 
 const MODAL_REGISTRY = {
   ConfirmModal,

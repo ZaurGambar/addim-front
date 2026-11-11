@@ -7,6 +7,7 @@ import MobileTab from "@/layouts/site/MobileTab";
 import SafeArea from "@/components/common/SafeArea";
 import { NAV_ITEMS, pagesWithHeaderAndTab, pagesWithHeaderWebBackMobile, pagesWithOnlyBack } from "@/utils/constants/ContractConstants";
 import { useMediaQuery } from "react-responsive";
+import { EMBED } from "@/utils/embed";
 
 // "/blog/:id" kimi pattern-ləri regex-ə çevirir
 const toRegex = (pattern) => new RegExp("^" + pattern.replace(/:[^/]+/g, "[^/]+").replace(/\/$/, "") + "/?$");
@@ -25,6 +26,17 @@ const SiteRoot = () => {
   let top = <Header />;
   if (isMobile && (onlyBack || webHeaderMobileBack)) top = <BackButtonHeader title={title} />;
 
+  // SmartUrban admin daxilində: yalnız səhifənin özü
+  if (EMBED) {
+    return (
+      <Embedded>
+        <main key={pathname}>
+          <Outlet />
+        </main>
+      </Embedded>
+    );
+  }
+
   return (
     <>
       {top}
@@ -39,6 +51,12 @@ const SiteRoot = () => {
     </>
   );
 };
+
+const Embedded = styled.div`
+  flex: 1;
+  min-width: 0;
+  padding-top: 8px;
+`;
 
 const Shell = styled.div`
   flex: 1;
