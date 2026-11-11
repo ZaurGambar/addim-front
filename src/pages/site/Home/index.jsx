@@ -6,6 +6,7 @@ import SectionHeading from "@/components/common/SectionHeading";
 import PageMobilSafeArea from "@/components/common/PageMobilSafeArea";
 import ErrorText from "@/components/common/Skeleton/ErrorText";
 import Hero from "@/components/site/Home/Hero";
+import MvpFocus from "@/components/site/Home/MvpFocus";
 import QuickLinks from "@/components/site/Home/QuickLinks";
 import KeyFindings from "@/components/site/Home/KeyFindings";
 import Story from "@/components/site/Home/Story";
@@ -19,21 +20,34 @@ const Home = () => {
   const analysis = useGet("bakuAnalysis", ENDPOINTS.BAKU_ANALYSIS);
   const synth = useGet("bakuSynthSummary", ENDPOINTS.BAKU_SYNTH_SUMMARY);
   const summary = useGet("summary", ENDPOINTS.SUMMARY);
-  const loading = analysis.isLoading || synth.isLoading || summary.isLoading;
-  const error = analysis.isError || synth.isError || summary.isError;
+  const transit = useGet("transitAccess", ENDPOINTS.TRANSIT_ACCESS);
+  const loading = analysis.isLoading || synth.isLoading || summary.isLoading || transit.isLoading;
+  const error = analysis.isError || synth.isError || summary.isError || transit.isError;
 
   return (
     <Section>
       <Helmet>
-        <title>ADDIM Bakı · AI piyada platforması</title>
-        <meta name="description" content="Bakı üçün süni intellekt əsaslı piyada platforması: 9 mövzuda analiz, sintez, SWOT, 29 anlayış və pilot zonalar." />
+        <title>ADDIM Bakı · Dayanacağa 5 dəqiqə</title>
+        <meta name="description" content="Periferiya sakinləri üçün: Bakıda yeni avtobus dayanacaqlarının yerini AI ilə seçən platforma. 525 min insan dayanacağa 10 dəqiqədən çox yeriyir." />
       </Helmet>
       <Container>
         {error && <ErrorText />}
         {loading && <Skeleton height={360} borderRadius={26} baseColor="var(--bg-secondary)" highlightColor="var(--panel-2)" />}
         {!loading && !error && (
           <>
-            <Hero city={analysis.data.city} synth={synth.data} onHelp={() => openModal("HelpModal")} />
+            <Hero transit={transit.data} onHelp={() => openModal("HelpModal")} />
+            <Block>
+              <SectionHeading
+                as="h2"
+                eyebrow="MVP · Dayanacağa 5 dəqiqə"
+                title="Necə işləyir və nə verir"
+                lede="Bir məqsəd: periferiyada yaşayan insan avtobusa 5 dəqiqədə çatsın. Alqoritm mövcud marşrutlarda ən faydalı dayanma nöqtələrini tapır."
+              />
+              <MvpFocus transit={transit.data} />
+            </Block>
+            <Divider>
+              <span>Platformanın təməli: bütün Bakının piyada analizi</span>
+            </Divider>
             <Block>
               <SectionHeading
                 as="h2"
@@ -72,6 +86,24 @@ export default Home;
 
 const Section = styled.section`
   padding-bottom: 56px;
+`;
+
+const Divider = styled.div`
+  margin-top: 56px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-3);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
 `;
 
 const Block = styled.div`

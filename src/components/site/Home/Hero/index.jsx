@@ -1,6 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import { CountUp } from "@/components/common/Motion";
 import { card, glow, kpiValue, label, pill } from "@/styles/common/mixins";
+import { Link } from "react-router-dom";
 import Button from "@/components/common/Button";
 
 // "ADDIM." nöqtəsi addım atır; mətnlər ardıcıl görünür
@@ -18,12 +19,14 @@ const stepDot = keyframes`
   90% { translate: 6px 0; }
 `;
 
-const Hero = ({ city, synth, onHelp }) => {
+// Fokus: periferiya sakinləri (MVP "Dayanacağa 5 dəqiqə"); rəqəmlər transit_access.json-dan
+const Hero = ({ transit, onHelp }) => {
+  const S = transit.summary;
   const facts = [
-    [city.pop, "insan Bakıda yaşayır", 0, ""],
-    [synth.hot_pop, "insan problemlərin toplandığı yerlərdə yaşayır", 0, ""],
-    [city.transit500_pct, "insanın evi dayanacağa 500 metrdən yaxındır", 1, "%"],
-    [city.lst_popw, "yayda yerin səthi bu qədər qızır", 1, "°C"],
+    [S.far_pop, "insan dayanacağa 10 dəqiqədən çox yeriyir", 0, ""],
+    [S.pct_5min, "sakin dayanacağa 5 dəqiqəyə çatır", 1, "%"],
+    [S.under_walk_m, "orta piyada yolu (5 dəqiqədən uzaq yaşayanlar)", 0, " m"],
+    [S.under_lst, "həmin məhəllələrdə yayda yerin səthi", 1, "°C"],
   ];
   return (
     <Wrap>
@@ -43,15 +46,16 @@ const Hero = ({ city, synth, onHelp }) => {
       <Brand>
         ADDIM<span>.</span>
       </Brand>
-      <Tag>Bakı üçün AI piyada platforması · “İnsanyönümlü şəhərlər” hakatonu · 11–13.11.2026</Tag>
+      <Tag>Hər kəs üçün şəhər · periferiya sakinləri üçün · “İnsanyönümlü şəhərlər” hakatonu · 11–13.11.2026</Tag>
       <Grid>
         <div>
           <Thesis>
-            Bakıda piyada olmaq çətindir. Yolu keçmək üçün yerin altına enirsən, geniş maşın yolunu gözləyirsən, kölgəsiz səkidə günün altında qalırsan. ADDIM bütün şəhəri yoxlayır, ən çətin yerləri tapır və onları necə düzəltməyi göstərir.
+            Mərkəzdə avtobus hər küncdədir. Qəsəbədə isə insan dayanacağa 1–3 km, 43°C istidə, çox vaxt səkisiz yolla yeriyir, halbuki avtobus çox vaxt elə evin yanından keçir, sadəcə orada dayanmır. ADDIM hər evdən dayanacağa real piyada yolunu ölçür və
+            yeni dayanacaqların ən çox insana fayda verən yerini seçir.
           </Thesis>
           <Actions>
-            <Button as="a" href="#tur" size="lg">
-              Xəritədə turu başlat
+            <Button as={Link} to="/dayanacaq" size="lg">
+              Simulyatoru aç
             </Button>
             <Button variant="secondary" size="lg" onClick={onHelp}>
               Necə oxumalı
