@@ -15,10 +15,10 @@ export const EquityBrief = () => {
   return (
     <Box>
       <Head>
-        <h2>İnklüziv baxış: kim kənarda qalır</h2>
+        <h2>İnklüziv baxış (Inclusive lens): kim kənarda qalır</h2>
         <LensTags ids={["I1", "I3", "I8"]} />
       </Head>
-      <p>Ən pis təmin olunmuş 20% əhali ən yaxşı 20%-dən neçə dəfə uzaqdadır (blok səviyyəsi, əhali ilə çəkili):</p>
+      <p>Ən pis təmin olunmuş 20% əhali ən yaxşı 20%-dən neçə dəfə uzaqdadır (Palma tipli nisbət, blok səviyyəsi, əhali ilə çəkili):</p>
       <Cards>
         {eq.map((e) => (
           <li key={e.key}>
@@ -51,11 +51,11 @@ export const InclusivePriority = () => {
   return (
     <Box>
       <Head>
-        <h2>İnklüziv və kompleks prioritet</h2>
+        <h2>İnklüziv və kompleks prioritet (Inclusive & comprehensive priority)</h2>
         <LensTags ids={["I1", "I3", "K1", "K2"]} />
       </Head>
       <p>
-        Ehtiyac balı sosial zəiflik indeksi (SVI: əlillik, dayanacaq və metroya uzaqlıq, aptek, riskli məktəb) ilə tamamlanıb. Sektor: zonada eyni anda kəskin olan sahə sayı (hərəkət, ətraf mühit, risk, xidmət). {fmt(multi)} insan 3–4 sektorun kəskin
+        Ehtiyac balı sosial zəiflik indeksi (Social Vulnerability Index, SVI: əlillik, dayanacaq və metroya uzaqlıq, aptek, riskli məktəb) ilə tamamlanıb. Sektor: zonada eyni anda kəskin olan sahə sayı (hərəkət, ətraf mühit, risk, xidmət). {fmt(multi)} insan 3–4 sektorun kəskin
         olduğu zonalarda yaşayır: onlara inteqrasiya olunmuş paket lazımdır.
       </p>
       <Table>

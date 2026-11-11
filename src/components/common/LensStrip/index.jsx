@@ -14,11 +14,11 @@ const LensStrip = ({ page, step }) => {
       <div>
         <p>{L.note}</p>
         <Row>
-          <span className="i">İnklüziv</span>
+          <span className="i">İnklüziv (Inclusive)</span>
           <LensTags ids={L.I} />
         </Row>
         <Row>
-          <span className="k">Kompleks</span>
+          <span className="k">Kompleks (Comprehensive)</span>
           <LensTags ids={L.K} />
         </Row>
       </div>
@@ -69,7 +69,7 @@ const Row = styled.div`
   > span {
     font-size: 11.5px;
     font-weight: 700;
-    width: 64px;
+    min-width: 150px;
   }
   .i {
     color: var(--accent);

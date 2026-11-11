@@ -86,6 +86,7 @@ export const RULE_LENS = {
 export const AI_TOPICS = [
   {
     title: "Ədalət yönümlü optimallaşdırma",
+    en: "Equity-aware optimization",
     sub: ["I1", "I8", "K4"],
     modules: ["M8"],
     status: "işləyir",
@@ -94,6 +95,7 @@ export const AI_TOPICS = [
   },
   {
     title: "Alqoritmik ədalət auditi",
+    en: "Algorithmic fairness audit",
     sub: ["I6", "I1"],
     modules: ["M8"],
     status: "təklif",
@@ -102,6 +104,7 @@ export const AI_TOPICS = [
   },
   {
     title: "İştirakçı AI: sakin səsi",
+    en: "Participatory AI",
     sub: ["I5", "I4", "K7"],
     modules: ["M6"],
     status: "təklif",
@@ -110,6 +113,7 @@ export const AI_TOPICS = [
   },
   {
     title: "Əlçatanlıq auditi: kompüter görmə",
+    en: "Computer vision accessibility audit",
     sub: ["I2", "I3", "I9"],
     modules: ["M3"],
     status: "təklif",
@@ -118,6 +122,7 @@ export const AI_TOPICS = [
   },
   {
     title: "Qrup marşrutları: sintetik əhali",
+    en: "Synthetic population, trip chaining",
     sub: ["I3", "I4", "K4"],
     modules: ["M1", "M5"],
     status: "təklif",
@@ -126,6 +131,7 @@ export const AI_TOPICS = [
   },
   {
     title: "Sektorlararası paket tövsiyəsi",
+    en: "Multi-criteria decision analysis, MCDA",
     sub: ["K1", "K6", "K9"],
     modules: ["M8"],
     status: "qismən",
@@ -134,6 +140,7 @@ export const AI_TOPICS = [
   },
   {
     title: "Ssenari və rəqəmsal əkiz",
+    en: "Scenario planning, digital twin",
     sub: ["K4", "K1"],
     modules: ["M5"],
     status: "təklif",
@@ -142,6 +149,7 @@ export const AI_TOPICS = [
   },
   {
     title: "Plan uyğunluq yoxlaması (LLM)",
+    en: "Plan compliance checking",
     sub: ["K6", "K7", "I2"],
     modules: ["M6"],
     status: "təklif",
@@ -150,6 +158,7 @@ export const AI_TOPICS = [
   },
   {
     title: "Monitorinq: əvvəl / sonra",
+    en: "Before–after monitoring",
     sub: ["K7", "K8", "K3"],
     modules: ["M4", "M7"],
     status: "qismən",

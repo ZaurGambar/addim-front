@@ -33,11 +33,13 @@ const AiModules = () => (
       <LensStrip page="/ai" step={7} />
       <Architecture />
       <ModuleCards />
-      <TopicsH>İnklüziv və kompleks planlama üçün AI mövzuları</TopicsH>
+      <TopicsH>İnklüziv (Inclusive) və kompleks (Comprehensive) planlama üçün AI mövzuları</TopicsH>
       <Topics>
         {AI_TOPICS.map((t) => (
           <li key={t.title}>
-            <b>{t.title}</b>
+            <b>
+              {t.title} ({t.en})
+            </b>
             <small>
               {t.modules.join(" · ")} · {t.status}
             </small>

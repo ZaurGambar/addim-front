@@ -126,9 +126,9 @@ const Transit = () => {
                   <HeartHandshake size={18} />
                   <b>{fmt(res.hi)}</b>
                   <span>
-                    onlardan həssas zonalarda (SVI ≥ 60) ·{" "}
+                    onlardan həssas zonalarda (Social Vulnerability Index, SVI ≥ 60) ·{" "}
                     <Link to="/planlama?addim=5" style={{ color: "var(--accent)" }}>
-                      inklüziv baxış
+                      inklüziv baxış (inclusive lens)
                     </Link>
                   </span>
                 </li>

@@ -9,9 +9,9 @@ const LensTags = ({ ids = [] }) => (
       const s = SUB_BY_ID[id];
       if (!s) return null;
       return (
-        <Tag key={id} to={`/planlama?addim=2#${id}`} className={s.core === "I" ? "i" : "k"} title={`${s.core === "I" ? "İnklüziv" : "Kompleks"} planlama: ${s.title}. ${s.def}`}>
+        <Tag key={id} to={`/planlama?addim=2#${id}`} className={s.core === "I" ? "i" : "k"} title={`${s.core === "I" ? "İnklüziv planlama (Inclusive planning)" : "Kompleks planlama (Comprehensive planning)"}: ${s.title} (${s.en}). ${s.def}`}>
           <b>{id.replace("I", "İ")}</b>
-          {s.title}
+          {s.title} ({s.en})
         </Tag>
       );
     })}

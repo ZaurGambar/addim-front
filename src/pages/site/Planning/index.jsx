@@ -16,14 +16,14 @@ import { AI_TOPICS, CHECKLIST, CORE, RULE_LENS, SOL_LENS, SUB } from "@/utils/mo
 
 // Tutorial: inklüziv və kompleks planlama ADDIM-in analiz → sintez → təklif → AI zəncirində
 const STEPS = [
-  { key: "core", title: "İki əsas anlayış", icon: Scale },
-  { key: "sub", title: "18 alt anlayış", icon: Layers },
-  { key: "inc", title: "Analiz: kim kənarda qalır", icon: Users },
-  { key: "comp", title: "Analiz: problemlər birlikdə", icon: Layers },
-  { key: "synth", title: "Sintez: zəiflik və prioritet", icon: Users },
-  { key: "props", title: "Təkliflər", icon: CheckSquare },
-  { key: "ai", title: "AI mövzuları", icon: BrainCircuit },
-  { key: "check", title: "Planlayıcı çeklisti", icon: CheckSquare },
+  { key: "core", title: "İki əsas anlayış (Core concepts)", icon: Scale },
+  { key: "sub", title: "18 alt anlayış (Sub-concepts)", icon: Layers },
+  { key: "inc", title: "Analiz: kim kənarda qalır (Equity analysis)", icon: Users },
+  { key: "comp", title: "Analiz: problemlər birlikdə (Integrated analysis)", icon: Layers },
+  { key: "synth", title: "Sintez: zəiflik və prioritet (Vulnerability & priority)", icon: Users },
+  { key: "props", title: "Təkliflər (Proposals)", icon: CheckSquare },
+  { key: "ai", title: "AI mövzuları (AI topics)", icon: BrainCircuit },
+  { key: "check", title: "Planlayıcı çeklisti (Planner checklist)", icon: CheckSquare },
 ];
 const STATUS = { ölçülür: "good", qismən: "warn", boşluq: "critical" };
 const SOL_TITLE = { A: "Yer üstü keçid", B: "Məktəb yolu", C: "Kölgə", D: "Cib parkı", E: "Dayanacaq", F: "Piyada keçidi (dalan)", G: "Market, aptek", H: "Pandus, məhəccər", I: "Drenaj" };
@@ -45,14 +45,14 @@ const Planning = () => {
   return (
     <Section>
       <Helmet>
-        <title>İnklüziv və kompleks planlama · ADDIM Bakı</title>
+        <title>İnklüziv (Inclusive) və kompleks (Comprehensive) planlama · ADDIM Bakı</title>
         <meta name="description" content="Tutorial: inklüziv və kompleks planlama anlayışları ADDIM-in analizində, sintezində, təkliflərində və AI modullarında." />
       </Helmet>
       <Container>
         <SectionHeading
           eyebrow="Tutorial · 8 addım"
-          title="İnklüziv və kompleks planlama"
-          lede="ADDIM-in bütün işi iki sual üzərində qurulur: şəhərin imkanları hər kəsə çatırmı (inklüziv) və problemlər bir sistem kimi birlikdə həll olunurmu (kompleks)? Bu tutorial hər iki anlayışın alt anlayışlarını, onların datamızla necə ölçüldüyünü və təkliflərə, AI-a necə keçdiyini addım-addım göstərir."
+          title="İnklüziv (Inclusive) və kompleks (Comprehensive) planlama"
+          lede="ADDIM-in bütün işi iki sual üzərində qurulur: şəhərin imkanları hər kəsə çatırmı (inklüziv planlama, inclusive planning) və problemlər bir sistem kimi birlikdə həll olunurmu (kompleks planlama, comprehensive planning)? Bu tutorial hər iki anlayışın alt anlayışlarını, onların datamızla necə ölçüldüyünü və təkliflərə, AI-a necə keçdiyini addım-addım göstərir."
         />
         <Progress id="tutorial">
           {STEPS.map((s, i) => (
@@ -105,7 +105,7 @@ const StepCore = () => (
         <Core key={k} style={{ "--c": `var(${c.color})` }}>
           <b>{c.code}</b>
           <h3>
-            {c.title} <small>{c.en}</small>
+            {c.title} <small>({c.en})</small>
           </h3>
           <p>{c.def}</p>
           <q>{c.question}</q>
@@ -144,14 +144,16 @@ const StepSub = () => {
         {["I", "K"].map((c) => (
           <div key={c}>
             <ColHead style={{ "--c": `var(${CORE[c].color})` }}>
-              {CORE[c].code} · {CORE[c].title}
+              {CORE[c].code} · {CORE[c].title} ({CORE[c].en})
             </ColHead>
             <SubList>
               {SUB.filter((s) => s.core === c).map((s) => (
                 <li key={s.id} id={s.id}>
                   <header>
                     <code>{s.id.replace("I", "İ")}</code>
-                    <b>{s.title}</b>
+                    <b>
+                      {s.title} <small>({s.en})</small>
+                    </b>
                     <Status className={STATUS[s.status]}>{s.status}</Status>
                   </header>
                   <p>{s.def}</p>
@@ -179,7 +181,7 @@ const StepInclusive = ({ L, T }) => {
   return (
     <>
       <Lead>
-        Orta dəyər bərabərsizliyi gizlədir. Ona görə hər xidmət üçün soruşuruq: ən pis təmin olunmuş 20% əhali ən yaxşı 20%-dən neçə dəfə uzaqdadır? <LensTags ids={["I1", "I3", "I8"]} />
+        Orta dəyər bərabərsizliyi gizlədir. Ona görə hər xidmət üçün soruşuruq: ən pis təmin olunmuş 20% əhali ən yaxşı 20%-dən neçə dəfə uzaqdadır (Palma tipli nisbət, Palma ratio)? Gini əmsalı (Gini coefficient) isə ümumi bərabərsizliyi ölçür. <LensTags ids={["I1", "I3", "I8"]} />
       </Lead>
       <TableWrap>
         <table>
@@ -267,7 +269,7 @@ const StepComprehensive = ({ L }) => {
   return (
     <>
       <Lead>
-        Səkkiz problem qatı dörd sektora bölünür. Bir zonada bir neçə sektor eyni anda kəskindirsə, bir qurumun ayrıca layihəsi işləməz: birgə paket lazımdır. <LensTags ids={["K1", "K6", "K2"]} />
+        Səkkiz problem qatı dörd sektora bölünür (sektorlararası inteqrasiya, cross-sector integration). Bir zonada bir neçə sektor eyni anda kəskindirsə, bir qurumun ayrıca layihəsi işləməz: birgə paket lazımdır. <LensTags ids={["K1", "K6", "K2"]} />
       </Lead>
       <Sectors>
         {Object.entries(L.sectors).map(([k, s]) => (
@@ -325,7 +327,7 @@ const StepSynth = ({ L, T }) => {
   return (
     <>
       <Lead>
-        Sintez iki balı birləşdirir: <b>ehtiyac</b> (8 problemin ortası) və <b>sosial zəiflik indeksi (SVI)</b>, yəni həmin yerdə yaşayanların dəyişikliyə nə qədər həssas olduğu. Prioritet = {L.method.priority}. <LensTags ids={["I1", "I3", "K2"]} />
+        Sintez iki balı birləşdirir: <b>ehtiyac</b> (8 problemin ortası) və <b>sosial zəiflik indeksi (Social Vulnerability Index, SVI)</b>, yəni həmin yerdə yaşayanların dəyişikliyə nə qədər həssas olduğu. Prioritet = {L.method.priority}. <LensTags ids={["I1", "I3", "K2"]} />
       </Lead>
       <SviParts>
         {Object.values(L.svi_parts).map((p) => (
@@ -404,7 +406,7 @@ const StepProposals = ({ L, Z }) => {
             <tr>
               <th>Həll</th>
               {ids.map((id) => (
-                <th key={id} title={SUB.find((s) => s.id === id).title}>
+                <th key={id} title={`${SUB.find((s) => s.id === id).title} (${SUB.find((s) => s.id === id).en})`}>
                   {id.replace("I", "İ")}
                 </th>
               ))}
@@ -472,7 +474,9 @@ const StepAi = ({ T }) => (
       {AI_TOPICS.map((t) => (
         <li key={t.title}>
           <header>
-            <b>{t.title}</b>
+            <b>
+              {t.title} <small>({t.en})</small>
+            </b>
             <Status className={t.status === "işləyir" ? "good" : t.status === "qismən" ? "warn" : "muted"}>{t.status}</Status>
           </header>
           <p>{t.what}</p>
@@ -713,6 +717,11 @@ const SubList = styled.ul`
   header b {
     flex: 1;
     font-size: 14px;
+  }
+  header small {
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--text-3);
   }
   p {
     font-size: 13px;
@@ -967,6 +976,11 @@ const Topics = styled.ul`
     display: flex;
     justify-content: space-between;
     gap: 8px;
+  }
+  header small {
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--text-3);
   }
   p {
     font-size: 13.5px;
