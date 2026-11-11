@@ -34,6 +34,7 @@ def main():
 
     inc = json.load(open(DATA / "inclusive_access.json"))
     lens = json.load(open(DATA / "planning_lens.json"))
+    transit = json.load(open(DATA / "transit_access.json"))
     zoning = json.load(open(DATA / "zoning.json"))
     zgeo = {f["properties"]["rank"]: f["geometry"] for f in json.load(open(DATA / "zoning_zones.geojson"))["features"]}
     svi = {z["rank"]: z for z in lens["zones"]}
@@ -61,6 +62,8 @@ def main():
         "scenarios": inc["scenarios"], "rayons": inc["rayons"], "method": inc["method"],
         "popTotal": inc["summary"]["pop_total"],
         "equity": lens["equity"],
+        # periferiya: dayanacağa (avtobus/metro) 10 dəqiqədən çox piyada yolu olan sakinlər (transit_access.py)
+        "periphery": {k: transit["summary"][k] for k in ("far_pop", "under_pop", "pct_5min", "pct_10min", "under_walk_m")},
     }
     barriers = json.load(open(DATA / "barriers_access.json"))
 
