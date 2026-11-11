@@ -82,7 +82,7 @@ const TwoGis = () => {
   return (
     <Section>
       <Helmet>
-        <title>2GIS datası · ADDIM Bakı</title>
+        <title>2GIS datası · SmartUrban Bakı</title>
         <meta name="description" content="2GIS-dən toplanmış obyekt və dayanacaq datası xəritədə, OpenStreetMap ilə müqayisədə." />
       </Helmet>
       <Container>

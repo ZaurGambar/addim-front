@@ -30,7 +30,7 @@ const Concepts = () => {
   return (
     <Section>
       <Helmet>
-        <title>29 anlayış · ADDIM Bakı</title>
+        <title>29 anlayış · SmartUrban Bakı</title>
         <meta name="description" content="İnsanyönümlü şəhərsalmanın 29 anlayışı Bakının datası ilə ölçülüb və çarpaz korrelasiya edilib." />
       </Helmet>
       <Container>

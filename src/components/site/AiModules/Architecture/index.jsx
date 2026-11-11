@@ -5,7 +5,7 @@ const SOURCES = ["OSM / GeoJSON xəritə", "BakıKart, metro turniketi", "Edge k
 const MODS = ["M1 Axın proqnozu", "M2 Adaptiv keçid", "M3 Səki auditi (CV)", "M4 İstilik və kölgə", "M5 Ssenari simulyatoru", "M6 Müraciət NLP (AZ)", "M7 Sel xəbərdarlığı", "M8 İnvestisiya prioriteti"];
 
 const Architecture = () => (
-  <Box role="img" aria-label="ADDIM arxitekturası: data mənbələri, platforma, AI modulları, insan təsdiqi və nəticələr">
+  <Box role="img" aria-label="SmartUrban arxitekturası: data mənbələri, platforma, AI modulları, insan təsdiqi və nəticələr">
     <svg viewBox="0 0 1000 380">
       <text className="hdr" x="20" y="22">DATA MƏNBƏLƏRİ</text>
       <text className="hdr" x="268" y="22">PLATFORMA</text>

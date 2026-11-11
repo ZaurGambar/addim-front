@@ -39,7 +39,7 @@ const Analysis = () => {
   return (
     <Section>
       <Helmet>
-        <title>Bakı analizi · ADDIM Bakı</title>
+        <title>Bakı analizi · SmartUrban Bakı</title>
         <meta name="description" content="Bakının 12 rayonu üzrə 9 mövzuda tematik analiz: demoqrafiya, nəqliyyat, iqlim, topoqrafiya, küçə şəbəkəsi və risk." />
       </Helmet>
       <Container>

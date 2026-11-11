@@ -24,10 +24,10 @@ const ThemeButton = () => {
 };
 
 const Brand = ({ to = "/" }) => (
-  <BrandLink to={to} aria-label="ADDIM ana səhifə">
-    <LogoSq>A</LogoSq>
+  <BrandLink to={to} aria-label="SmartUrban ana səhifə">
+    <LogoSq>S</LogoSq>
     <div>
-      ADDIM<span>.</span>
+      SmartUrban<span>.</span>
       <small>Bakı piyada platforması</small>
     </div>
   </BrandLink>

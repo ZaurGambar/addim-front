@@ -36,7 +36,7 @@ const Synthesis = () => {
   return (
     <Section>
       <Helmet>
-        <title>Sintez · ADDIM Bakı</title>
+        <title>Sintez · SmartUrban Bakı</title>
         <meta name="description" content="Bakıda problemlərin üst-üstə düşdüyü zonalar: Getis-Ord Gi* qaynar nöqtələri, 4 məhəllə tipi və prioritet zonalar." />
       </Helmet>
       <Container>

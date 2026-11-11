@@ -21,7 +21,7 @@ const Swot = () => {
   return (
     <Section>
       <Helmet>
-        <title>SWOT · ADDIM Bakı</title>
+        <title>SWOT · SmartUrban Bakı</title>
         <meta name="description" content="İnsanyönümlü Bakı üçün SWOT: güclü və zəif tərəflər, imkanlar və təhdidlər, real data ilə." />
       </Helmet>
       <Container>

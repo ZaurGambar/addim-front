@@ -59,7 +59,7 @@ const CentralMap = () => {
   return (
     <Section>
       <Helmet>
-        <title>Mərkəzi xəritə · ADDIM Bakı</title>
+        <title>Mərkəzi xəritə · SmartUrban Bakı</title>
         <meta name="description" content="Bakı mərkəzində 250 m hücrələrdə piyada indeksi, yeraltı keçidlər, metro, BakuBus və Seul ssenarisi." />
       </Helmet>
       <Container>

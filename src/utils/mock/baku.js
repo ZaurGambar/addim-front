@@ -25,7 +25,7 @@ export const BAKU_SOURCES = {
   ps_400_net_pct: "OSM piyada şəbəkəsi (420 min qovşaq), Dijkstra; ≥ 0.25 ha məkan", ps_800_net_pct: "OSM piyada şəbəkəsi, Dijkstra", ps_detour: "Şəbəkə məsafəsi / düz xətt, blok mərkəzindən",
   coast_10min_pct: "OSM sahil xətti və piyada şəbəkəsi, Dijkstra 800 m", coast_800_straight_pct: "OSM sahil xətti, düz xətt",
   late_pct: "OSM opening_hours, obyektlərin ~13%-i", open24_10k: "OSM opening_hours / DSK 2024",
-  below_m20_pct: "SRTM", heritage: "OSM", culture: "OSM", walk_score: "ADDIM indeksi, yalnız mərkəzi zona",
+  below_m20_pct: "SRTM", heritage: "OSM", culture: "OSM", walk_score: "SmartUrban indeksi, yalnız mərkəzi zona",
 };
 
 export const DATA_GAPS = [

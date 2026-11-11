@@ -4,7 +4,7 @@ import { card, glow, kpiValue, label, pill } from "@/styles/common/mixins";
 import { Link } from "react-router-dom";
 import Button from "@/components/common/Button";
 
-// "ADDIM." nöqtəsi addım atır; mətnlər ardıcıl görünür
+// "SmartUrban." nöqtəsi addım atır; mətnlər ardıcıl görünür
 const flowK = keyframes`to { stroke-dashoffset: -48; }`;
 const inK = keyframes`
   from {
@@ -44,13 +44,13 @@ const Hero = ({ transit, onHelp }) => {
         ))}
       </Streets>
       <Brand>
-        ADDIM<span>.</span>
+        SmartUrban<span>.</span>
       </Brand>
       <Tag>Hər kəs üçün şəhər · periferiya sakinləri üçün · “İnsanyönümlü şəhərlər” hakatonu · 11–13.11.2026</Tag>
       <Grid>
         <div>
           <Thesis>
-            Mərkəzdə avtobus hər küncdədir. Qəsəbədə isə insan dayanacağa 1–3 km, 43°C istidə, çox vaxt səkisiz yolla yeriyir, halbuki avtobus çox vaxt elə evin yanından keçir, sadəcə orada dayanmır. ADDIM hər evdən dayanacağa real piyada yolunu ölçür və
+            Mərkəzdə avtobus hər küncdədir. Qəsəbədə isə insan dayanacağa 1–3 km, 43°C istidə, çox vaxt səkisiz yolla yeriyir, halbuki avtobus çox vaxt elə evin yanından keçir, sadəcə orada dayanmır. SmartUrban hər evdən dayanacağa real piyada yolunu ölçür və
             yeni dayanacaqların ən çox insana fayda verən yerini seçir.
           </Thesis>
           <Actions>

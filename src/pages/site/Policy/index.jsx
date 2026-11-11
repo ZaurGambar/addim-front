@@ -128,7 +128,7 @@ const Policy = () => {
   return (
     <Section>
       <Helmet>
-        <title>Qayda təklifləri · ADDIM Bakı</title>
+        <title>Qayda təklifləri · SmartUrban Bakı</title>
         <meta name="description" content="Sistemin tapdığı 8 problemə qarşı 10 qayda təklifi: piyada keçidi, sürət, kölgə, parkinq, nəqliyyat, büdcə və açıq məlumat." />
       </Helmet>
       <Container>

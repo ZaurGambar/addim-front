@@ -92,7 +92,7 @@ const Zoning = () => {
   return (
     <Section>
       <Helmet>
-        <title>Bölgələmə · ADDIM Bakı</title>
+        <title>Bölgələmə · SmartUrban Bakı</title>
         <meta name="description" content="Bakı məhəllə blokları və planlama zonaları: hər zonanın problemləri və ona uyğun qayda təklifləri." />
       </Helmet>
       <Container>

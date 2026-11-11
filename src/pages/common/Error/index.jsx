@@ -6,7 +6,7 @@ import Button from "@/components/common/Button";
 const Error = () => (
   <Wrapper>
     <Helmet>
-      <title>Səhifə tapılmadı · ADDIM Bakı</title>
+      <title>Səhifə tapılmadı · SmartUrban Bakı</title>
     </Helmet>
     <Code>404</Code>
     <h1>Səhifə tapılmadı</h1>

@@ -16,14 +16,14 @@ import ModuleCards from "@/components/site/AiModules/ModuleCards";
 const AiModules = () => (
   <Section>
     <Helmet>
-      <title>AI modulları · ADDIM Bakı</title>
-      <meta name="description" content="ADDIM-in 8 AI modulu: piyada axını proqnozu, adaptiv keçid, səki auditi, istilik, ssenari simulyatoru, müraciət analizi, sel xəbərdarlığı və investisiya prioriteti." />
+      <title>AI modulları · SmartUrban Bakı</title>
+      <meta name="description" content="SmartUrban-ın 8 AI modulu: piyada axını proqnozu, adaptiv keçid, səki auditi, istilik, ssenari simulyatoru, müraciət analizi, sel xəbərdarlığı və investisiya prioriteti." />
     </Helmet>
     <Container>
       <SectionHeading
         eyebrow="09 · Arxitektura"
         title="Əl ilə görülən işi AI modulları ilə əvəz edirik"
-        lede="İndi piyada axını əl ilə sayılır, svetofor rejimi sabitdir, şikayətlər bir-bir oxunur, planlama intuisiyaya əsaslanır. ADDIM bunların hər birini bir data platforması üzərində işləyən AI modulu ilə əvəz edir."
+        lede="İndi piyada axını əl ilə sayılır, svetofor rejimi sabitdir, şikayətlər bir-bir oxunur, planlama intuisiyaya əsaslanır. SmartUrban bunların hər birini bir data platforması üzərində işləyən AI modulu ilə əvəz edir."
       />
       <PageIntro
         art={<Brain />}

@@ -49,8 +49,8 @@ const Methodology = () => {
   return (
     <Section>
       <Helmet>
-        <title>Metodologiya · ADDIM Bakı</title>
-        <meta name="description" content="ADDIM piyada indeksinin metodologiyası, data mənbələri və hakaton müraciət mətni." />
+        <title>Metodologiya · SmartUrban Bakı</title>
+        <meta name="description" content="SmartUrban piyada indeksinin metodologiyası, data mənbələri və hakaton müraciət mətni." />
       </Helmet>
       <Container>
         <SectionHeading eyebrow="12 · Metodologiya" title="İndeks necə hesablanır" lede="Qaydaya əsaslanan ilkin model. Pilotda çəkilər real piyada sayı ilə öyrədiləcək." />

@@ -14,7 +14,7 @@ export const TIMELINE = [
   { when: "6–18 ay", title: "Startap", items: ["Şəhər üzrə SaaS", "Gəncə, Sumqayıt", "Region şəhərləri"] },
 ];
 
-export const PITCH = `ADDIM — Bakı üçün süni intellekt əsaslı piyada platforması.
+export const PITCH = `SmartUrban — Bakı üçün süni intellekt əsaslı piyada platforması.
 
 Problem: Bakının mərkəzində piyada yeraltı keçidlər, geniş magistrallar və kölgəsiz səkilər arasında qalır. Bütün şəhər üzrə analizimiz göstərir ki, 443 min nəfər statistik “qaynar nöqtələrdə” yaşayır, 5 rayonda (880 min nəfər) metro yoxdur, yay günü (01.08.2026) səth temperaturu orta hesabla 43°C-dir, Qaradağda 50°C-yə çatır.
 

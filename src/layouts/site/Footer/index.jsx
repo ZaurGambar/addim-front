@@ -12,7 +12,7 @@ const Footer = () => {
         <Grid>
           <div>
             <Logo>
-              ADDIM<span>.</span>
+              SmartUrban<span>.</span>
             </Logo>
             <p>Bakı üçün süni intellekt əsaslı piyada platforması. “İnsanyönümlü şəhərlər” hakatonu, 11–13 noyabr 2026.</p>
           </div>

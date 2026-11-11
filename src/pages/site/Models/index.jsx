@@ -12,7 +12,7 @@ import RiskList from "@/components/site/Models/RiskList";
 const Models = () => (
   <Section>
     <Helmet>
-      <title>Şəhər modelləri · ADDIM Bakı</title>
+      <title>Şəhər modelləri · SmartUrban Bakı</title>
       <meta name="description" content="Seul, Amsterdam, Barselona, Paris, Kopenhagen və Sinqapur modelləri Bakı ilə müqayisədə: çatışmazlıqlar, risklər və həllər." />
     </Helmet>
     <Container>

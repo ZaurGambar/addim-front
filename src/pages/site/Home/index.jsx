@@ -27,7 +27,7 @@ const Home = () => {
   return (
     <Section>
       <Helmet>
-        <title>ADDIM Bakı · Dayanacağa 5 dəqiqə</title>
+        <title>SmartUrban Bakı · Dayanacağa 5 dəqiqə</title>
         <meta name="description" content="Periferiya sakinləri üçün: Bakıda yeni avtobus dayanacaqlarının yerini AI ilə seçən platforma. 525 min insan dayanacağa 10 dəqiqədən çox yeriyir." />
       </Helmet>
       <Container>

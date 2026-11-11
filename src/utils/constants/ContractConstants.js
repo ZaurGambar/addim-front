@@ -1,6 +1,6 @@
 import { BarChart3, BrainCircuit, Building2, Bus, Compass, Database, Grid3x3, Footprints, Home, Layers, Lightbulb, MapPinned, Ruler, Scale, Target } from "lucide-react";
 
-export const SITE_NAME = "ADDIM Bakı";
+export const SITE_NAME = "SmartUrban Bakı";
 export const SITE_URL = import.meta.env.VITE_SITE_URL || "";
 
 export const NAV_ITEMS = [

@@ -44,7 +44,7 @@ const Pilot = () => {
   return (
     <Section>
       <Helmet>
-        <title>Pilot · ADDIM Bakı</title>
+        <title>Pilot · SmartUrban Bakı</title>
         <meta name="description" content="Data ilə seçilmiş 3 pilot zona, yeraltı keçid namizədlərinin peyk yoxlaması və sahə yoxlaması forması." />
       </Helmet>
       <Container>

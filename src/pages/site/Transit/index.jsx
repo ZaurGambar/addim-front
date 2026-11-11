@@ -48,14 +48,14 @@ const Transit = () => {
   return (
     <Section>
       <Helmet>
-        <title>Dayanacağa 5 dəqiqə · ADDIM Bakı</title>
+        <title>Dayanacağa 5 dəqiqə · SmartUrban Bakı</title>
         <meta name="description" content="Periferiya sakinləri üçün: yeni avtobus dayanacaqlarının yeri piyada şəbəkəsi və əhali datası ilə optimallaşdırılır." />
       </Helmet>
       <Container>
         <SectionHeading
           eyebrow="Hər kəs üçün şəhər · MVP"
           title="Dayanacağa 5 dəqiqə"
-          lede="Mərkəzdə avtobus hər küncdədir, qəsəbədə isə insan dayanacağa 1–3 km, 43°C istidə, çox vaxt səkisiz yolla yeriyir. ADDIM hər evdən ən yaxın dayanacağa real piyada məsafəsini ölçür və mövcud avtobus marşrutlarının üzərində yeni dayanacaqların ən faydalı yerini seçir: yeni marşrut, yeni avtobus lazım deyil."
+          lede="Mərkəzdə avtobus hər küncdədir, qəsəbədə isə insan dayanacağa 1–3 km, 43°C istidə, çox vaxt səkisiz yolla yeriyir. SmartUrban hər evdən ən yaxın dayanacağa real piyada məsafəsini ölçür və mövcud avtobus marşrutlarının üzərində yeni dayanacaqların ən faydalı yerini seçir: yeni marşrut, yeni avtobus lazım deyil."
         />
         <PageIntro
           art={<MapLayers />}

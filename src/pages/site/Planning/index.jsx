@@ -14,7 +14,7 @@ import { ENDPOINTS } from "@/utils/constants/Endpoints";
 import { fmt } from "@/utils/helpers/format";
 import { AI_TOPICS, CHECKLIST, CORE, RULE_LENS, SOL_LENS, SUB } from "@/utils/mock/planning";
 
-// Tutorial: inklüziv və kompleks planlama ADDIM-in analiz → sintez → təklif → AI zəncirində
+// Tutorial: inklüziv və kompleks planlama SmartUrban-ın analiz → sintez → təklif → AI zəncirində
 const STEPS = [
   { key: "core", title: "İki əsas anlayış (Core concepts)", icon: Scale },
   { key: "sub", title: "18 alt anlayış (Sub-concepts)", icon: Layers },
@@ -45,14 +45,14 @@ const Planning = () => {
   return (
     <Section>
       <Helmet>
-        <title>İnklüziv (Inclusive) və kompleks (Comprehensive) planlama · ADDIM Bakı</title>
-        <meta name="description" content="Tutorial: inklüziv və kompleks planlama anlayışları ADDIM-in analizində, sintezində, təkliflərində və AI modullarında." />
+        <title>İnklüziv (Inclusive) və kompleks (Comprehensive) planlama · SmartUrban Bakı</title>
+        <meta name="description" content="Tutorial: inklüziv və kompleks planlama anlayışları SmartUrban-ın analizində, sintezində, təkliflərində və AI modullarında." />
       </Helmet>
       <Container>
         <SectionHeading
           eyebrow="Tutorial · 8 addım"
           title="İnklüziv (Inclusive) və kompleks (Comprehensive) planlama"
-          lede="ADDIM-in bütün işi iki sual üzərində qurulur: şəhərin imkanları hər kəsə çatırmı (inklüziv planlama, inclusive planning) və problemlər bir sistem kimi birlikdə həll olunurmu (kompleks planlama, comprehensive planning)? Bu tutorial hər iki anlayışın alt anlayışlarını, onların datamızla necə ölçüldüyünü və təkliflərə, AI-a necə keçdiyini addım-addım göstərir."
+          lede="SmartUrban-ın bütün işi iki sual üzərində qurulur: şəhərin imkanları hər kəsə çatırmı (inklüziv planlama, inclusive planning) və problemlər bir sistem kimi birlikdə həll olunurmu (kompleks planlama, comprehensive planning)? Bu tutorial hər iki anlayışın alt anlayışlarını, onların datamızla necə ölçüldüyünü və təkliflərə, AI-a necə keçdiyini addım-addım göstərir."
         />
         <Progress id="tutorial">
           {STEPS.map((s, i) => (
@@ -113,7 +113,7 @@ const StepCore = () => (
       ))}
     </Two>
     <Box>
-      <h3>ADDIM-də necə işləyir</h3>
+      <h3>SmartUrban-da necə işləyir</h3>
       <Flow>
         <li>
           <b>Analiz</b> hər göstəricini iki cür oxuyur: orta dəyər yox, kimin ən pis vəziyyətdə olduğu (İ); bir problem yox, problemlərin harada üst-üstə düşdüyü (K).

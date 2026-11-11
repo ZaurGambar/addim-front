@@ -1,4 +1,4 @@
-# ADDIM Bakı
+# SmartUrban Bakı
 
 Bakı üçün süni intellekt əsaslı piyada platforması. “İnsanyönümlü şəhərlər” hakatonu (Gənclər Fondu və Milli Süni İntellekt Mərkəzi, 11–13 noyabr 2026) üçün hazırlanıb.
 
