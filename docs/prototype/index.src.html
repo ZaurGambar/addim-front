@@ -1,0 +1,1770 @@
+<meta charset="utf-8">
+<title>ADDIM Bakı</title>
+<meta name="description" content="Bakı üçün süni intellekt əsaslı piyada platforması: dünya şəhər modelləri ilə müqayisə, risklər, həllər və OSM GeoJSON xəritəsi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+Display:wght@500;700&display=swap">
+<style>
+/*LEAFLET_CSS*/
+:root{
+  --ground:#f3f6f5; --panel:#ffffff; --panel-2:#e8eeec; --line:#cdd8d5; --line-soft:#dfe7e4;
+  --ink:#11222b; --ink-2:#44565e; --ink-3:#6c7d84;
+  --caspian:#165a7a; --caspian-soft:#d6e7ef; --madder:#a8352b; --madder-soft:#f6e1dd;
+  --land:#eef2f0; --sea:#cfe0e8; --road:#b9c5c2; --road-major:#7f8f8c; --park:#b7d8b4; --coast:#6f9db3;
+  --good:#0ca30c; --warn:#fab219; --serious:#ec835a; --critical:#d03b3b;
+  --s1:#cde2fb; --s2:#9ec5f4; --s3:#6da7ec; --s4:#3987e5; --s5:#256abf; --s6:#184f95; --s7:#0d366b;
+  --g1:#fde3d6; --g2:#f6b394; --g3:#eb6834; --g4:#b9471b;
+  --d-neg:#d03b3b; --d-mid:#f0efec; --d-pos:#2a78d6;
+  --t0:#2a78d6; --t1:#eb6834; --t2:#1baf7a; --t3:#4a3aa7;
+  --ff-display:"Noto Serif Display", Georgia, "Times New Roman", serif;
+  --ff-body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ff-mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#0f1a1f; --panel:#15232a; --panel-2:#1b2c34; --line:#2c4049; --line-soft:#22353d;
+    --ink:#e8f0f2; --ink-2:#b2c3c8; --ink-3:#8399a0;
+    --caspian:#6fb6d6; --caspian-soft:#173847; --madder:#e8786b; --madder-soft:#3a1f1c;
+    --land:#16242b; --sea:#0d2a38; --road:#2e434b; --road-major:#5a7179; --park:#24452c; --coast:#3f7f9b;
+    --s1:#16304d; --s2:#184f95; --s3:#1c5cab; --s4:#2a78d6; --s5:#3987e5; --s6:#6da7ec; --s7:#b7d3f6;
+    --g1:#3b2117; --g2:#7a3416; --g3:#d95926; --g4:#f6a582;
+    --d-neg:#e66767; --d-mid:#383835; --d-pos:#3987e5;
+    --t0:#3987e5; --t1:#d95926; --t2:#199e70; --t3:#9085e9;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#0f1a1f; --panel:#15232a; --panel-2:#1b2c34; --line:#2c4049; --line-soft:#22353d;
+  --ink:#e8f0f2; --ink-2:#b2c3c8; --ink-3:#8399a0;
+  --caspian:#6fb6d6; --caspian-soft:#173847; --madder:#e8786b; --madder-soft:#3a1f1c;
+  --land:#16242b; --sea:#0d2a38; --road:#2e434b; --road-major:#5a7179; --park:#24452c; --coast:#3f7f9b;
+  --s1:#16304d; --s2:#184f95; --s3:#1c5cab; --s4:#2a78d6; --s5:#3987e5; --s6:#6da7ec; --s7:#b7d3f6;
+  --g1:#3b2117; --g2:#7a3416; --g3:#d95926; --g4:#f6a582;
+  --d-neg:#e66767; --d-mid:#383835; --d-pos:#3987e5;
+  --t0:#3987e5; --t1:#d95926; --t2:#199e70; --t3:#9085e9;
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--ff-body);font-size:16px;line-height:1.55;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:20px}
+h1,h2,h3{font-family:var(--ff-display);font-weight:700;text-wrap:balance;margin:0;line-height:1.15}
+h2{font-size:clamp(28px,4vw,40px)}
+h3{font-size:21px;font-weight:500}
+p{margin:0}
+a{color:var(--caspian)}
+.eyebrow{font-family:var(--ff-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.lede{font-size:18px;color:var(--ink-2);max-width:68ch}
+.num{font-variant-numeric:tabular-nums;font-family:var(--ff-mono)}
+:focus-visible{outline:2px solid var(--caspian);outline-offset:2px}
+
+/* header */
+header.top{padding-block:40px 28px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.brand h1{font-size:clamp(44px,7vw,80px);letter-spacing:-.01em}
+.brand h1 span{color:var(--madder)}
+.brand .tag{font-family:var(--ff-mono);font-size:13px;color:var(--ink-3)}
+.thesis{margin-top:18px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:32px;align-items:end}
+.thesis p.big{font-size:clamp(19px,2.2vw,24px);line-height:1.45;max-width:46ch}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.fact{background:var(--panel);padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.fact b{font-family:var(--ff-mono);font-size:24px;font-weight:500;font-variant-numeric:tabular-nums}
+.fact span{font-size:13px;color:var(--ink-2);line-height:1.35}
+
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:1000;background:var(--ground);border-bottom:1px solid var(--line)}
+nav.toc .wrap{display:flex;gap:4px;overflow-x:auto;padding-block:8px;scrollbar-width:none}
+nav.toc a{flex:none;text-decoration:none;color:var(--ink-2);font-size:14px;padding:6px 10px;border-radius:4px;white-space:nowrap}
+nav.toc a:hover{background:var(--panel-2);color:var(--ink)}
+
+section.block{padding-block:56px;border-bottom:1px solid var(--line)}
+.sec-head{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+
+/* map */
+.mapgrid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px}
+#map{height:620px;border:1px solid var(--line);background:var(--land);border-radius:2px}
+.leaflet-container{font-family:var(--ff-body);background:var(--land)}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:var(--panel);color:var(--ink);border-radius:4px;box-shadow:0 4px 18px rgba(0,0,0,.18)}
+.leaflet-popup-content{margin:12px 14px;font-size:13px;line-height:1.45}
+.leaflet-popup-content b{font-family:var(--ff-mono);font-weight:500}
+.leaflet-bar a{background:var(--panel);color:var(--ink);border-color:var(--line)}
+.leaflet-tooltip{background:var(--panel);color:var(--ink);border:1px solid var(--line);font-size:12px;box-shadow:none}
+.leaflet-tooltip.sea{background:transparent;border:0;color:var(--coast);font-family:var(--ff-display);font-size:18px;font-style:italic;letter-spacing:.2em}
+.leaflet-tooltip.sea::before{display:none}
+.side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.card{background:var(--panel);border:1px solid var(--line);padding:14px;border-radius:2px}
+.card h4{margin:0 0 8px;font-size:13px;font-family:var(--ff-mono);font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.layers label{display:flex;align-items:center;gap:8px;font-size:14px;padding:3px 0;cursor:pointer}
+.layers input{accent-color:var(--caspian)}
+.sw{width:14px;height:10px;border-radius:2px;flex:none;border:1px solid var(--line)}
+.legend-ramp{display:flex;height:10px;margin-top:6px}
+.legend-ramp i{flex:1}
+.legend-scale{display:flex;justify-content:space-between;font-family:var(--ff-mono);font-size:11px;color:var(--ink-3);margin-top:3px}
+.scenario{display:flex;flex-direction:column;gap:10px}
+.btn{font:inherit;font-size:14px;border:1px solid var(--caspian);background:var(--caspian);color:var(--panel);padding:8px 12px;border-radius:3px;cursor:pointer;text-align:left}
+.btn.ghost{background:transparent;color:var(--caspian)}
+.btn[aria-pressed="true"]{background:var(--madder);border-color:var(--madder);color:#fff}
+.delta{font-family:var(--ff-mono);font-size:13px;color:var(--ink-2)}
+.delta b{font-size:22px;color:var(--ink);font-weight:500}
+.cellinfo{font-size:13px;color:var(--ink-2)}
+.cellinfo dl{display:grid;grid-template-columns:1fr auto;gap:2px 10px;margin:6px 0 0}
+.cellinfo dd{margin:0;font-family:var(--ff-mono);color:var(--ink);text-align:right}
+
+.stations{margin-top:24px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px}
+.bars{display:flex;flex-direction:column;gap:3px}
+.bar-row{display:grid;grid-template-columns:150px 1fr 34px;align-items:center;gap:10px;font-size:13px;background:none;border:0;padding:3px 0;color:var(--ink);cursor:pointer;text-align:left;font-family:inherit}
+.bar-row:hover .bar-track i{background:var(--s6)}
+.bar-row:hover .bname{color:var(--caspian)}
+.bar-track{height:12px;background:var(--panel-2);position:relative}
+.bar-track i{position:absolute;left:0;top:0;bottom:0;background:var(--s4);border-radius:0 4px 4px 0}
+.bar-track u{position:absolute;top:-3px;bottom:-3px;width:0;border-left:1px dashed var(--ink-3)}
+.bname{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bval{font-family:var(--ff-mono);text-align:right;font-variant-numeric:tabular-nums}
+.scatter-wrap{margin-top:36px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px;align-items:start}
+.scatter{position:relative;border:1px solid var(--line);background:var(--panel);padding:8px}
+.scatter svg{display:block;width:100%;height:auto}
+.scatter text{font-family:var(--ff-mono);font-size:11px;fill:var(--ink-3)}
+.scatter .lab{font-family:var(--ff-body);font-size:12px;fill:var(--ink)}
+.scatter .grid{stroke:var(--line-soft);stroke-width:1}
+.scatter .axis{stroke:var(--line);stroke-width:1}
+.scatter .zone{fill:var(--madder-soft)}
+.scatter .zone-t{fill:var(--madder);font-family:var(--ff-mono);font-size:11px;letter-spacing:.06em}
+.scatter circle.dot{fill:var(--s4);stroke:var(--panel);stroke-width:2;cursor:pointer}
+.scatter circle.dot.hot{fill:var(--madder)}
+.scatter circle.hit{fill:transparent;cursor:pointer}
+.tip{position:absolute;pointer-events:none;background:var(--panel);border:1px solid var(--line);padding:8px 10px;font-size:12px;line-height:1.4;box-shadow:0 4px 14px rgba(0,0,0,.15);border-radius:3px;white-space:nowrap}
+.tip b{font-family:var(--ff-mono);font-weight:500}
+.sources{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 32px;margin-top:16px;font-size:14px}
+.sources div{display:flex;flex-direction:column;border-top:1px solid var(--line-soft);padding-top:8px}
+.sources span{font-family:var(--ff-mono);font-size:11px;color:var(--ink-3)}
+.note{font-size:13px;color:var(--ink-3);max-width:70ch}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--ff-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:500;border-bottom:1px solid var(--line)}
+td.n{font-family:var(--ff-mono);text-align:right;font-variant-numeric:tabular-nums}
+
+/* city models */
+.cities{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.city{background:var(--panel);padding:20px;display:flex;flex-direction:column;gap:12px}
+.city header{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.city .coord{font-family:var(--ff-mono);font-size:11px;color:var(--ink-3)}
+.city ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--ink-2)}
+.city ul b{color:var(--ink);font-weight:600}
+.city .take{margin-top:auto;font-size:14px;border-top:1px solid var(--line-soft);padding-top:10px}
+.city .take em{font-style:normal;font-family:var(--ff-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--madder);display:block;margin-bottom:2px}
+
+/* gap matrix */
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;white-space:nowrap}
+.chip::before{content:"";width:10px;height:10px;border-radius:50%;flex:none}
+.chip.yes::before{background:var(--good)}
+.chip.part::before{background:var(--warn)}
+.chip.no::before{background:var(--critical)}
+.chip.yes::after{content:"✓";font-size:11px;color:var(--ink-3)}
+.chip.no::after{content:"✕";font-size:11px;color:var(--ink-3)}
+.chip.part::after{content:"◐";font-size:11px;color:var(--ink-3)}
+.prio{font-family:var(--ff-mono);font-size:12px;padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+.prio.p1{background:var(--madder-soft);border-color:var(--madder);color:var(--ink)}
+
+/* risks */
+.risks{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+.risk{display:grid;grid-template-columns:200px minmax(0,1fr) minmax(0,1fr);gap:24px;padding-block:20px;border-bottom:1px solid var(--line)}
+.risk .src{font-family:var(--ff-mono);font-size:12px;color:var(--ink-3);display:flex;flex-direction:column;gap:4px}
+.risk .src strong{font-family:var(--ff-display);font-size:19px;color:var(--ink);font-weight:500;letter-spacing:0}
+.risk h5{margin:0 0 4px;font-size:12px;font-family:var(--ff-mono);font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.risk .prob h5{color:var(--madder)}
+.risk .sol h5{color:var(--caspian)}
+.risk p{font-size:15px;color:var(--ink-2)}
+.sev{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-2)}
+.sev::before{content:"";width:8px;height:8px;border-radius:2px}
+.sev.hi::before{background:var(--critical)}
+.sev.md::before{background:var(--serious)}
+
+/* AI */
+.arch{overflow-x:auto;border:1px solid var(--line);background:var(--panel);padding:16px}
+.arch svg{display:block;min-width:860px;width:100%;height:auto}
+.arch text{font-family:var(--ff-body);fill:var(--ink)}
+.arch .lbl{font-size:13px}
+.arch .hdr{font-family:var(--ff-mono);font-size:11px;letter-spacing:.1em;fill:var(--ink-3)}
+.arch .box{fill:var(--panel-2);stroke:var(--line)}
+.arch .core{fill:var(--caspian-soft);stroke:var(--caspian)}
+.arch .human{fill:var(--madder-soft);stroke:var(--madder)}
+.arch .edge{stroke:var(--ink-3);stroke-width:1.2;fill:none}
+.modules{margin-top:20px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.mod{background:var(--panel);padding:18px;display:grid;grid-template-columns:44px minmax(0,1fr);gap:4px 14px}
+.mod .code{grid-row:span 4;font-family:var(--ff-mono);font-size:12px;color:var(--caspian);border:1px solid var(--caspian);height:44px;display:grid;place-items:center;border-radius:3px}
+.mod h3{font-size:19px}
+.mod .what{font-size:14px;color:var(--ink-2)}
+.mod .kv{font-size:13px;color:var(--ink-2)}
+.mod .kv b{font-family:var(--ff-mono);font-weight:500;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-right:6px}
+.mod .replaces{font-size:13px;color:var(--ink)}
+.mod .replaces b{color:var(--madder);font-weight:600}
+.callout{margin-top:20px;border-left:3px solid var(--madder);background:var(--madder-soft);padding:14px 16px;font-size:15px;max-width:80ch}
+
+/* pilot */
+.pilots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.pilot{border-top:3px solid var(--caspian);background:var(--panel);padding:16px;display:flex;flex-direction:column;gap:8px}
+.pilot .where{font-family:var(--ff-mono);font-size:12px;color:var(--ink-3)}
+.pilot p{font-size:14px;color:var(--ink-2)}
+.pilot .go{align-self:flex-start;margin-top:auto}
+.pilot .biz-line{font-size:13px;border-top:1px solid var(--line-soft);padding-top:8px;color:var(--ink-2)}
+.pilot .biz-line b{font-family:var(--ff-mono);font-weight:500;color:var(--ink)}
+.thumb{width:72px;height:72px;object-fit:cover;border:1px solid var(--line);cursor:zoom-in;display:block;background:var(--panel-2)}
+.shots{display:flex;gap:6px;flex-wrap:wrap}
+.shots figure{margin:0;display:flex;flex-direction:column;gap:2px}
+.shots img{width:120px;height:68px;object-fit:cover;border:1px solid var(--line);cursor:zoom-in;background:var(--panel-2)}
+.shots figcaption,.credit{font-family:var(--ff-mono);font-size:10px;color:var(--ink-3)}
+dialog.lb{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:12px;max-width:min(92vw,900px);border-radius:4px}
+dialog.lb::backdrop{background:rgba(0,0,0,.6)}
+dialog.lb img{display:block;max-width:100%;max-height:75vh;margin:0 auto}
+dialog.lb .row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:8px;font-size:13px}
+.field{margin-top:32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:32px;align-items:start}
+.field form{background:var(--panel);border:1px solid var(--line);padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.field form .full{grid-column:1/-1}
+.field label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-2)}
+.field input,.field select,.field textarea{font:inherit;font-size:15px;color:var(--ink);background:var(--ground);border:1px solid var(--line);border-radius:3px;padding:8px 10px;width:100%}
+.field textarea{min-height:64px;resize:vertical}
+.field .status{font-size:13px;color:var(--ink-2)}
+.field .status.err{color:var(--critical)}
+.field .status.ok{color:var(--good)}
+.checks{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+.check{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:10px 0;border-bottom:1px solid var(--line-soft);font-size:13px}
+.check b{font-size:14px}
+.check .meta{font-family:var(--ff-mono);font-size:11px;color:var(--ink-3)}
+.check .vals{grid-column:1/-1;color:var(--ink-2)}
+.check img{grid-row:span 3;width:64px;height:64px;object-fit:cover;border:1px solid var(--line);cursor:zoom-in}
+.empty{font-size:14px;color:var(--ink-3);padding:12px 0}
+@media (max-width:980px){.field{grid-template-columns:1fr}}
+@media (max-width:640px){.field form{grid-template-columns:1fr}}
+.concept-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:start}
+.findings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:20px}
+.finding{background:var(--panel);padding:16px;display:flex;flex-direction:column;gap:6px}
+.finding .tags{display:flex;gap:4px;flex-wrap:wrap}
+.finding .tags span{font-family:var(--ff-mono);font-size:10px;letter-spacing:.04em;border:1px solid var(--line);padding:1px 6px;border-radius:10px;color:var(--ink-2)}
+.finding h3{font-size:18px}
+.finding p{font-size:14px;color:var(--ink-2)}
+.finding .big{font-family:var(--ff-mono);font-size:26px;color:var(--ink)}
+.heat-wrap{overflow-x:auto;border:1px solid var(--line);background:var(--panel);padding:10px;position:relative}
+.heat-wrap svg{display:block;min-width:620px;width:100%;height:auto}
+.heat-wrap text{font-family:var(--ff-mono);font-size:10px;fill:var(--ink-2)}
+.heat-wrap rect.c{stroke:var(--panel);stroke-width:1.5}
+.heat-wrap rect.c:hover{stroke:var(--ink);stroke-width:1.5}
+.heat-legend{display:flex;align-items:center;gap:8px;font-family:var(--ff-mono);font-size:11px;color:var(--ink-3);margin-top:8px;flex-wrap:wrap}
+.heat-legend i{display:inline-block;width:120px;height:10px;background:linear-gradient(90deg,var(--d-neg),var(--d-mid),var(--d-pos))}
+.cat-group td{background:var(--panel-2);font-family:var(--ff-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.lvl{display:inline-flex;align-items:center;gap:6px;font-size:13px;white-space:nowrap}
+.lvl::before{content:"";width:10px;height:10px;border-radius:2px}
+.lvl.hi::before{background:var(--good)} .lvl.md::before{background:var(--warn)} .lvl.lo::before{background:var(--critical)} .lvl.na::before{background:var(--line);border:1px dashed var(--ink-3)}
+.lvl.hi::after{content:"güclü";color:var(--ink-3);font-size:11px} .lvl.md::after{content:"orta";color:var(--ink-3);font-size:11px} .lvl.lo::after{content:"zəif";color:var(--ink-3);font-size:11px} .lvl.na::after{content:"data yoxdur";color:var(--ink-3);font-size:11px}
+.cbtn{font:inherit;font-size:12px;border:1px solid var(--line);background:transparent;color:var(--caspian);padding:2px 8px;border-radius:3px;cursor:pointer;white-space:nowrap}
+.cbtn:hover{border-color:var(--caspian)}
+@media (max-width:980px){.concept-head,.findings{grid-template-columns:1fr}}
+.bgrid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px}
+#bmap{height:560px;border:1px solid var(--line);background:var(--sea);border-radius:2px}
+.themes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:24px}
+.theme{background:var(--panel);padding:16px;display:flex;flex-direction:column;gap:8px}
+.theme header{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.theme h3{font-size:19px}
+.theme .src{font-family:var(--ff-mono);font-size:10px;color:var(--ink-3);text-align:right}
+.theme ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px;color:var(--ink-2)}
+.theme li{display:grid;grid-template-columns:86px 1fr;gap:8px}
+.theme li b{font-family:var(--ff-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;padding-top:3px}
+.theme li.var b{color:var(--good)} .theme li.yox b{color:var(--critical)} .theme li.dq b{color:var(--caspian)}
+.theme .mbtns{display:flex;gap:4px;flex-wrap:wrap;margin-top:auto;padding-top:6px}
+.rtable td.n{position:relative}
+.rtable td.n span{position:relative;z-index:1}
+.rtable td.n i{position:absolute;left:0;top:4px;bottom:4px;background:var(--caspian-soft);z-index:0;border-radius:0 2px 2px 0}
+.rtable th{white-space:nowrap}
+.rtable td:first-child{font-weight:600;white-space:nowrap}
+.swot{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.swq{background:var(--panel);padding:18px;display:flex;flex-direction:column;gap:10px}
+.swq h3{font-size:22px;display:flex;align-items:baseline;gap:10px}
+.swq h3 span{font-family:var(--ff-mono);font-size:12px;color:var(--ink-3);letter-spacing:.08em}
+.swq ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--ink-2)}
+.swq ul b{color:var(--ink);font-family:var(--ff-mono);font-weight:500}
+.swq.s{border-top:3px solid var(--good)} .swq.w{border-top:3px solid var(--critical)} .swq.o{border-top:3px solid var(--caspian)} .swq.t{border-top:3px solid var(--serious)}
+.gaps{margin-top:20px;font-size:13px;color:var(--ink-2);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 24px}
+.gaps div{border-top:1px solid var(--line-soft);padding-top:6px}
+@media (max-width:980px){.bgrid,.themes,.swot,.gaps{grid-template-columns:1fr} #bmap{height:440px}}
+.types{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:24px}
+.type{background:var(--panel);padding:16px;display:flex;flex-direction:column;gap:8px}
+.type header{display:flex;align-items:center;gap:10px}
+.type header i{width:14px;height:14px;border-radius:3px;flex:none}
+.type h3{font-size:19px}
+.type .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.type .kpis div{display:flex;flex-direction:column;font-size:11px;color:var(--ink-3)}
+.type .kpis b{font-family:var(--ff-mono);font-size:16px;font-weight:500;color:var(--ink)}
+.type p{font-size:14px;color:var(--ink-2)}
+.type .rx{font-size:14px;border-top:1px solid var(--line-soft);padding-top:8px}
+.type .rx em{font-style:normal;font-family:var(--ff-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--madder);display:block;margin-bottom:2px}
+.zones{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.zone{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:2px 12px;padding:10px 0;border-bottom:1px solid var(--line-soft);background:none;border-left:0;border-right:0;border-top:0;text-align:left;font:inherit;color:var(--ink);cursor:pointer}
+.zone:hover b.nm{color:var(--caspian)}
+.zone .rk{font-family:var(--ff-mono);font-size:18px;color:var(--madder);grid-row:span 2}
+.zone b.nm{font-size:15px}
+.zone .pp{font-family:var(--ff-mono);font-size:13px;text-align:right}
+.zone .ly{grid-column:2/4;font-size:12px;color:var(--ink-2)}
+.synth-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;margin-top:32px}
+@media (max-width:980px){.types,.synth-grid{grid-template-columns:1fr}.type .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stat{display:inline-flex;align-items:center;gap:6px;font-size:13px;white-space:nowrap}
+.stat::before{content:"";width:10px;height:10px;border-radius:50%}
+.stat.no_zebra::before{background:var(--madder)}
+.stat.zebra_nearby::before{background:var(--panel);border:2px solid var(--madder);width:6px;height:6px}
+.stat.unclear::before{background:var(--warn)}
+.timeline{margin-top:28px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid var(--line)}
+.step{padding:14px;border-right:1px solid var(--line);background:var(--panel)}
+.step:last-child{border-right:0}
+.step .when{font-family:var(--ff-mono);font-size:12px;color:var(--madder)}
+.step h3{font-size:17px;margin:4px 0 6px}
+.step ul{margin:0;padding-left:16px;font-size:13px;color:var(--ink-2);display:flex;flex-direction:column;gap:3px}
+.biz{margin-top:28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.biz div h3{font-size:17px;margin-bottom:6px}
+.biz div p{font-size:14px;color:var(--ink-2)}
+
+/* pitch */
+.pitch{background:var(--panel);border:1px solid var(--line);padding:20px;display:flex;flex-direction:column;gap:12px;max-width:820px}
+.pitch pre{white-space:pre-wrap;font-family:var(--ff-body);font-size:15px;line-height:1.6;margin:0;color:var(--ink)}
+.pitch .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.copied{font-size:13px;color:var(--good)}
+.qa{margin-top:24px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 32px}
+.qa h3{font-size:17px;margin-bottom:4px}
+.qa p{font-size:14px;color:var(--ink-2)}
+footer{padding-block:32px 48px;font-size:13px;color:var(--ink-3)}
+footer code{font-family:var(--ff-mono);font-size:12px}
+
+@media (max-width:980px){
+  .mapgrid,.stations,.thesis,.scatter-wrap,.sources{grid-template-columns:1fr}
+  .cities,.pilots,.biz{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .risk{grid-template-columns:1fr;gap:10px}
+  .timeline{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .step:nth-child(2){border-right:0}
+  .step:nth-child(-n+2){border-bottom:1px solid var(--line)}
+}
+@media (max-width:640px){
+  .wrap{padding-inline:16px}
+  .cities,.pilots,.biz,.modules,.qa,.timeline{grid-template-columns:1fr}
+  .step{border-right:0;border-bottom:1px solid var(--line)}
+  #map{height:460px}
+  .bar-row{grid-template-columns:110px 1fr 30px}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+section[id]{scroll-margin-top:52px}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <h1>ADDIM<span>.</span></h1>
+      <span class="tag">Bakı üçün AI piyada platforması · “İnsanyönümlü şəhərlər” hakatonu · 11–13.11.2026</span>
+    </div>
+    <div class="thesis">
+      <p class="big">Bakının mərkəzində piyada çox vaxt yeraltı keçidə enir, 8 zolaqlı prospekti gözləyir və kölgəsiz səkidə yeriyir. ADDIM Seul, Amsterdam, Barselona və digər şəhərlərin işləyən modellərini Bakının real xəritə datası üzərində sınayır. Hansının Bakıda işləyəcəyini, hansının problem yaradacağını süni intellektlə hesablayır. Data: OpenStreetMap və opendata.az (Bakı Metropoliteni, BakuBus, Yerüstü Nəqliyyat Agentliyi).</p>
+      <div class="facts" id="facts" aria-label="OSM datasından əsas göstəricilər">
+        <div class="fact"><b id="f-ped">16.5 km</b><span>piyada küçəsi (tədqiqat ərazisində)</span></div>
+        <div class="fact"><b id="f-major">167 km</b><span>magistral yol (motorway, trunk, primary)</span></div>
+        <div class="fact"><b id="f-under">83</b><span>yeraltı piyada keçidi nöqtəsi</span></div>
+        <div class="fact"><b id="f-barrier">63 km</b><span>350 m-dən uzun keçidsiz magistral hissəsi</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Bölmələr">
+  <div class="wrap">
+    <a href="#baki">Bakı analizi</a>
+    <a href="#sintez">Sintez</a>
+    <a href="#swot">SWOT</a>
+    <a href="#xerite">Xəritə</a>
+    <a href="#modeller">Şəhər modelləri</a>
+    <a href="#bosluqlar">Bakının çatışmazlıqları</a>
+    <a href="#riskler">Risklər və həllər</a>
+    <a href="#anlayislar">29 anlayış</a>
+    <a href="#ai">AI modulları</a>
+    <a href="#pilot">Pilot və biznes</a>
+    <a href="#muraciet">Müraciət mətni</a>
+    <a href="#metod">Metodologiya</a>
+  </div>
+</nav>
+
+<main>
+<section class="block" id="baki">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">01 · Bütün Bakı · 12 rayon · 2018 km² quru</span>
+      <h2>Bakı: tematik analiz</h2>
+      <p class="lede">Layihəni izah etmək üçün əvvəlcə şəhərin özünü oxuyuruq. Doqquz mövzu üzrə analiz aparılıb: demoqrafiya, sosial-iqtisadi vəziyyət, topoqrafiya, küçə şəbəkəsinin topologiyası, nəqliyyat, tikili mühit, iqlim, risk və tarixi-mədəni irs. Hər mövzu üzrə göstərilir: şəhərdə nə var, nə yoxdur və nə diqqət çəkir. Rayon sərhədləri OSM-dən alınıb və Xəzərin dəniz sahəsi kəsilib.</p>
+    </div>
+    <div class="bgrid">
+      <div id="bmap" role="region" aria-label="Bakı rayonlarının tematik xəritəsi"></div>
+      <div class="side">
+        <div class="card">
+          <label for="bmetric" style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--ink-3)">Göstərici
+            <select id="bmetric" style="font:inherit;font-size:14px;color:var(--ink);background:var(--ground);border:1px solid var(--line);border-radius:3px;padding:6px"></select></label>
+          <h4 id="blegend-title" style="margin-top:12px"></h4>
+          <div class="legend-ramp" id="blegend-ramp"></div>
+          <div class="legend-scale" id="blegend-scale"></div>
+          <p class="note" id="bsrc" style="margin-top:8px;font-size:12px"></p>
+        </div>
+        <div class="card cellinfo" id="binfo"><h4>Rayon</h4><p>Xəritədə rayona və ya hücrəyə klikləyin.</p></div>
+        <div class="card" id="bcity"></div>
+      </div>
+    </div>
+    <div class="themes" id="themes"></div>
+    <h3 style="margin-top:36px">Rayonların müqayisəsi</h3>
+    <p class="note" style="margin:6px 0 12px">Mavi zolaq dəyərin sütundakı ən böyük dəyərə nisbətini göstərir. Sütun başlığına klikləsəniz cədvəl sıralanır.</p>
+    <div class="tbl-wrap"><table class="rtable" id="rtable"></table></div>
+    <div class="gaps" id="gaps"></div>
+  </div>
+</section>
+
+<section class="block" id="sintez">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">02 · Sintez · 1 km hücrələr · məskunlaşmış ərazi</span>
+      <h2>Problemlər harada üst-üstə düşür</h2>
+      <p class="lede">Doqquz mövzudan səkkiz problem qatı çıxarılıb: istilik, yaşıllıq çatışmazlığı, nəqliyyat boşluğu, şəbəkə qırıqlığı, avtomobil hökmranlığı, relyef maneəsi, alçaq sahil riski, xidmət çatışmazlığı. Hər hücrədə neçə qatın ən pis üçdə birlikdə olduğu sayılıb. Sonra Getis-Ord Gi* ilə statistik qaynar nöqtələr tapılıb, k-means ilə məhəllə tipləri ayrılıb. Hesablama yalnız məskunlaşmış hücrələrdə (≥ 300 nəfər/km²) aparılıb.</p>
+    </div>
+    <div class="bgrid">
+      <div id="smap" role="region" aria-label="Sintez xəritəsi" style="height:560px;border:1px solid var(--line);background:var(--sea);border-radius:2px"></div>
+      <div class="side">
+        <div class="card">
+          <label for="smode" style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--ink-3)">Göstər
+            <select id="smode" style="font:inherit;font-size:14px;color:var(--ink);background:var(--ground);border:1px solid var(--line);border-radius:3px;padding:6px"></select></label>
+          <h4 id="slegend-title" style="margin-top:12px"></h4>
+          <div id="slegend"></div>
+        </div>
+        <div class="card cellinfo" id="sinfo"><h4>Hücrə</h4><p>Xəritədə hücrəyə klikləyin.</p></div>
+      </div>
+    </div>
+    <h3 style="margin-top:32px">Məhəllə tipləri</h3>
+    <p class="note" id="types-note" style="margin:6px 0 0"></p>
+    <div class="types" id="types"></div>
+    <div class="synth-grid">
+      <div>
+        <h3>Prioritet zonalar</h3>
+        <p class="note" style="margin:6px 0 12px">Bitişik qaynar nöqtə hücrələri birləşdirilib. Sıralama: əhali × ehtiyac indeksi. Zonaya klikləsəniz, xəritə ora keçəcək.</p>
+        <div class="zones" id="zones"></div>
+      </div>
+      <div>
+        <h3>Ən çox üst-üstə düşən problemlər</h3>
+        <p class="note" style="margin:6px 0 12px">Üç problemin eyni hücrədə ən pis üçdə birlikdə olduğu hallar. Bu kombinasiyalarla yaşayan əhali sayı göstərilir.</p>
+        <div class="bars" id="combos"></div>
+        <h3 style="margin-top:24px">Rayonlar üzrə</h3>
+        <div class="tbl-wrap"><table id="s-ray"></table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="swot">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">03 · Analizin yekunu</span>
+      <h2>SWOT: insanyönümlü Bakı</h2>
+      <p class="lede">Hər bənd yuxarıdakı analizdən gəlir, rəqəmlər real datadandır. Güclü və zəif tərəflər şəhərin daxili vəziyyətini, imkanlar və təhdidlər isə xarici amilləri göstərir.</p>
+    </div>
+    <div class="swot" id="swot-grid"></div>
+  </div>
+</section>
+
+<section class="block" id="xerite">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">04 · Mərkəzi zona, GeoJSON</span>
+      <h2>Piyada Rahatlığı İndeksi</h2>
+      <p class="lede">Ərazi 250 × 250 m hücrələrə bölünüb. Hər hücrə 0–100 bal alır: metro çıxışına və parka məsafə, zebra keçidlərin sıxlığı, piyada küçələri və BakuBus dayanacaqları balı artırır. Magistral yollar və yeraltı keçidlər balı azaldır. Tələb balı metro stansiyalarının real gündəlik sərnişin sayı ilə çəkilənir. Hücrəyə və ya stansiyaya klikləyin.</p>
+    </div>
+    <div class="mapgrid">
+      <div id="map" role="region" aria-label="Bakı mərkəzinin interaktiv xəritəsi"></div>
+      <div class="side">
+        <div class="card layers" id="layers">
+          <h4>Qatlar</h4>
+        </div>
+        <div class="card" id="legend">
+          <label for="concept-sel" style="display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--ink-3);margin-bottom:8px">Hücrələri rənglə
+            <select id="concept-sel" style="font:inherit;font-size:14px;color:var(--ink);background:var(--ground);border:1px solid var(--line);border-radius:3px;padding:6px"></select></label>
+          <h4 id="legend-title">Piyada indeksi</h4>
+          <div class="legend-ramp" id="legend-ramp"></div>
+          <div class="legend-scale" id="legend-scale"></div>
+        </div>
+        <div class="card scenario">
+          <h4>Ssenari: Seul modeli</h4>
+          <p class="cellinfo">Model ən yüksək prioritetli 15 yeraltı keçiddən peyk görüntüsündə zebrası olmayan 10-nun yanında yerüstü zebra keçid açır. Sonra indeksi yenidən hesablayır.</p>
+          <button class="btn" id="btn-seoul" type="button" aria-pressed="false">Ssenarini tətbiq et</button>
+          <div class="delta" id="delta">Orta indeks: <b id="mean-now">34</b></div>
+        </div>
+        <div class="card cellinfo" id="cellinfo">
+          <h4>Seçilmiş hücrə</h4>
+          <p>Xəritədə bir hücrəyə klikləyin.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="stations">
+      <div>
+        <h3>Metro stansiyalarının ətrafı</h3>
+        <p class="note" style="margin:6px 0 14px">500 m radiusda hücrələrin orta indeksi. Ən zəifdən güclüyə doğru düzülüb. Kəsik xətt mərkəzin orta göstəricisidir. Stansiyaya klikləsəniz, xəritə ora keçəcək.</p>
+        <div class="bars" id="bars"></div>
+      </div>
+      <div>
+        <h3>Stansiya kartları (400 m)</h3>
+        <p class="note" style="margin:6px 0 14px">Sərnişin: 2026-cı ilin yanvar–sentyabr aylarında gündəlik orta (Bakı Metropoliteni, opendata.az). Çıxış sayı opendata-dan, qalanı 400 m radiusda OSM-dən. Ulduz kimi 0 göstərən stansiyalar OSM datasında boşluq ola bilər. Bu da həll ediləcək bir problemdir.</p>
+        <div class="tbl-wrap"><table id="station-table"><thead><tr><th>Stansiya</th><th>Sərnişin/gün</th><th>Çıxış</th><th>Zebra</th><th>Yeraltı</th><th>Magistral, m</th></tr></thead><tbody></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="scatter-wrap">
+      <div>
+        <h3>Sərnişin sayı × piyada rahatlığı</h3>
+        <p class="note" style="margin:6px 0 14px">Hər nöqtə bir metro stansiyasıdır. Sağ-aşağı zona ən vacib yerdir: gündə on minlərlə insan oradan çıxır, amma ətraf piyada üçün rahat deyil. Nöqtəyə klikləsəniz, xəritə stansiyaya keçəcək.</p>
+        <div class="scatter" id="scatter"><div class="tip" id="tip" hidden></div></div>
+      </div>
+      <div>
+        <h3>Nə deyir</h3>
+        <p class="note" id="scatter-read" style="margin-top:6px;font-size:15px;color:var(--ink-2)"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="modeller">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">05 · Benchmark</span>
+      <h2>Altı şəhər, altı model</h2>
+      <p class="lede">Hər şəhərdən bir əsas yanaşma götürürük. Hər birini Bakının şərtləri ilə yoxlayırıq: relyef, Xəzri küləyi, yay istisi, geniş sovet prospektləri və avtomobilə bağlılıq.</p>
+    </div>
+    <div class="cities">
+      <article class="city">
+        <header><h3>Seul</h3><span class="coord">37.57°N 126.98°E</span></header>
+        <ul>
+          <li><b>Çonqeçon (2003–2005):</b> estakada yolu söküldü. Yerində 5.8 km açıq çay və piyada dəhlizi yarandı.</li>
+          <li><b>Seoullo 7017 (2017):</b> köhnə avtomobil estakadası 1 km-lik piyada bağına çevrildi.</li>
+          <li><b>Yerüstü keçidlər:</b> yeraltı keçidlərin yanında zebra keçidləri bərpa olundu.</li>
+          <li><b>TOPIS:</b> nəqliyyatı real vaxtda izləyən mərkəz. Şəhərdə IoT sensor şəbəkəsi var.</li>
+        </ul>
+        <p class="take"><em>Bakıya götürürük</em>Yeraltı keçid əvəzinə yerüstü keçid. Magistral yolun yerini piyada dəhlizinə vermək.</p>
+      </article>
+      <article class="city">
+        <header><h3>Amsterdam</h3><span class="coord">52.37°N 4.90°E</span></header>
+        <ul>
+          <li><b>30 km/s (dekabr 2023):</b> küçələrin çoxunda sürət həddi 50-dən 30-a endirildi.</li>
+          <li><b>Parkinq siyasəti:</b> küçə parkinq yerləri mərhələli azaldılır, yer piyadaya və yaşıllığa verilir.</li>
+          <li><b>Alqoritm reyestri:</b> şəhərin istifadə etdiyi AI sistemləri açıq reyestrdə dərc olunur.</li>
+          <li><b>Velosiped şəbəkəsi:</b> ayrılmış zolaqlar və stansiyalarda böyük parkinq.</li>
+        </ul>
+        <p class="take"><em>Bakıya götürürük</em>Sürətin azaldılması və AI şəffaflığı. Velosiped modelini isə adaptasiya etmək lazımdır (bax: risklər).</p>
+      </article>
+      <article class="city">
+        <header><h3>Barselona</h3><span class="coord">41.39°N 2.17°E</span></header>
+        <ul>
+          <li><b>Superilla (superblok):</b> 3×3 məhəllə qrupunda tranzit avtomobil daxili küçələrə buraxılmır. Pilotlar: Poblenou (2016), Sant Antoni (2018).</li>
+          <li><b>Eixample yaşıl oxları (2023):</b> Consell de Cent kimi küçələr piyada-yaşıl oxa çevrildi.</li>
+          <li><b>Sentilo:</b> şəhərin açıq sensor platforması.</li>
+        </ul>
+        <p class="take"><em>Bakıya götürürük</em>Mərkəzin düzbucaqlı tikinti hissəsində superblok pilotu.</p>
+      </article>
+      <article class="city">
+        <header><h3>Paris</h3><span class="coord">48.86°N 2.35°E</span></header>
+        <ul>
+          <li><b>15 dəqiqəlik şəhər (2020-dən):</b> gündəlik ehtiyaclar piyada 15 dəqiqəlik məsafədə olmalıdır.</li>
+          <li><b>Rue aux écoles:</b> məktəblərin qarşısındakı küçələr avtomobilə bağlanır.</li>
+          <li><b>Sena sahili:</b> sağ sahildə avtomobil yolu piyada parkına çevrildi (2016).</li>
+        </ul>
+        <p class="take"><em>Bakıya götürürük</em>Məktəb küçələri. Metro stansiyaları ətrafında 15 dəqiqəlik qovşaqlar.</p>
+      </article>
+      <article class="city">
+        <header><h3>Kopenhagen</h3><span class="coord">55.68°N 12.57°E</span></header>
+        <ul>
+          <li><b>Strøget (1962):</b> Avropanın ilk uzun piyada küçələrindən biri.</li>
+          <li><b>“İctimai həyat” ölçmələri:</b> Jan Gehl metodu ilə insanlar müntəzəm sayılır və müşahidə olunur. Qərarlar bu dataya əsaslanır.</li>
+          <li><b>Velosiped magistralları:</b> şəhərətrafı ərazilər mərkəzə bağlanır.</li>
+        </ul>
+        <p class="take"><em>Bakıya götürürük</em>Ölçmədən qərar verilmir. AI həmin sayma işini avtomatlaşdırır.</p>
+      </article>
+      <article class="city">
+        <header><h3>Sinqapur</h3><span class="coord">1.35°N 103.82°E</span></header>
+        <ul>
+          <li><b>Virtual Singapore:</b> bütün şəhərin 3D rəqəmsal əkizi.</li>
+          <li><b>Green Man+:</b> yaşlı və əlil insanlar kartı oxutduqda yaşıl işıq uzanır.</li>
+          <li><b>ERP:</b> mərkəzə girişdə tıxac haqqı elektron yığılır (1998-dən).</li>
+          <li><b>Kölgəli keçidlər:</b> isti iqlimdə metroya gedən yollar örtülüdür.</li>
+        </ul>
+        <p class="take"><em>Bakıya götürürük</em>Rəqəmsal əkiz, inklüziv svetofor və istiyə uyğun dizayn.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="bosluqlar">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">06 · Boşluq analizi</span>
+      <h2>Bakıda nə var, nə çatışmır</h2>
+      <p class="lede">Status komandanın açıq mənbələrə əsaslanan ilkin qiymətləndirməsidir. Hakatondan əvvəl hər sətri rəsmi mənbə ilə yoxlayın.</p>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>İmkan</th><th>Nümunə</th><th>Bakıda</th><th>Bakıdakı vəziyyət</th><th>Prioritet</th></tr></thead>
+        <tbody>
+          <tr><td>Mərkəzdə piyada küçə şəbəkəsi</td><td>Kopenhagen</td><td><span class="chip part">qismən</span></td><td>Nizami küçəsi, İçərişəhər, Bulvar. Tədqiqat ərazisində <span class="num" id="g-ped">16.5</span> km. Şəbəkə bir-birinə bağlı deyil.</td><td><span class="prio">P2</span></td></tr>
+          <tr><td>Yerüstü keçidə üstünlük</td><td>Seul</td><td><span class="chip no">yoxdur</span></td><td><span class="num" id="g-under">83</span> yeraltı keçid nöqtəsi var. Yaşlılar, uşaq arabası və əlil arabası üçün çətindir.</td><td><span class="prio p1">P1</span></td></tr>
+          <tr><td>Velosiped şəbəkəsi</td><td>Amsterdam</td><td><span class="chip part">qismən</span></td><td>opendata.az-a görə tədqiqat ərazisində <span class="num" id="g-bike">68</span> velosiped zolağı hissəsi və <span class="num" id="g-bikep">641</span> velosiped parkinqi var. Zolaqlar bir-birinə bağlı şəbəkə yaratmır.</td><td><span class="prio">P2</span></td></tr>
+          <tr><td>Şəhər daxilində 30 km/s zonaları</td><td>Amsterdam</td><td><span class="chip no">yoxdur</span></td><td>Məktəb və yaşayış küçələrində sistemli sürət zonası yoxdur.</td><td><span class="prio p1">P1</span></td></tr>
+          <tr><td>Məktəb küçələri</td><td>Paris</td><td><span class="chip no">yoxdur</span></td><td>Tədqiqat ərazisində <span class="num" id="g-poi">454</span> məktəb, bağça və xəstəxana var. Onların ətrafında piyada prioriteti yoxdur.</td><td><span class="prio p1">P1</span></td></tr>
+          <tr><td>Superblok</td><td>Barselona</td><td><span class="chip no">yoxdur</span></td><td>Mərkəzi düzbucaqlı tikinti buna uyğundur, mikrorayonlarda isə adaptasiya lazımdır.</td><td><span class="prio">P2</span></td></tr>
+          <tr><td>İnklüziv svetofor</td><td>Sinqapur</td><td><span class="chip no">yoxdur</span></td><td>Yaşlı və əlil insanlar üçün uzadılmış yaşıl işıq yoxdur.</td><td><span class="prio p1">P1</span></td></tr>
+          <tr><td>Nəqliyyat idarəetmə mərkəzi</td><td>Seul TOPIS</td><td><span class="chip part">qismən</span></td><td>Bakı Nəqliyyat Agentliyinin idarəetmə mərkəzi var. Fokus avtomobil axınıdır, piyada axını ölçülmür.</td><td><span class="prio">P2</span></td></tr>
+          <tr><td>Rəqəmsal əkiz</td><td>Sinqapur</td><td><span class="chip no">yoxdur</span></td><td>Bir küçə bağlananda nəticəni əvvəlcədən sınamaq üçün ictimai alət yoxdur.</td><td><span class="prio">P2</span></td></tr>
+          <tr><td>Açıq şəhər datası və sensorlar</td><td>Barselona</td><td><span class="chip part">qismən</span></td><td>Açıq data portalı var. Real vaxt piyada, istilik və hava datası açıq deyil.</td><td><span class="prio">P2</span></td></tr>
+          <tr><td>İctimai həyat ölçməsi</td><td>Kopenhagen</td><td><span class="chip no">yoxdur</span></td><td>Piyada sayı müntəzəm ölçülmür. Layihələrin təsiri qiymətləndirilmir.</td><td><span class="prio p1">P1</span></td></tr>
+          <tr><td>İstiyə və küləyə uyğun dizayn</td><td>Sinqapur</td><td><span class="chip part">qismən</span></td><td>Yeni parklar salınır. Dayanacaq və marşrutlarda kölgə sistemli planlanmır.</td><td><span class="prio">P2</span></td></tr>
+          <tr><td>Alqoritm reyestri</td><td>Amsterdam</td><td><span class="chip no">yoxdur</span></td><td>2025–2028 AI Strategiyası ilə uyğun açıq reyestr yaradıla bilər.</td><td><span class="prio">P3</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="riskler">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">07 · Köçürmə riskləri</span>
+      <h2>Bakıya birbaşa köçürsək nə pozular</h2>
+      <p class="lede">Münsiflər buna diqqət edəcək: başqa şəhərin modelini Bakıya kopyalamaq olmaz. Hər model üçün Bakıda yaranacaq problemi və həllimizi yazmışıq.</p>
+    </div>
+    <div class="risks">
+      <div class="risk">
+        <div class="src"><span>Amsterdam</span><strong>Velosiped şəhəri</strong><span class="sev hi">yüksək risk</span></div>
+        <div class="prob"><h5>Bakıda problem</h5><p>Mərkəz amfiteatr formalı relyefdədir, yamaclar diktir. Güclü Xəzri küləyi və 35°C-dən yuxarı yay istisi var. Velosiped yolu çəkilsə də, istifadə zəif ola bilər. Yolu daralmış avtomobil sürücüləri narazı qalar.</p></div>
+        <div class="sol"><h5>Həllimiz</h5><p>Əvvəlcə düz sahil xətti və metro stansiyalarına “son 1 km” bağlantısı. Elektrik velosiped və skuter paylaşımı. AI modulu küləyə və istiyə görə marşrut təklif edir. Zolaq yalnız proqnoz tələbi yüksək olan dəhlizlərə çəkilir.</p></div>
+      </div>
+      <div class="risk">
+        <div class="src"><span>Seul</span><strong>Yeraltı keçidin bağlanması</strong><span class="sev hi">yüksək risk</span></div>
+        <div class="prob"><h5>Bakıda problem</h5><p>Neftçilər və Azadlıq kimi prospektlər 6–10 zolaqlıdır, sürət yüksəkdir. Keçidi birdən yerüstünə çıxarsaq, piyada qəzaları arta bilər. Tıxac da artar.</p></div>
+        <div class="sol"><h5>Həllimiz</h5><p>Mərhələli plan. Əvvəlcə ortada sığınacaq adası, sürət 40 km/s-ə qədər, AI ilə adaptiv işıq qoyulur. Hamısı birdən dəyişmir: model 83 nöqtədən ən prioritetli 15-ni seçir. Yeraltı keçid saxlanılır və lift ilə əlçatan edilir.</p></div>
+      </div>
+      <div class="risk">
+        <div class="src"><span>Barselona</span><strong>Superblok</strong><span class="sev md">orta risk</span></div>
+        <div class="prob"><h5>Bakıda problem</h5><p>Əhmədli və 8-ci kilometr kimi mikrorayonlar düzbucaqlı tikinti deyil. Həyətlər parkinq kimi istifadə olunur. Tranzit bağlananda tıxac qonşu küçələrə keçir.</p></div>
+        <div class="sol"><h5>Həllimiz</h5><p>Pilot yalnız mərkəzin düzbucaqlı hissəsində olur. Əvvəlcə rəqəmsal əkizdə tıxac simulyasiyası aparılır. Parkinq kənara köçürülür. Sakinlər üçün giriş icazəsi və çatdırılma saatları müəyyən edilir.</p></div>
+      </div>
+      <div class="risk">
+        <div class="src"><span>Paris</span><strong>15 dəqiqəlik şəhər</strong><span class="sev md">orta risk</span></div>
+        <div class="prob"><h5>Bakıda problem</h5><p>İş yerləri mərkəzdədir. Əhali Xırdalan, Masazır və qəsəbələrdə yaşayır. Gündəlik gediş 15 dəqiqəyə sığmır.</p></div>
+        <div class="sol"><h5>Həllimiz</h5><p>Model şəhər səviyyəsində yox, metro qovşaqları ətrafında qurulur. AI hər stansiya ətrafında çatışmayan xidmətləri tapır: məktəb, aptek, park. Tikinti icazələrində bu boşluqlar prioritet olur.</p></div>
+      </div>
+      <div class="risk">
+        <div class="src"><span>Hamısı</span><strong>Leysan və su basması</strong><span class="sev hi">yüksək risk</span></div>
+        <div class="prob"><h5>Bakıda problem</h5><p>Güclü yağışda küçələr və yeraltı keçidlər su altında qalır. Yeni piyada zonası düzgün drenajsız salınsa, eyni problem təkrarlanar.</p></div>
+        <div class="sol"><h5>Həllimiz</h5><p>Piyada zonalarında suyu keçirən örtük və yağış bağları. AI modulu hava proqnozuna və relyefə görə su yığılacaq nöqtələri əvvəlcədən göstərir. Piyadaya alternativ marşrut xəbərdarlığı göndərilir.</p></div>
+      </div>
+      <div class="risk">
+        <div class="src"><span>Kopenhagen, Seul</span><strong>Kamera ilə sayma</strong><span class="sev md">orta risk</span></div>
+        <div class="prob"><h5>Bakıda problem</h5><p>Kamera datası şəxsi həyatın toxunulmazlığı ilə bağlı narahatlıq yaradır. “Fərdi məlumatlar haqqında” Qanunla ziddiyyət riski var. İctimai etimad azala bilər.</p></div>
+        <div class="sol"><h5>Həllimiz</h5><p>Görüntü cihazın içində (edge AI) emal olunur. Mərkəzə yalnız anonim saylar gedir, üz və nömrə saxlanılmır. Bütün modellər Amsterdam tipli açıq alqoritm reyestrində dərc olunur.</p></div>
+      </div>
+      <div class="risk">
+        <div class="src"><span>Nizami küçəsi təcrübəsi</span><strong>Turistləşmə və qiymət artımı</strong><span class="sev md">orta risk</span></div>
+        <div class="prob"><h5>Bakıda problem</h5><p>Piyada zonası icarə haqqını qaldırır. Yerli kiçik biznes və sakinlər sıxışdırılır. Küçə yalnız turist üçün işləyir.</p></div>
+        <div class="sol"><h5>Həllimiz</h5><p>Pilotlar turizm mərkəzlərində yox, yaşayış və məktəb ərazilərində aparılır. Panel icarə və piyada axını dəyişikliyini birlikdə izləyir.</p></div>
+      </div>
+      <div class="risk">
+        <div class="src"><span>AI-nin özü</span><strong>Natamam data</strong><span class="sev hi">yüksək risk</span></div>
+        <div class="prob"><h5>Bakıda problem</h5><p>OSM-də bəzi ərazilər natamamdır. Məsələn, Ulduz stansiyası ətrafında 400 m-də heç bir zebra keçid qeyd olunmayıb. Natamam data AI-ni səhv istiqamətləndirir.</p></div>
+        <div class="sol"><h5>Həllimiz</h5><p>BakuBus avtobuslarına kamera qoyulur. Kompüter görmə küçəni avtomatik xəritələyir. Könüllü xəritələmə kampaniyası keçirilir. Hər hücrədə datanın etibarlılıq balı göstərilir.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="anlayislar">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">08 · Nəzəriyyə × data</span>
+      <h2>29 anlayış Bakının datası ilə</h2>
+      <p class="lede">İnsanyönümlü şəhərsalmanın 29 əsas anlayışının hər biri ölçülə bilən göstəriciyə çevrilib. Göstəricilər 808 hücrənin hər biri üçün hesablanıb, sonra bir-biri ilə çarpaz müqayisə olunub. Ölçmək üçün data olmayan anlayışlar açıq şəkildə “data yoxdur” kimi qeyd olunub. Bunlar AI modullarının dolduracağı boşluqlardır.</p>
+    </div>
+    <h3>Çarpaz analizdən çıxan nəticələr</h3>
+    <div class="findings" id="findings"></div>
+
+    <div class="concept-head" style="margin-top:36px">
+      <div>
+        <h3>Korrelasiya xəritəsi</h3>
+        <p class="note" style="margin:6px 0 12px">Spearman ρ, n = 808 hücrə (Tam küçələr yalnız magistralı olan hücrələrdə). Mavi: birlikdə artır. Qırmızı: biri artanda o biri azalır. Nöqtə ilə işarələnmiş xanalarda iki göstərici eyni xam datanı paylaşır, ona görə onların korrelasiyası qismən özündən gəlir. Nəticə çıxararkən bu xanalar nəzərə alınmayıb.</p>
+        <div class="heat-wrap" id="heat"><div class="tip" id="heat-tip" hidden></div></div>
+        <div class="heat-legend"><span>−1</span><i></i><span>+1</span><span>· ortaq komponent</span></div>
+      </div>
+      <div>
+        <h3>Metro stansiyalarında</h3>
+        <p class="note" style="margin:6px 0 12px">17 stansiyanın gündəlik sərnişin sayı ilə ətrafdakı (500 m) göstəricilərin Spearman korrelasiyası. n kiçikdir, ona görə istiqamət kimi oxuyun.</p>
+        <div class="bars" id="st-corr"></div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:36px">Anlayışlar kataloqu</h3>
+    <p class="note" style="margin:6px 0 12px">Bakı nəticəsi: tədqiqat ərazisi üzrə orta göstərici (0–100). “Xəritədə” düyməsi hücrələri həmin göstəriciyə görə rəngləyir.</p>
+    <div class="tbl-wrap"><table id="concept-table"><thead><tr><th>#</th><th>Anlayış</th><th>Necə ölçülür</th><th>Bakı</th><th>Səviyyə</th><th>AI modul</th><th></th></tr></thead><tbody></tbody></table></div>
+  </div>
+</section>
+
+<section class="block" id="ai">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">09 · Arxitektura</span>
+      <h2>Əl ilə görülən işi AI modulları ilə əvəz edirik</h2>
+      <p class="lede">İndi bu işlər əl ilə görülür: piyada axını əl ilə sayılır, svetofor rejimi sabitdir, şikayətlər bir-bir oxunur, planlama intuisiyaya əsaslanır. ADDIM bunların hər birini ayrı AI modulu ilə əvəz edir. Modullar bir data platformasının üzərində işləyir.</p>
+    </div>
+    <div class="arch" role="img" aria-label="ADDIM arxitekturası: data mənbələri, data platforması, AI modulları, insan təsdiqi və nəticələr">
+      <svg viewBox="0 0 1000 380" xmlns="http://www.w3.org/2000/svg">
+        <text class="hdr" x="20" y="22">DATA MƏNBƏLƏRİ</text>
+        <text class="hdr" x="268" y="22">PLATFORMA</text>
+        <text class="hdr" x="490" y="22">AI MODULLARI</text>
+        <text class="hdr" x="740" y="22">İNSAN · NƏTİCƏ</text>
+        <g>
+          <rect class="box" x="20" y="38" width="200" height="34" rx="3"/><text class="lbl" x="32" y="60">OSM / GeoJSON xəritə</text>
+          <rect class="box" x="20" y="80" width="200" height="34" rx="3"/><text class="lbl" x="32" y="102">BakıKart, metro turniketi</text>
+          <rect class="box" x="20" y="122" width="200" height="34" rx="3"/><text class="lbl" x="32" y="144">Edge kamera (anonim say)</text>
+          <rect class="box" x="20" y="164" width="200" height="34" rx="3"/><text class="lbl" x="32" y="186">BakuBus küçə görüntüləri</text>
+          <rect class="box" x="20" y="206" width="200" height="34" rx="3"/><text class="lbl" x="32" y="228">Peyk: istilik, ağac örtüyü</text>
+          <rect class="box" x="20" y="248" width="200" height="34" rx="3"/><text class="lbl" x="32" y="270">Hava proqnozu, yağış</text>
+          <rect class="box" x="20" y="290" width="200" height="34" rx="3"/><text class="lbl" x="32" y="312">Vətəndaş müraciətləri</text>
+        </g>
+        <rect class="core" x="268" y="110" width="176" height="150" rx="4"/>
+        <text class="lbl" x="282" y="140" style="font-weight:600">Şəhər data gölü</text>
+        <text class="lbl" x="282" y="162">PostGIS + GeoJSON API</text>
+        <text class="lbl" x="282" y="184">Rəqəmsal əkiz</text>
+        <text class="lbl" x="282" y="206">Etibarlılıq balı</text>
+        <text class="lbl" x="282" y="228">Alqoritm reyestri</text>
+        <g>
+          <rect class="box" x="490" y="38" width="210" height="30" rx="3"/><text class="lbl" x="502" y="58">M1 Axın proqnozu</text>
+          <rect class="box" x="490" y="74" width="210" height="30" rx="3"/><text class="lbl" x="502" y="94">M2 Adaptiv keçid</text>
+          <rect class="box" x="490" y="110" width="210" height="30" rx="3"/><text class="lbl" x="502" y="130">M3 Səki auditi (CV)</text>
+          <rect class="box" x="490" y="146" width="210" height="30" rx="3"/><text class="lbl" x="502" y="166">M4 İstilik və kölgə</text>
+          <rect class="box" x="490" y="182" width="210" height="30" rx="3"/><text class="lbl" x="502" y="202">M5 Ssenari simulyatoru</text>
+          <rect class="box" x="490" y="218" width="210" height="30" rx="3"/><text class="lbl" x="502" y="238">M6 Müraciət NLP (AZ)</text>
+          <rect class="box" x="490" y="254" width="210" height="30" rx="3"/><text class="lbl" x="502" y="274">M7 Sel xəbərdarlığı</text>
+          <rect class="box" x="490" y="290" width="210" height="30" rx="3"/><text class="lbl" x="502" y="310">M8 İnvestisiya prioriteti</text>
+        </g>
+        <rect class="human" x="740" y="120" width="120" height="130" rx="4"/>
+        <text class="lbl" x="752" y="150" style="font-weight:600">Operator</text>
+        <text class="lbl" x="752" y="172">AI təklif edir,</text>
+        <text class="lbl" x="752" y="192">insan təsdiq edir</text>
+        <text class="lbl" x="752" y="214">Audit jurnalı</text>
+        <g>
+          <rect class="box" x="880" y="60" width="104" height="54" rx="3"/><text class="lbl" x="890" y="82">BNA paneli</text><text class="lbl" x="890" y="102">svetoforlar</text>
+          <rect class="box" x="880" y="158" width="104" height="54" rx="3"/><text class="lbl" x="890" y="180">Planlama</text><text class="lbl" x="890" y="200">paneli</text>
+          <rect class="box" x="880" y="256" width="104" height="54" rx="3"/><text class="lbl" x="890" y="278">Vətəndaş</text><text class="lbl" x="890" y="298">tətbiqi</text>
+        </g>
+        <path class="edge" d="M220 55 C245 55 245 150 268 150"/>
+        <path class="edge" d="M220 97 C245 97 245 160 268 160"/>
+        <path class="edge" d="M220 139 C245 139 245 170 268 170"/>
+        <path class="edge" d="M220 181 C245 181 245 185 268 185"/>
+        <path class="edge" d="M220 223 C245 223 245 200 268 200"/>
+        <path class="edge" d="M220 265 C245 265 245 215 268 215"/>
+        <path class="edge" d="M220 307 C245 307 245 230 268 230"/>
+        <path class="edge" d="M444 185 C470 185 470 53 490 53"/>
+        <path class="edge" d="M444 185 C470 185 470 305 490 305"/>
+        <path class="edge" d="M444 185 L490 197"/>
+        <path class="edge" d="M700 53 C720 53 720 150 740 150"/>
+        <path class="edge" d="M700 197 L740 197"/>
+        <path class="edge" d="M700 305 C720 305 720 230 740 230"/>
+        <path class="edge" d="M860 160 C870 160 870 87 880 87"/>
+        <path class="edge" d="M860 185 L880 185"/>
+        <path class="edge" d="M860 215 C870 215 870 283 880 283"/>
+        <text class="hdr" x="268" y="290">ƏKS ƏLAQƏ: nəticələr</text>
+        <text class="hdr" x="268" y="306">modelləri yenidən öyrədir</text>
+        <path class="edge" d="M932 320 C932 360 356 360 356 312" stroke-dasharray="4 4"/>
+      </svg>
+    </div>
+
+    <div class="modules">
+      <div class="mod"><span class="code">M1</span><h3>Piyada axını proqnozu</h3><p class="what">Hər küçə üçün saatlıq piyada sayını proqnozlaşdırır. Metro, BakıKart və edge kamera datasından istifadə edir.</p><p class="kv"><b>Model</b>Qrafik neyron şəbəkə (GNN) və gradient boosting</p><p class="replaces"><b>Əvəz edir:</b> əl ilə sayma və birdəfəlik sorğular</p></div>
+      <div class="mod"><span class="code">M2</span><h3>Adaptiv piyada keçidi</h3><p class="what">Gözləyən piyada sayına görə yaşıl işığın vaxtını dəyişir. Yaşlı insan BakıKart oxutduqda yaşıl işıq uzanır (Green Man+).</p><p class="kv"><b>Model</b>Gücləndirilmiş öyrənmə (RL) və təhlükəsizlik qaydaları</p><p class="replaces"><b>Əvəz edir:</b> sabit svetofor rejimi</p></div>
+      <div class="mod"><span class="code">M3</span><h3>Səki auditi</h3><p class="what">Avtobus kameralarının görüntülərindən səki problemlərini tapır: çuxur, səkidə parklanma, pandus olmaması. Hər birini xəritəyə qeyd edir.</p><p class="kv"><b>Model</b>Kompüter görmə (YOLO və seqmentasiya)</p><p class="replaces"><b>Əvəz edir:</b> inspektorun piyada gəzintisi</p></div>
+      <div class="mod"><span class="code">M4</span><h3>İstilik və kölgə</h3><p class="what">Peyk istilik xəritəsini ağac örtüyü ilə birləşdirir. Ağac harada əkilməlidir, onu sıralayır. Piyadaya kölgəli marşrut təklif edir.</p><p class="kv"><b>Model</b>Məkan reqressiyası və marşrut optimizasiyası</p><p class="replaces"><b>Əvəz edir:</b> intuitiv yaşıllaşdırma qərarları</p></div>
+      <div class="mod"><span class="code">M5</span><h3>Ssenari simulyatoru</h3><p class="what">Sual cavablandırır: bu küçəni piyadalaşdırsaq, tıxac və piyada axını necə dəyişər? Rəqəmsal əkizdə işləyir. Yuxarıdakı xəritədə kiçik demo versiyası var.</p><p class="kv"><b>Model</b>Agent əsaslı simulyasiya və surrogat neyron model</p><p class="replaces"><b>Əvəz edir:</b> sınaq-səhv ilə tikinti</p></div>
+      <div class="mod"><span class="code">M6</span><h3>Müraciət analizi</h3><p class="what">Azərbaycan dilində şikayətləri mövzuya və təcililiyə görə sıralayır. Hər şikayəti xəritədə nöqtəyə bağlayır.</p><p class="kv"><b>Model</b>LLM və Azərbaycan dili üçün klassifikator</p><p class="replaces"><b>Əvəz edir:</b> müraciətlərin əl ilə oxunması</p></div>
+      <div class="mod"><span class="code">M7</span><h3>Sel xəbərdarlığı</h3><p class="what">Yağış proqnozu, relyef və drenaj datası ilə su yığılacaq küçələri əvvəlcədən göstərir. Yeraltı keçidləri vaxtında bağlatdırır.</p><p class="kv"><b>Model</b>Hidroloji model və ML düzəlişi</p><p class="replaces"><b>Əvəz edir:</b> hadisədən sonra reaksiya</p></div>
+      <div class="mod"><span class="code">M8</span><h3>İnvestisiya prioriteti</h3><p class="what">Piyada indeksi, tələb və boşluq analizinə görə ən faydalı layihələri sıralayır. Bu demo onun ilk versiyasıdır.</p><p class="kv"><b>Model</b>Çoxmeyarlı optimizasiya</p><p class="replaces"><b>Əvəz edir:</b> siyasi və intuitiv sıralama</p></div>
+    </div>
+    <p class="callout"><b>Niyə “tam avtomat” yox?</b> İctimai yolda svetoforu və ya yolun bağlanmasını yalnız AI-yə vermək təhlükəsizlik və hüquqi risk yaradır. Bizim modelimizdə AI işin 90%-ni görür: ölçür, proqnozlaşdırır, təklif edir. Son qərarı operator verir və hər qərar jurnala yazılır. Bu yanaşma Milli AI Strategiyasının etik prinsipləri ilə uyğundur və münsiflərin “bu real tətbiq oluna bilərmi?” sualına cavab verir.</p>
+  </div>
+</section>
+
+<section class="block" id="pilot">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">10 · Data əsaslı seçim</span>
+      <h2>Üç pilot zona</h2>
+      <p class="lede">Zonaları biz seçməmişik, xəritədəki model seçib: bunlar tələbin yüksək, rahatlığın aşağı olduğu yerlərdir.</p>
+    </div>
+    <div class="pilots" id="pilots">
+      <div class="pilot"><span class="where">Gənclik · Fətəli Xan Xoyski pr.</span><h3>Seul pilotu</h3><p>Stansiyadan gündə orta hesabla 39.6 min nəfər keçir, amma ətrafın indeksi cəmi 40-dır. 400 m-də 7 yeraltı keçid və 2.8 km magistral yol var. Top-15 siyahısındakı 4 yeraltı keçid bu prospektdədir. Yerüstü keçid və adaptiv işıq qoyulur.</p><p class="biz-line" data-biz="genclik"></p><button class="btn ghost go" type="button" data-go="Gənclik">Xəritədə göstər</button></div>
+      <div class="pilot"><span class="where">20 Yanvar · 8 Noyabr</span><h3>Qovşaq pilotu</h3><p>20 Yanvar gündə 41.8 min sərnişinlə şəhərin ən yüklü stansiyalarındandır. Siyahıda 1-ci və 2-ci yerdə olan yeraltı keçidlər buradadır: onlar həm də metro çıxışıdır, ətrafda 10–11 BakuBus dayanacağı var. 4.3 km magistral yol stansiyanı ətrafından ayırır. 15 dəqiqəlik qovşaq modeli tətbiq olunur.</p><p class="biz-line" data-biz="20yanvar"></p><button class="btn ghost go" type="button" data-go="20 Yanvar st.">Xəritədə göstər</button></div>
+      <div class="pilot"><span class="where">İnşaatçılar prospekti</span><h3>Məktəb küçəsi pilotu</h3><p>Bir yeraltı keçidin 400 m radiusunda 13 məktəb, bağça və ya xəstəxana var. Dərs saatlarında 30 km/s zonası, məktəb küçəsi və M2 adaptiv keçid tətbiq olunur.</p><p class="biz-line" data-biz="insaatcilar"></p><button class="btn ghost go" type="button" data-go="Elmlər Akademiyası">Xəritədə göstər</button></div>
+    </div>
+    <div class="timeline">
+      <div class="step"><span class="when">11–13 noyabr</span><h3>Hakaton</h3><ul><li>İndeks və xəritə demosu</li><li>M5 ssenari demosu</li><li>M6 üçün AZ dilində prototip</li></ul></div>
+      <div class="step"><span class="when">Demo Day</span><h3>Finalçı</h3><ul><li>3 pilot üçün təsir proqnozu</li><li>BNA ilə data tələbi</li><li>Biznes modeli</li></ul></div>
+      <div class="step"><span class="when">0–6 ay</span><h3>Pilot</h3><ul><li>1 qovşaqda edge sayğac</li><li>Əvvəl/sonra ölçməsi</li><li>Açıq alqoritm reyestri</li></ul></div>
+      <div class="step"><span class="when">6–18 ay</span><h3>Startap</h3><ul><li>Şəhər üzrə SaaS</li><li>Gəncə, Sumqayıt</li><li>Region şəhərləri</li></ul></div>
+    </div>
+    <h3 style="margin-top:32px">Top-15 namizədin yoxlanması</h3>
+    <p class="note" style="margin:6px 0 14px">Hər nöqtəyə Esri peyk görüntüsündə (z19, ≈0.23 m/piksel) baxılıb. Görüntünün çəkilmə tarixi məlum deyil, ona görə yekun qərar yerində yoxlamadan sonra verilir. Şəklə klikləsəniz böyüyəcək. Qırmızı dairə nöqtəni göstərir (radius 30 m). Sahədə yoxlamanı aşağıdakı formadan qeyd edin.</p>
+    <div class="tbl-wrap"><table id="sat-table"><thead><tr><th>Peyk</th><th>#</th><th>Yer</th><th>Peyk nəticəsi</th><th>Qeyd</th><th>Sahədə</th></tr></thead><tbody></tbody></table></div>
+    <div class="field" id="sahe">
+      <div>
+        <h3>Sahə yoxlaması</h3>
+        <p class="note" style="margin:6px 0 14px">Komanda telefondan doldurur, nəticə hamıya dərhal görünür. Hər nöqtədə 15 dəqiqə keçən piyadaları sayın və keçidin şəklini çəkin. Formu göndərmək üçün claude.ai hesabına daxil olmaq və artifakta redaktə və ya şərh icazəsi lazımdır.</p>
+        <form id="fc-form" name="field-check" method="POST" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field" autocomplete="off">
+          <input type="hidden" name="form-name" value="field-check"><p hidden><label>Boş saxlayın <input name="bot-field"></label></p>
+          <label class="full">Nöqtə<select id="fc-point" name="point" required></select></label>
+          <label>Yeraltı keçid işləyir?<select id="fc-works" name="works"><option value="">–</option><option>bəli</option><option>xeyr</option><option>bağlıdır</option></select></label>
+          <label>Lift və ya pandus?<select id="fc-lift" name="lift"><option value="">–</option><option>lift</option><option>pandus</option><option>yoxdur</option></select></label>
+          <label>Ən yaxın zebra, m<input id="fc-zebra" name="zebra_m" type="number" min="0" max="2000" inputmode="numeric"></label>
+          <label>Svetofor var?<select id="fc-signal" name="signal"><option value="">–</option><option>bəli</option><option>xeyr</option></select></label>
+          <label>15 dəq. keçən piyada (yeraltı)<input id="fc-ped-under" name="ped_under" type="number" min="0" inputmode="numeric"></label>
+          <label>15 dəq. yolu üstdən keçən piyada<input id="fc-ped-over" name="ped_over" type="number" min="0" inputmode="numeric"></label>
+          <label class="full">Şəkil<input id="fc-photo" name="photo" type="file" accept="image/*" capture="environment"></label>
+          <label class="full">Qeyd<textarea id="fc-note" name="note" maxlength="1000" placeholder="Məs.: pilləkən sürüşkəndir, işıqlandırma zəifdir"></textarea></label>
+          <div class="full" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="btn" id="fc-submit" type="submit">Yoxlamanı yadda saxla</button><span class="status" id="fc-status"></span></div>
+        </form>
+      </div>
+      <div>
+        <h3>Daxil olan yoxlamalar <span class="num" id="fc-total" style="font-size:15px;color:var(--ink-3)"></span></h3>
+        <div class="checks" id="fc-list"><p class="empty" id="fc-empty">Yüklənir…</p></div>
+      </div>
+    </div>
+    <div class="biz">
+      <div><h3>Kim ödəyir</h3><p>Dövlət müştəriləri (B2G): Bakı Nəqliyyat Agentliyi, Bakı Şəhər İcra Hakimiyyəti, Şəhərsalma və Arxitektura Komitəsi. Model illik SaaS lisenziyasıdır.</p></div>
+      <div><h3>İkinci gəlir</h3><p>Developerlərə və əmlak platformalarına “piyada balı” API-si satılır, Walk Score kimi. Hər mənzil elanında göstərilə bilər.</p></div>
+      <div><h3>Uğurun ölçüsü</h3><p>Piyadanın keçiddə gözləmə vaxtı, piyada qəzaları, kölgə örtüyünün faizi. Pilot zonalarda orta indeksi <span class="num" id="kpi-now">34</span>-dən 45-ə qaldırmaq.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="muraciet">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">11 · Qeydiyyat forması · son tarix 08.11.2026</span>
+      <h2>Müraciət mətni</h2>
+      <p class="lede">Qeydiyyat formasındakı “ideya” sahəsinə yapışdırmaq üçün hazır mətn. Komanda adını və üzvlərin rollarını özünüz əlavə edin.</p>
+    </div>
+    <div class="pitch">
+      <pre id="pitch-text">ADDIM — Bakı üçün süni intellekt əsaslı piyada platforması.
+
+Problem: Bakının mərkəzində piyada yeraltı keçidlər, geniş magistrallar və kölgəsiz səkilər arasında qalır. OpenStreetMap datası üzərində apardığımız analiz göstərir ki, tədqiqat ərazisində 83 yeraltı keçid nöqtəsi və 350 m-dən uzun, zebra keçidi olmayan 63 km magistral hissəsi var. 250 m-lik hücrələrin 32%-i 100 ballıq piyada indeksində 30-dan aşağı bal alır. Bakı Metropoliteninin açıq datasına görə Gənclik və 20 Yanvar stansiyalarının hər birindən gündə təxminən 40 min insan keçir, amma onların ətrafı piyada indeksində 40–48 bal alır.
+
+Həll: Seul, Amsterdam, Barselona, Paris, Kopenhagen və Sinqapurun modellərini Bakının şərtlərinə uyğunlaşdırırıq: relyef, Xəzri, yay istisi, sovet prospektləri. Hansı modelin Bakıda işləyəcəyini, hansının risk yaradacağını rəqəmsal əkizdə əvvəlcədən sınayırıq. Platforma 8 AI modulundan ibarətdir: piyada axını proqnozu, adaptiv və inklüziv svetofor, avtobus kameraları ilə səki auditi, istilik və kölgə xəritəsi, ssenari simulyatoru, Azərbaycan dilində müraciət analizi, sel xəbərdarlığı və investisiya prioriteti. AI təklif edir, operator təsdiq edir.
+
+Prototip: OpenStreetMap və opendata.az datası (metro sərnişin sayı, BakuBus dayanacaqları və marşrutları, velosiped zolaqları) üzərində GeoJSON əsaslı interaktiv xəritə, piyada indeksi, metro stansiyalarının əlçatanlıq kartları və “yeraltı keçidi yerüstünə çıxarmaq” ssenarisi artıq işləyir. Data əsasında 3 pilot zona seçilib: Gənclik, 20 Yanvar və İnşaatçılar prospekti.
+
+Startap modeli: dövlət qurumları üçün SaaS və developerlər üçün “piyada balı” API-si. Layihə 2025–2028 AI Strategiyasının prioritetlərinə uyğundur.</pre>
+      <div class="row"><button class="btn" id="copy-pitch" type="button">Mətni kopyala</button><span class="copied" id="copied" hidden>Kopyalandı</span></div>
+    </div>
+    <div class="qa">
+      <div><h3>Münsif soruşacaq: data haradandır?</h3><p>OpenStreetMap və opendata.az: Bakı Metropoliteninin gündəlik sərnişin sayı, BakuBus dayanacaqları və marşrut yükü, Yerüstü Nəqliyyat Agentliyinin velosiped datası. Pilotda BNA svetofor datası əlavə olunur. Hər hücrədə datanın etibarlılığı göstərilir.</p></div>
+      <div><h3>Bu, sadəcə xəritə deyilmi?</h3><p>Xəritə interfeysdir. Dəyər qərar mexanizmindədir: hansı keçid, hansı küçə, hansı ardıcıllıqla. Hər qərarın təsiri əvvəlcədən simulyasiya olunur.</p></div>
+      <div><h3>Niyə məhz Bakı?</h3><p>İqlim, relyef və sovet şəhərsalması Avropa modellərini birbaşa köçürməyə imkan vermir. Biz uyğunlaşdırma qatını qururuq.</p></div>
+      <div><h3>Necə böyüyəcək?</h3><p>Model şəhərdən asılı deyil. Gəncə, Sumqayıt və region şəhərləri üçün eyni məntiq yalnız data ilə işləyir.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="metod">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">12 · Metodologiya</span>
+      <h2>İndeks necə hesablanır</h2>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Komponent</th><th>Bal</th><th>Ölçü</th></tr></thead>
+        <tbody>
+          <tr><td>Metroya yaxınlıq</td><td class="n">+25</td><td>ən yaxın metro çıxışına qədər: 0 m-də tam bal, 1200 m-də sıfır</td></tr>
+          <tr><td>Parka yaxınlıq</td><td class="n">+20</td><td>0 m-də tam bal, 600 m-də sıfır</td></tr>
+          <tr><td>Zebra keçid sıxlığı</td><td class="n">+20</td><td>hücrədə 8 və daha çox keçid olduqda tam bal</td></tr>
+          <tr><td>Piyada küçəsi uzunluğu</td><td class="n">+20</td><td>hücrədə 300 m və daha çox olduqda tam bal</td></tr>
+          <tr><td>BakuBus dayanacaqları</td><td class="n">+15</td><td>hücrədə 4 və daha çox olduqda tam bal</td></tr>
+          <tr><td>Magistral yol</td><td class="n">−25</td><td>hücrədə 600 m və daha çox motorway, trunk və ya primary olduqda</td></tr>
+          <tr><td>Yeraltı keçid</td><td class="n">−10</td><td>hücrədə 2 və daha çox olduqda</td></tr>
+          <tr><td>Baza</td><td class="n">+10</td><td>nəticə 0–100 aralığında saxlanılır</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note" style="margin-top:14px">Tələb balı hücrədəki məktəb, bağça və xəstəxanaları, avtobus dayanacaqlarını və metroya yaxınlığı nəzərə alır. Metro təsiri stansiyanın sərnişin sayı ilə çəkilənir: ən yüklü stansiya tam təsir, sərnişini az olan stansiya 40% təsir verir. Boşluq = tələb − indeks. Bu, qaydaya əsaslanan ilkin modeldir. Pilotda çəkilər real piyada sayı ilə öyrədiləcək. OSM datası Overpass API ilə 31.10.2026 tarixində yüklənib. Ərazi: 40.345–40.425°N, 49.790–49.905°E.</p>
+    <h3 style="margin-top:28px">Data mənbələri</h3>
+    <div class="sources">
+      <div>Yollar, keçidlər, piyada küçələri, parklar, məktəblər<span>OpenStreetMap · ODbL</span></div>
+      <div>Stansiyalar üzrə gündəlik sərnişin sayı, 2025–2026<span>opendata.az · Bakı Metropoliteni</span></div>
+      <div>Metro çıxışlarının koordinatları (98)<span>opendata.az · Bakı Metropoliteni</span></div>
+      <div>BakuBus dayanacaqlarının koordinatları<span>opendata.az · Bakı Metropoliteni</span></div>
+      <div>BakuBus marşrutları üzrə gündəlik sərnişin, 2026<span>opendata.az · Bakı Metropoliteni</span></div>
+      <div>Avtobusların hərəkət trayektoriyası<span>opendata.az · Yerüstü Nəqliyyat Agentliyi</span></div>
+      <div>Velosiped zolaqları və parkinqləri<span>opendata.az · Yerüstü Nəqliyyat Agentliyi</span></div>
+      <div>2021-dən əvvəl yenilənmiş 9 piyada seqmentinin vizual yoxlaması (4 təsdiq, 3 aydın deyil, 2 köhnəlib)<span>2GIS · 31.10.2026 · ekran görüntüləri lokal saxlanılır</span></div>
+      <div>Top-15 yeraltı keçid namizədinin peyk yoxlaması (7 zebra yoxdur, 5 yaxında var, 3 aydın deyil)<span>Esri World Imagery · Esri, Maxar, Earthstar Geographics</span></div>
+      <div>Pilot zonalarda kafe və mağazaların vizual sayı<span>2GIS · 31.10.2026 · təxmini, ekran görüntüləri lokal</span></div>
+      <div>Bakı rayonları: əhali, yaş strukturu (100 m)<span>WorldPop 2020 · CC BY 4.0</span></div>
+      <div>Yer səthinin temperaturu və NDVI<span>Landsat 8 C2 L2, 30.08.2025 · Microsoft Planetary Computer</span></div>
+      <div>Hündürlük və meyl<span>SRTM, AWS Terrain Tiles</span></div>
+      <div>Əlilliyi olan şəxslər rayonlar üzrə, 2026<span>opendata.az · DSK</span></div>
+      <div>Rayon sərhədləri, bütün Bakının yol şəbəkəsi (77 min) və obyektləri (22 min)<span>OpenStreetMap · ODbL</span></div>
+      <div>Bilinən problem: metro çıxışları faylında “28 May” tarixə çevrilib (Excel). Skript bunu düzəldir.<span>data keyfiyyəti</span></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<dialog class="lb" id="lb"><img id="lb-img" alt=""><div class="row"><span class="credit" id="lb-cap"></span><button class="btn ghost" id="lb-close" type="button">Bağla</button></div></dialog>
+<footer>
+  <div class="wrap">Xəritə datası © OpenStreetMap iştirakçıları (ODbL). Skriptlər: <code>data/collect_opendata.py</code>, <code>data/build_opendata_geojson.py</code>, <code>data/build_geojson.py</code>. opendata.az datası CC lisenziyaları ilə. GeoJSON faylları: <code>geojson/*.geojson</code>.</div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(function(){
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const RAMP = ['--s1','--s2','--s3','--s4','--s5','--s6','--s7'];
+  const GRAMP = ['--g1','--g2','--g3','--g4'];
+  const scoreBin = s => s < 20 ? 0 : s < 30 ? 1 : s < 40 ? 2 : s < 50 ? 3 : s < 60 ? 4 : s < 70 ? 5 : 6;
+  const gapBin = g => g < 15 ? 0 : g < 30 ? 1 : g < 45 ? 2 : 3;
+  const fmt = n => Number(n).toLocaleString('az-Latn-AZ');
+  const ride = name => { const s = summary && summary.stations.find(x => x.name === name); return s && s.ride_2026; };
+
+  const map = L.map('map', {preferCanvas:true, zoomSnap:0.5, minZoom:12, maxZoom:18, attributionControl:true})
+    .fitBounds([[40.355,49.80],[40.425,49.905]]);
+  map.attributionControl.setPrefix(false).addAttribution('© OpenStreetMap iştirakçıları');
+  const renderer = L.canvas({padding:0.3});
+  L.tooltip({permanent:true, direction:'center', className:'sea', interactive:false})
+    .setLatLng([40.362,49.878]).setContent('XƏZƏR').addTo(map);
+
+  const files = ['walk_index','roads','coast','parks','pedestrian','oldcity','barriers','underpasses','metro','crossings','schools','od_bus_lines','od_bus_stops','od_metro_exits','od_bike_lanes','od_bike_parking'];
+  const data = {};
+  let summary = null;
+  const layers = {};
+  let mode = 'score'; // score | gap
+  let seoul = false;
+  let seoulBoost = new Map(); // cell index -> new score
+
+  Promise.all([
+    ...files.map(f => fetch('geojson/' + f + '.geojson').then(r => r.json()).then(j => data[f] = j)),
+    fetch('geojson/summary.json').then(r => r.json()).then(j => summary = j),
+    fetch('geojson/business.json').then(r => r.json()).then(j => data.business = j),
+    fetch('geojson/concepts.json').then(r => r.json()).then(j => data.concepts = j),
+    fetch('geojson/baku_rayons.geojson').then(r => r.json()).then(j => data.baku = j),
+    fetch('geojson/baku_grid.geojson').then(r => r.json()).then(j => data.bakugrid = j),
+    fetch('geojson/baku_analysis.json').then(r => r.json()).then(j => data.bakuA = j),
+    fetch('geojson/baku_synth.geojson').then(r => r.json()).then(j => data.synth = j),
+    fetch('geojson/baku_synth.json').then(r => r.json()).then(j => data.synthS = j)
+  ]).then(build).catch(err => {
+    document.getElementById('map').innerHTML = '<p style="padding:20px">Xəritə datası yüklənmədi: ' + err.message + '. Səhifəni yerli serverdən açın (məs. <code>python3 -m http.server</code>).</p>';
+  });
+
+  function styles(){
+    return {
+      roads: f => {
+        const c = f.properties.cls;
+        const major = c==='motorway'||c==='trunk'||c==='primary';
+        return {renderer, color: major ? css('--road-major') : css('--road'), weight: major ? 2.4 : c==='secondary' ? 1.6 : 1, opacity:.9, interactive:false};
+      },
+      coast: () => ({renderer, color: css('--coast'), weight:3, opacity:1, interactive:false}),
+      parks: () => ({renderer, color: css('--park'), fillColor: css('--park'), fillOpacity:.75, weight:0.5, interactive:false}),
+      pedestrian: f => {
+        const p = f.properties, bad = p.check === 'likely_outdated', unsure = p.check === 'uncertain' || (p.stale && !p.check);
+        const col = bad ? css('--ink-3') : css('--madder');
+        return {renderer, color: col, weight: p.kind === 'footway' ? 2.5 : 3.5, opacity: bad || unsure ? .65 : .95, dashArray: bad || unsure ? '3 4' : null, fillColor: col, fillOpacity: bad ? .15 : .35};
+      },
+      oldcity: () => ({renderer, color: css('--madder'), weight:1.5, dashArray:'4 3', fillOpacity:0, interactive:false}),
+      barriers: () => ({renderer, color: css('--critical'), weight:4, opacity:.8}),
+      cells: f => {
+        const p = f.properties;
+        const s = seoul && seoulBoost.has(p._i) ? seoulBoost.get(p._i) : p.score;
+        if (mode.startsWith('c:')) {
+          const v = p['c_' + mode.slice(2)];
+          if (v == null) return {renderer, stroke:false, fillColor:'transparent', fillOpacity:0};
+          return {renderer, stroke:false, fillColor: css(RAMP[scoreBin(v)]), fillOpacity:.72};
+        }
+        if (mode === 'gap') {
+          const g = Math.max(0, p.demand - s);
+          return {renderer, stroke:false, fillColor: g < 5 ? 'transparent' : css(GRAMP[gapBin(g)]), fillOpacity: g < 5 ? 0 : .8};
+        }
+        return {renderer, stroke:false, fillColor: css(RAMP[scoreBin(s)]), fillOpacity:.72};
+      }
+    };
+  }
+
+  function build(){
+    const S = styles();
+    data.walk_index.features.forEach((f,i) => f.properties._i = i);
+
+    layers.cells = L.geoJSON(data.walk_index, {style:S.cells, onEachFeature:(f,l) => l.on('click', () => showCell(f, l))});
+    layers.roads = L.geoJSON(data.roads, {style:S.roads});
+    layers.coast = L.geoJSON(data.coast, {style:S.coast});
+    layers.parks = L.geoJSON(data.parks, {style:S.parks});
+    layers.oldcity = L.geoJSON(data.oldcity, {style:S.oldcity});
+    layers.pedestrian = L.geoJSON(data.pedestrian, {style:S.pedestrian, onEachFeature:(f,l) => {
+      const p = f.properties;
+      const chk = {confirmed:'✓ 2GIS ilə təsdiqləndi', uncertain:'? 2GIS-də aydın deyil', likely_outdated:'✕ 2GIS-ə görə köhnəlib'}[p.check];
+      l.bindTooltip(`${p.name || 'Adsız piyada sahəsi'}<br>OSM-də son yenilənmə: ${p.updated || '?'}${p.stale && !p.check ? ' · köhnə ola bilər' : ''}${chk ? `<br><b>${chk}</b> (${p.check_date})<br><span style="white-space:normal;display:inline-block;max-width:260px">${p.check_note}</span>` : ''}`, {sticky:true});
+    }});
+    layers.barriers = L.geoJSON(data.barriers, {style:S.barriers, onEachFeature:(f,l) => l.bindTooltip(`${f.properties.name || 'Adsız magistral'} · ${fmt(f.properties.len_m)} m keçidsiz`, {sticky:true})});
+    layers.crossings = L.geoJSON(data.crossings, {pointToLayer:(f,ll) => L.circleMarker(ll, {renderer, radius:1.8, stroke:false, fillColor: f.properties.signals ? css('--good') : css('--ink-2'), fillOpacity:.85, interactive:false})});
+    layers.schools = L.geoJSON(data.schools, {pointToLayer:(f,ll) => L.circleMarker(ll, {renderer, radius:3, color:css('--panel'), weight:1, fillColor: css('--warn'), fillOpacity:1}).bindTooltip(({school:'Məktəb',kindergarten:'Bağça',hospital:'Xəstəxana'}[f.properties.kind]||'') + (f.properties.name ? ': ' + f.properties.name : ''))});
+    layers.underpasses = L.geoJSON(data.underpasses, {pointToLayer:(f,ll) => {
+      const p = f.properties;
+      const satTxt = {no_zebra:'Peyk: yerüstü zebra yoxdur, güclü namizəd', zebra_nearby:'Peyk: yaxınlıqda zebra artıq var', unclear:'Peyk: aydın deyil, yerində yoxlanmalı'}[p.sat];
+      return L.circleMarker(ll, {renderer, radius: p.candidate ? 7 : 4, color: p.sat === 'zebra_nearby' ? css('--madder') : css('--panel'), weight:2, fillColor: p.candidate ? (p.sat === 'zebra_nearby' ? css('--panel') : css('--madder')) : css('--ink-3'), fillOpacity:1})
+        .bindPopup(`<strong>${p.candidate ? '#' + p.rank + ' yerüstü keçid namizədi' : 'Yeraltı keçid'}</strong><br>${p.road || p.metro + ' yaxınlığı'}<br>Prioritet: <b>${p.priority}</b>/100<br>400 m-də məktəb/xəstəxana: <b>${p.poi_400m}</b><br>250 m-də avtobus dayanacağı: <b>${p.bus_250m}</b><br>Ən yaxın metro: ${p.metro}, <b>${fmt(p.metro_m)}</b> m${satTxt ? `<br><b>${satTxt}</b><br><span style="white-space:normal;display:inline-block;max-width:250px">${p.sat_note}</span>` : ''}`);
+    }});
+    const busMax = Math.max(1, ...data.od_bus_lines.features.map(f => f.properties.daily || 0));
+    layers.buslines = L.geoJSON(data.od_bus_lines, {style: f => ({renderer, color: css('--caspian'), opacity: f.properties.daily ? .35 + .5 * f.properties.daily / busMax : .25, weight: f.properties.daily ? 1 + 4 * f.properties.daily / busMax : 1}),
+      onEachFeature:(f,l) => l.bindTooltip(`Marşrut ${f.properties.route}` + (f.properties.daily ? ` · gündə ${fmt(f.properties.daily)} gediş` : ''), {sticky:true})});
+    layers.busstops = L.geoJSON(data.od_bus_stops, {pointToLayer:(f,ll) => L.circleMarker(ll, {renderer, radius:2.5, color: css('--panel'), weight:.8, fillColor: css('--caspian'), fillOpacity:1}).bindTooltip('🚌 ' + f.properties.name)});
+    layers.exits = L.geoJSON(data.od_metro_exits, {pointToLayer:(f,ll) => L.circleMarker(ll, {renderer, radius:3.5, color: css('--caspian'), weight:1.5, fillColor: css('--caspian'), fillOpacity:1}).bindTooltip(`${f.properties.station}: ${f.properties.exit}` + (f.properties.address ? ` · ${f.properties.address}` : ''))});
+    layers.bike = L.layerGroup([
+      L.geoJSON(data.od_bike_lanes, {style: () => ({renderer, color: css('--good'), weight:3, opacity:.9}), onEachFeature:(f,l) => f.properties.name && l.bindTooltip('Velosiped zolağı: ' + f.properties.name, {sticky:true})}),
+      L.geoJSON(data.od_bike_parking, {pointToLayer:(f,ll) => L.circleMarker(ll, {renderer, radius:2, stroke:false, fillColor: css('--good'), fillOpacity:.9, interactive:false})})
+    ]);
+    layers.metro = L.geoJSON(data.metro, {pointToLayer:(f,ll) => {
+      const live = f.properties.status === 'işləyir';
+      return L.circleMarker(ll, {renderer, radius:6, color: css('--caspian'), weight:2.5, fillColor: live ? css('--panel') : css('--caspian-soft'), fillOpacity:1, dashArray: live ? null : '2 2'})
+        .bindTooltip('Ⓜ ' + f.properties.name + (ride(f.properties.name) ? ` · gündə ${fmt(ride(f.properties.name))} sərnişin` : ''), {direction:'top', offset:[0,-6]});
+    }});
+
+    const order = ['cells','parks','roads','coast','oldcity','buslines','bike','pedestrian','barriers','crossings','schools','busstops','underpasses','exits','metro'];
+    const defaults = new Set(['cells','parks','roads','coast','oldcity','pedestrian','underpasses','metro']);
+    order.forEach(k => defaults.has(k) && layers[k].addTo(map));
+
+    const box = document.getElementById('layers');
+    const items = [
+      ['cells','Piyada indeksi', () => css('--s5')],
+      ['gap','Boşluq: tələb − indeks', () => css('--g3'), true],
+      ['barriers','Keçidsiz magistral, 350 m-dən uzun', () => css('--critical')],
+      ['underpasses','Yeraltı keçidlər (qırmızı: top 15, içi boş: yaxında zebra var)', () => css('--madder')],
+      ['metro','Metro (qırıq xətt: tikilir)', () => css('--caspian')],
+      ['exits','Metro çıxışları (opendata)', () => css('--caspian')],
+      ['buslines','BakuBus marşrutları: qalınlıq = sərnişin', () => css('--caspian')],
+      ['busstops','BakuBus dayanacaqları (opendata)', () => css('--caspian')],
+      ['bike','Velosiped zolaqları və parkinq (opendata)', () => css('--good')],
+      ['pedestrian','Piyada küçələri (qırıq: köhnə və ya şübhəli, boz: 2GIS-ə görə köhnəlib)', () => css('--madder')],
+      ['parks','Parklar', () => css('--park')],
+      ['crossings','Zebra keçidlər (yaşıl: işıqforlu)', () => css('--ink-2')],
+      ['schools','Məktəb, bağça, xəstəxana', () => css('--warn')],
+    ];
+    items.forEach(([k,label,color,isGap]) => {
+      const id = 'ly-' + k;
+      const lab = document.createElement('label');
+      lab.innerHTML = `<input type="checkbox" id="${id}"><span class="sw" style="background:${color()}"></span>${label}`;
+      const cb = lab.querySelector('input');
+      cb.checked = isGap ? false : defaults.has(k);
+      cb.addEventListener('change', () => {
+        if (isGap || k === 'cells') {
+          const gapCb = document.getElementById('ly-gap'), cellCb = document.getElementById('ly-cells');
+          if (isGap && cb.checked) cellCb.checked = false;
+          if (!isGap && cb.checked) gapCb.checked = false;
+          mode = gapCb.checked ? 'gap' : 'score';
+          document.getElementById('concept-sel').value = mode;
+          const on = gapCb.checked || cellCb.checked;
+          if (on && !map.hasLayer(layers.cells)) { layers.cells.addTo(map); layers.cells.bringToBack(); }
+          if (!on) map.removeLayer(layers.cells);
+          layers.cells.setStyle(styles().cells);
+          drawLegend();
+          return;
+        }
+        if (cb.checked) { layers[k].addTo(map); restack(); } else map.removeLayer(layers[k]);
+      });
+      box.appendChild(lab);
+    });
+    function restack(){ ['pedestrian','barriers','crossings','schools','busstops','underpasses','exits','metro'].forEach(k => map.hasLayer(layers[k]) && layers[k].bringToFront && layers[k].bringToFront()); }
+
+    const csel = document.getElementById('concept-sel');
+    csel.innerHTML = `<option value="score">Piyada indeksi</option><option value="gap">Boşluq: tələb − indeks</option><optgroup label="29 anlayış">${Object.keys(CL).filter(k => k !== 'score' && k !== 'demand').map(k => `<option value="c:${k}">${CL[k]}</option>`).join('')}</optgroup>`;
+    csel.addEventListener('change', () => {
+      mode = csel.value;
+      document.getElementById('ly-gap').checked = mode === 'gap';
+      document.getElementById('ly-cells').checked = mode !== 'gap';
+      if (!map.hasLayer(layers.cells)) { layers.cells.addTo(map); layers.cells.bringToBack(); }
+      layers.cells.setStyle(styles().cells); drawLegend();
+    });
+    renderConcepts();
+    initBaku();
+    initSynth();
+    drawLegend();
+    fillSummary();
+    drawStations();
+    prepSeoul();
+
+    // theme changes: restyle
+    const restyle = () => {
+      const S2 = styles();
+      ['roads','coast','parks','pedestrian','oldcity','barriers'].forEach(k => layers[k].setStyle(S2[k]));
+      drawScatter(); drawHeat(); if (bmap) drawBaku(); if (smap) drawSynth();
+      layers.cells.setStyle(S2.cells);
+      drawLegend();
+    };
+    matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', restyle);
+    new MutationObserver(restyle).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
+
+    const satLbl = {no_zebra:'zebra yoxdur', zebra_nearby:'yaxında zebra var', unclear:'aydın deyil'};
+    document.querySelector('#sat-table tbody').innerHTML = data.underpasses.features.filter(f => f.properties.candidate)
+      .sort((a,b) => a.properties.rank - b.properties.rank)
+      .map(f => { const p = f.properties, [lon,lat] = f.geometry.coordinates;
+        const nn = String(p.rank).padStart(2,'0');
+        if (window.ADDIM_PUBLIC) return `<tr><td>—</td><td class="n">${p.rank}</td><td>${p.road || p.metro + ' yaxınlığı'}</td><td><span class="stat ${p.sat}">${satLbl[p.sat] || '–'}</span></td><td>${p.sat_note || ''}</td><td><span class="fc-count" data-pt="U${nn}">–</span><br><a href="https://maps.google.com/?q=${lat},${lon}" target="_blank" rel="noopener">xəritədə aç</a></td></tr>`;
+        return `<tr><td><img class="thumb" src="media/sat/t${nn}.jpg" data-full="media/sat/${nn}.jpg" data-cap="#${p.rank} · ${p.road || p.metro} · Esri, Maxar, Earthstar Geographics" alt="#${p.rank} peyk görüntüsü" loading="lazy"></td><td class="n">${p.rank}</td><td>${p.road || p.metro + ' yaxınlığı'}</td><td><span class="stat ${p.sat}">${satLbl[p.sat] || '–'}</span></td><td>${p.sat_note || ''}</td><td><span class="fc-count" data-pt="U${nn}">–</span><br><a href="https://maps.google.com/?q=${lat},${lon}" target="_blank" rel="noopener">xəritədə aç</a></td></tr>`; }).join('');
+    document.querySelectorAll('[data-biz]').forEach(el => {
+      const b = data.business && data.business[el.dataset.biz];
+      if (!b) return;
+      el.innerHTML = `Yerli biznes (2GIS, görünən): <b>~${b.gis_cafe}</b> kafe və restoran, <b>~${b.gis_shop}</b> mağaza.` + (b.osm_food != null ? ` OSM-də 500 m-də: ${b.osm_food} və ${b.osm_shop}.` : '') + ` ${b.note}`
+        + (window.ADDIM_PUBLIC ? '' : `<span class="shots" style="margin-top:8px">${['kafe','magaza'].map(t => `<figure><img src="media/2gis/${el.dataset.biz}_${t}.jpg" data-full="media/2gis/${el.dataset.biz}_${t}.jpg" data-cap="${b.name} · ${t === 'kafe' ? 'kafe' : 'mağaza'} · © 2GIS, 31.10.2026" alt="${b.name}: 2GIS ${t}" loading="lazy"><figcaption>${t === 'kafe' ? 'kafe' : 'mağaza'} · © 2GIS</figcaption></figure>`).join('')}</span>`);
+    });
+
+    document.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => {
+      goStation(b.dataset.go);
+    }));
+  }
+
+  function drawLegend(){
+    const ramp = document.getElementById('legend-ramp');
+    const scale = document.getElementById('legend-scale');
+    const title = document.getElementById('legend-title');
+    if (mode.startsWith('c:')) {
+      title.textContent = (CL[mode.slice(2)] || 'Göstərici') + ', 0–100';
+      ramp.innerHTML = RAMP.map(v => `<i style="background:${css(v)}"></i>`).join('');
+      scale.innerHTML = '<span>0</span><span>20</span><span>30</span><span>40</span><span>50</span><span>60</span><span>70+</span>';
+    } else if (mode === 'gap') {
+      title.textContent = 'Boşluq (tələb − indeks)';
+      ramp.innerHTML = GRAMP.map(v => `<i style="background:${css(v)}"></i>`).join('');
+      scale.innerHTML = '<span>5</span><span>15</span><span>30</span><span>45+</span>';
+    } else {
+      title.textContent = 'Piyada indeksi, 0–100';
+      ramp.innerHTML = RAMP.map(v => `<i style="background:${css(v)}"></i>`).join('');
+      scale.innerHTML = '<span>0</span><span>20</span><span>30</span><span>40</span><span>50</span><span>60</span><span>70+</span>';
+    }
+  }
+
+  function showCell(f){
+    const p = f.properties;
+    const s = seoul && seoulBoost.has(p._i) ? seoulBoost.get(p._i) : p.score;
+    document.getElementById('cellinfo').innerHTML = `<h4>Seçilmiş hücrə</h4>
+      <dl>
+        <dt>Piyada indeksi</dt><dd>${s}${s !== p.score ? ' (əvvəl ' + p.score + ')' : ''}</dd>
+        <dt>Tələb</dt><dd>${p.demand}</dd>
+        <dt>Zebra keçid</dt><dd>${p.cross}</dd>
+        <dt>Yeraltı keçid</dt><dd>${p.under}</dd>
+        <dt>Avtobus dayanacağı</dt><dd>${p.bus}</dd>
+        <dt>Məktəb, xəstəxana</dt><dd>${p.poi}</dd>
+        <dt>Piyada küçəsi, m</dt><dd>${fmt(p.ped_m)}</dd>
+        <dt>Magistral, m</dt><dd>${fmt(p.major_m)}</dd>
+        <dt>Metroya, m</dt><dd>${fmt(p.metro_m)}</dd>
+        <dt>Parka, m</dt><dd>${fmt(p.park_m)}</dd>
+      </dl>
+      <h4 style="margin-top:10px">Anlayış balları</h4>
+      <dl>${Object.keys(CL).filter(k => p['c_' + k] !== undefined).map(k => `<dt>${CL[k]}</dt><dd>${p['c_' + k] ?? '–'}</dd>`).join('')}</dl>`;
+  }
+
+  function mean(){
+    const fs = data.walk_index.features;
+    let t = 0;
+    fs.forEach(f => t += seoul && seoulBoost.has(f.properties._i) ? seoulBoost.get(f.properties._i) : f.properties.score);
+    return t / fs.length;
+  }
+
+  function fillSummary(){
+    const s = summary;
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+    set('f-ped', s.pedestrian_km + ' km');
+    set('f-major', Math.round(s.major_road_km) + ' km');
+    set('f-under', s.underpass_sites);
+    set('f-barrier', Math.round(s.barrier_km) + ' km');
+    set('g-ped', s.pedestrian_km);
+    set('g-under', s.underpass_sites);
+    set('g-poi', s.schools_hospitals);
+    set('mean-now', mean().toFixed(1));
+    set('kpi-now', s.mean_score);
+    set('g-bike', data.od_bike_lanes.features.length);
+    set('g-bikep', data.od_bike_parking.features.length);
+  }
+
+  function drawStations(){
+    const st = summary.stations.filter(s => s.score != null);
+    const avg = summary.mean_score;
+    const bars = document.getElementById('bars');
+    bars.innerHTML = st.map(s => `<button class="bar-row" type="button" data-go="${s.name}" title="${s.name}: ${s.score}/100">
+      <span class="bname">${s.name}</span>
+      <span class="bar-track"><i style="width:${s.score}%"></i><u style="left:${avg}%"></u></span>
+      <span class="bval">${s.score}</span></button>`).join('');
+    bars.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => goStation(b.dataset.go)));
+    const tb = document.querySelector('#station-table tbody');
+    tb.innerHTML = st.map(s => `<tr><td>${s.name}</td><td class="n">${s.ride_2026 ? fmt(s.ride_2026) : '–'}</td><td class="n">${s.exits ?? '–'}</td><td class="n">${s.cross_400m}</td><td class="n">${s.under_400m}</td><td class="n">${fmt(s.major_m_400m)}</td></tr>`).join('');
+    drawScatter();
+  }
+
+  function drawScatter(){
+    const host = document.getElementById('scatter');
+    if (!host || !summary) return;
+    const st = summary.stations.filter(s => s.score != null && s.ride_2026);
+    const W = 640, H = 380, m = {l:48, r:20, t:16, b:44};
+    const xMax = 50000, yMin = 30, yMax = 70;
+    const X = v => m.l + (W - m.l - m.r) * v / xMax;
+    const Y = v => m.t + (H - m.t - m.b) * (1 - (v - yMin) / (yMax - yMin));
+    const avg = summary.mean_score, xCut = 25000;
+    const hot = s => s.ride_2026 >= xCut && s.score < 50;
+    let g = '';
+    g += `<rect class="zone" x="${X(xCut)}" y="${Y(50)}" width="${X(xMax) - X(xCut)}" height="${Y(yMin) - Y(50)}"/>`;
+    g += `<text class="zone-t" x="${X(xMax) - 6}" y="${Y(yMin) - 8}" text-anchor="end">ÇOX SƏRNİŞİN · AZ RAHATLIQ</text>`;
+    for (let v = 30; v <= 70; v += 10) g += `<line class="grid" x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${m.l - 8}" y="${Y(v) + 4}" text-anchor="end">${v}</text>`;
+    for (let v = 0; v <= xMax; v += 10000) g += `<text x="${X(v)}" y="${H - m.b + 18}" text-anchor="middle">${v / 1000}k</text>`;
+    g += `<line class="axis" x1="${m.l}" x2="${W - m.r}" y1="${Y(yMin)}" y2="${Y(yMin)}"/>`;
+    g += `<text x="${(m.l + W - m.r) / 2}" y="${H - 6}" text-anchor="middle">gündəlik sərnişin, 2026</text>`;
+    g += `<text x="12" y="${(m.t + H - m.b) / 2}" text-anchor="middle" transform="rotate(-90 12 ${(m.t + H - m.b) / 2})">piyada indeksi</text>`;
+    const labelled = new Set(st.filter(hot).map(s => s.name).concat(['28 May','Ulduz']));
+    const placed = [];
+    st.forEach(s => {
+      const cx = X(Math.min(s.ride_2026, xMax)), cy = Y(Math.max(yMin, Math.min(yMax, s.score)));
+      g += `<circle class="dot${hot(s) ? ' hot' : ''}" cx="${cx}" cy="${cy}" r="6"/>`;
+      if (labelled.has(s.name)) {
+        const right = cx > W - 140, txt = s.name.replace(' st.', ''), w = txt.length * 6.5;
+        let ly = cy + 4;
+        const x0 = right ? cx - 10 - w : cx + 10;
+        while (placed.some(p => x0 < p.x + p.w && x0 + w > p.x && Math.abs(ly - p.y) < 14)) ly += 14;
+        placed.push({x:x0, y:ly, w});
+        g += `<text class="lab" x="${right ? cx - 10 : cx + 10}" y="${ly}" text-anchor="${right ? 'end' : 'start'}">${txt}</text>`;
+      }
+      g += `<circle class="hit" data-name="${s.name}" cx="${cx}" cy="${cy}" r="14"/>`;
+    });
+    let svg = host.querySelector('svg');
+    if (!svg) { host.insertAdjacentHTML('afterbegin', `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Metro stansiyaları: gündəlik sərnişin sayı və piyada indeksi"></svg>`); svg = host.querySelector('svg'); }
+    svg.innerHTML = g;
+    const tip = document.getElementById('tip');
+    svg.querySelectorAll('.hit').forEach(c => {
+      const s = st.find(x => x.name === c.dataset.name);
+      c.addEventListener('mouseenter', () => {
+        tip.innerHTML = `<strong>Ⓜ ${s.name}</strong><br>Gündə <b>${fmt(s.ride_2026)}</b> sərnişin<br>İndeks: <b>${s.score}</b>/100`;
+        tip.hidden = false;
+        const r = svg.getBoundingClientRect(), k = r.width / W;
+        tip.style.left = Math.min(r.width - 170, +c.getAttribute('cx') * k + 12) + 'px';
+        tip.style.top = (+c.getAttribute('cy') * k - 10) + 'px';
+      });
+      c.addEventListener('mouseleave', () => tip.hidden = true);
+      c.addEventListener('click', () => goStation(s.name));
+    });
+    const hs = st.filter(hot).sort((a,b) => b.ride_2026 - a.ride_2026);
+    const total = hs.reduce((t,s) => t + s.ride_2026, 0);
+    document.getElementById('scatter-read').innerHTML = `Qırmızı zonada <b>${hs.length}</b> stansiya var: ${hs.map(s => s.name.replace(' st.', '')).join(', ')}. Onlardan gündə cəmi <b>${fmt(total)}</b> sərnişin keçir, ətraflarının indeksi isə 50-dən aşağıdır. Pilot investisiya ən çox insana burada təsir edir. Müqayisə üçün: 28 May şəhərin ən yüklü stansiyalarındandır, amma indeksi ${summary.stations.find(x => x.name === '28 May')?.score}-dir. Deməli yüksək yük və rahat mühit birlikdə mümkündür.`;
+  }
+
+  function goStation(name){
+    const s = summary.stations.find(x => x.name === name);
+    if (!s) return;
+    document.getElementById('xerite').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+    map.flyTo([s.lat, s.lon], 16, {duration: .8});
+    L.popup().setLatLng([s.lat, s.lon]).setContent(`<strong>Ⓜ ${s.name}</strong>${s.ride_2026 ? `<br>Gündə <b>${fmt(s.ride_2026)}</b> sərnişin` : ''}<br>500 m indeks: <b>${s.score}</b>/100<br>400 m-də zebra: <b>${s.cross_400m}</b>, yeraltı: <b>${s.under_400m}</b><br>Magistral: <b>${fmt(s.major_m_400m)}</b> m`).openOn(map);
+  }
+
+  // Seul ssenarisi: top-15 yeraltı keçidin hücrəsinə +2 zebra keçid, yeraltı cəriməsi götürülür
+  function prepSeoul(){
+    const cands = data.underpasses.features.filter(f => f.properties.candidate && f.properties.sat !== 'zebra_nearby');
+    const cells = data.walk_index.features;
+    const clamp = v => Math.max(0, Math.min(1, v));
+    cells.forEach(f => {
+      const ring = f.geometry.coordinates[0];
+      const [x0,y0] = ring[0], [x1,y1] = ring[2];
+      const hits = cands.filter(c => { const [x,y] = c.geometry.coordinates; return x >= x0 && x < x1 && y >= y0 && y < y1; }).length;
+      if (!hits) return;
+      const p = f.properties;
+      const crossOld = 20 * clamp(p.cross / 8), crossNew = 20 * clamp((p.cross + 2 * hits) / 8);
+      const underOld = 10 * clamp(p.under / 2), underNew = 10 * clamp(Math.max(0, p.under - hits) / 2);
+      const s = Math.round(Math.max(0, Math.min(100, p.score + (crossNew - crossOld) + (underOld - underNew))));
+      seoulBoost.set(p._i, s);
+    });
+    const before = mean();
+    const btn = document.getElementById('btn-seoul');
+    btn.addEventListener('click', () => {
+      seoul = !seoul;
+      btn.setAttribute('aria-pressed', String(seoul));
+      btn.textContent = seoul ? 'Ssenarini ləğv et' : 'Ssenarini tətbiq et';
+      layers.cells.setStyle(styles().cells);
+      const now = mean();
+      const touched = [...seoulBoost.entries()];
+      const localBefore = touched.reduce((t,[i]) => t + data.walk_index.features[i].properties.score, 0) / touched.length;
+      const localAfter = touched.reduce((t,[,s]) => t + s, 0) / touched.length;
+      document.getElementById('delta').innerHTML = seoul
+        ? `Orta indeks: <b>${now.toFixed(1)}</b> (əvvəl ${before.toFixed(1)})<br>Toxunulan ${touched.length} hücrədə: <b>${localBefore.toFixed(0)} → ${localAfter.toFixed(0)}</b>`
+        : `Orta indeks: <b>${now.toFixed(1)}</b>`;
+      if (seoul) {
+        const b = L.latLngBounds(cands.map(f => [f.geometry.coordinates[1], f.geometry.coordinates[0]]));
+        map.flyToBounds(b.pad(0.2), {duration:.8});
+        if (!map.hasLayer(layers.underpasses)) { layers.underpasses.addTo(map); document.getElementById('ly-underpasses').checked = true; }
+      }
+    });
+  }
+
+
+  // ---------- Bütün Bakı: tematik analiz ----------
+  const BM = [
+    ['Demoqrafiya', [['pop','Əhali','nəfər','r'],['density','Əhali sıxlığı','nəfər/km²','r'],['disabled_per1000','Əlilliyi olan şəxslər','1000 nəfərə','r'],['g:pop','Əhali (1 km hücrə)','nəfər/km²','g']]],
+    ['Sosial-iqtisadi', [['poi_km2','Xidmət və ticarət sıxlığı','obyekt/km²','r'],['commerce_per1000','Ticarət və iaşə','1000 nəfərə','r'],['office_per1000','Ofislər','1000 nəfərə','r'],['mix_index','Qarışıq istifadə indeksi','0–100','r'],['tourism_beds','Mehmanxana və hostellər','say','r'],['g:poi','Obyektlər (1 km hücrə)','say','g']]],
+    ['Topoqrafiya', [['elev_mean','Orta hündürlük','m','r'],['slope_mean','Orta meyl','%','r'],['steep_pct','Dik ərazi (meyl > 15%)','ərazinin %-i','r'],['g:elev','Hündürlük (1 km hücrə)','m','g'],['g:slope','Meyl (1 km hücrə)','%','g']]],
+    ['Küçə şəbəkəsi', [['road_km_km2','Yol sıxlığı','km/km²','r'],['intersections_km2','Kəsişmə sıxlığı','kəsişmə/km²','r'],['deadend_pct','Dalan küçə payı','%','r'],['major_share','Magistral payı','yolların %-i','r'],['ped_km_km2','Piyada yolu sıxlığı','km/km²','r'],['g:inter','Kəsişmələr (1 km hücrə)','say','g']]],
+    ['Nəqliyyat', [['transit500_pct','Dayanacağa 500 m (SDG 11.2.1)','əhalinin %-i','r'],['metro_ride','Metro sərnişini','gündə','r'],['bus_stops_km2','Avtobus dayanacağı sıxlığı','dayanacaq/km²','r'],['g:stops','Dayanacaqlar (1 km hücrə)','say','g']]],
+    ['İqlim və yaşıllıq', [['lst_mean','Yer səthinin temperaturu','°C, 30.08.2025','r'],['uhi','Şəhər ortasından fərq','°C','r'],['green_pct','Yaşıl örtük (NDVI > 0.3)','%','r'],['g:lst','Səth temperaturu (1 km hücrə)','°C','g'],['g:ndvi','NDVI (1 km hücrə)','indeks','g']]],
+    ['Risk', [['below_m20_pct','Alçaq sahil (−20 m-dən aşağı)','ərazinin %-i','r'],['steep_pct','Sürüşmə riski: dik yamac','ərazinin %-i','r']]],
+    ['Tarixi-mədəni', [['heritage','Tarixi obyektlər','say','r'],['culture','Mədəniyyət obyektləri','say','r']]],
+    ['Piyada (mərkəz)', [['walk_score','Piyada indeksi (mərkəzi zona)','0–100','r']]],
+  ];
+  const BMETA = {}; BM.forEach(([th, ms]) => ms.forEach(m => BMETA[m[0]] = {theme: th, label: m[1], unit: m[2], level: m[3]}));
+  const SRC = {pop:'WorldPop 2020, 100 m', density:'WorldPop 2020', disabled_per1000:'DSK 2026 / WorldPop 2020', poi_km2:'OSM', commerce_per1000:'OSM / WorldPop', office_per1000:'OSM / WorldPop', mix_index:'OSM, 8 kateqoriya', tourism_beds:'OSM',
+    elev_mean:'SRTM (AWS terrain tiles)', slope_mean:'SRTM', steep_pct:'SRTM', road_km_km2:'OSM', intersections_km2:'OSM', deadend_pct:'OSM', major_share:'OSM', ped_km_km2:'OSM', transit500_pct:'BakuBus, metro / WorldPop', metro_ride:'Bakı Metropoliteni 2026', bus_stops_km2:'BakuBus',
+    lst_mean:'Landsat 8, 30.08.2025', uhi:'Landsat 8', green_pct:'Landsat 8 NDVI', below_m20_pct:'SRTM', heritage:'OSM', culture:'OSM', walk_score:'ADDIM indeksi, yalnız mərkəzi zona'};
+  let bmap = null, bray = null, bgrid = null, bmetric = 'density', brend = null;
+  const fmtN = v => v == null ? '–' : (Math.abs(v) >= 1000 ? fmt(Math.round(v)) : (Number.isInteger(v) ? v : v.toFixed(Math.abs(v) < 1 ? 2 : 1)));
+
+  function bBreaks(vals){
+    const v = vals.filter(x => x != null).sort((a,b) => a-b); if (!v.length) return [];
+    const q = p => v[Math.min(v.length-1, Math.floor(p * (v.length-1)))];
+    return [q(1/7), q(2/7), q(3/7), q(4/7), q(5/7), q(6/7)];
+  }
+  function bColor(v, br){ if (v == null) return 'transparent'; let i = 0; while (i < br.length && v > br[i]) i++; return css(RAMP[i]); }
+
+  function initBaku(){
+    if (bmap || !data.baku) return;
+    brend = L.canvas({padding:0.3});
+    bmap = L.map('bmap', {preferCanvas:true, zoomSnap:0.5, minZoom:9, maxZoom:15}).fitBounds([[40.18,49.45],[40.62,50.45]]);
+    bmap.attributionControl.setPrefix(false).addAttribution('© OpenStreetMap · WorldPop · Landsat · SRTM');
+    const sel = document.getElementById('bmetric');
+    sel.innerHTML = BM.map(([th, ms]) => `<optgroup label="${th}">${ms.map(m => `<option value="${m[0]}">${m[1]}</option>`).join('')}</optgroup>`).join('');
+    sel.value = bmetric;
+    sel.addEventListener('change', () => { bmetric = sel.value; drawBaku(); });
+    drawBaku();
+    renderBakuText();
+  }
+  function drawBaku(){
+    const meta = BMETA[bmetric], isGrid = meta.level === 'g', key = isGrid ? bmetric.slice(2) : bmetric;
+    if (bray) bmap.removeLayer(bray); if (bgrid) bmap.removeLayer(bgrid);
+    const rf = data.baku.features;
+    let br;
+    if (isGrid) {
+      const gf = data.bakugrid.features;
+      br = bBreaks(gf.map(f => f.properties[key]));
+      bgrid = L.geoJSON(data.bakugrid, {style: f => ({renderer: brend, stroke:false, fillColor: bColor(f.properties[key], br), fillOpacity: f.properties[key] == null ? 0 : .78}),
+        onEachFeature: (f,l) => l.on('click', () => { const p = f.properties; document.getElementById('binfo').innerHTML = `<h4>1 km hücrə · ${p.rayon || '–'}</h4><dl><dt>Əhali</dt><dd>${fmt(p.pop)}</dd><dt>Obyektlər</dt><dd>${p.poi}</dd><dt>Kəsişmələr</dt><dd>${p.inter}</dd><dt>Dayanacaqlar</dt><dd>${p.stops}</dd><dt>Səth temp.</dt><dd>${p.lst ?? '–'} °C</dd><dt>NDVI</dt><dd>${p.ndvi ?? '–'}</dd><dt>Hündürlük</dt><dd>${p.elev ?? '–'} m</dd><dt>Meyl</dt><dd>${p.slope ?? '–'}%</dd></dl>`; })}).addTo(bmap);
+      bray = L.geoJSON(data.baku, {style: () => ({renderer: brend, color: css('--ink'), weight:1.2, fill:false, opacity:.7}), interactive:false}).addTo(bmap);
+    } else {
+      br = bBreaks(rf.map(f => f.properties[key]));
+      bray = L.geoJSON(data.baku, {style: f => ({renderer: brend, color: css('--panel'), weight:1.5, fillColor: bColor(f.properties[key], br), fillOpacity: f.properties[key] == null ? .05 : .85}),
+        onEachFeature: (f,l) => { const p = f.properties;
+          l.bindTooltip(`${p.rayon}: ${fmtN(p[key])} ${meta.unit}`, {sticky:true});
+          l.on('click', () => showRayon(p)); }}).addTo(bmap);
+    }
+    document.getElementById('blegend-title').textContent = `${meta.label}, ${meta.unit}`;
+    document.getElementById('blegend-ramp').innerHTML = RAMP.map(v => `<i style="background:${css(v)}"></i>`).join('');
+    document.getElementById('blegend-scale').innerHTML = ['', ...br].map((b,i) => `<span>${i === 0 ? 'min' : fmtN(b)}</span>`).join('');
+    document.getElementById('bsrc').textContent = 'Mənbə: ' + (SRC[key] || (isGrid ? 'WorldPop, OSM, Landsat, SRTM; 1 km hücrələr' : '')) + (isGrid ? '' : '. Siniflər kvantillərlə bölünüb (12 rayon).');
+  }
+  function showRayon(p){
+    const rows = [['Əhali', fmt(p.pop)], ['Sahə', p.area_km2 + ' km²'], ['Sıxlıq', fmt(p.density) + ' /km²'], ['Metro stansiyası', p.metro_st], ['Metro sərnişini/gün', fmt(p.metro_ride)], ['Dayanacağa 500 m', p.transit500_pct + '%'],
+      ['Kəsişmə/km²', p.intersections_km2], ['Dalan küçə', p.deadend_pct + '%'], ['Obyekt/km²', p.poi_km2], ['Səth temp.', p.lst_mean + ' °C'], ['Yaşıl örtük', p.green_pct + '%'], ['Dik ərazi', p.steep_pct + '%'], ['Alçaq sahil', p.below_m20_pct + '%'], ['Əlillik/1000', p.disabled_per1000 ?? '–'], ['Piyada indeksi', p.walk_score ?? 'ölçülməyib']];
+    document.getElementById('binfo').innerHTML = `<h4>${p.rayon} rayonu</h4><dl>${rows.map(([a,b]) => `<dt>${a}</dt><dd>${b}</dd>`).join('')}</dl>`;
+  }
+  function renderBakuText(){
+    const A = data.bakuA, R = A.rayons, C = A.city;
+    const by = k => [...R].filter(r => r[k] != null).sort((a,b) => b[k] - a[k]);
+    const top = k => by(k)[0], bot = k => by(k).slice(-1)[0];
+    const r = n => R.find(x => x.rayon === n);
+    document.getElementById('bcity').innerHTML = `<h4>Bakı · yekun</h4><dl class="cellinfo"><dt>Əhali (WorldPop 2020)</dt><dd>${fmt(C.pop)}</dd><dt>Quru sahə</dt><dd>${C.area_km2} km²</dd><dt>Dayanacağa 500 m</dt><dd>${C.transit500_pct}%</dd><dt>Metro sərnişini/gün</dt><dd>${fmt(C.metro_ride_total)}</dd><dt>Səth temp. (əhaliyə görə)</dt><dd>${C.lst_popw} °C</dd><dt>Yaşıl örtük</dt><dd>${C.green_pct_popw}%</dd><dt>Uşaq 0–14 / 65+</dt><dd>${C.child_pct_city}% / ${C.old_pct_city}%</dd><dt>Əlilliyi olan şəxslər</dt><dd>${fmt(C.disabled)}</dd></dl>`;
+    const T = [
+      {t:'Demoqrafiya', src:'WorldPop 2020 · DSK 2026', m:['density','disabled_per1000','g:pop'],
+       var:`Mərkəz çox sıxdır: Nəsimidə ${fmt(r('Nəsimi').density)}, Yasamalda ${fmt(r('Yasamal').density)} nəfər/km². Bu, piyada şəhəri üçün kifayət qədər kritik kütlədir.`,
+       yox:`Yaş strukturu rayonlar üzrə açıq data kimi yoxdur. WorldPop bütün rayonlara eyni payı verir: uşaqlar ${C.child_pct_city}%, 65+ ${C.old_pct_city}%.`,
+       dq:`Əhalinin üçdə biri periferiyadadır: Sabunçu (${fmt(r('Sabunçu').pop)}), Binəqədi (${fmt(r('Binəqədi').pop)}). Əlillik ən yüksək Suraxanıda (${r('Suraxanı').disabled_per1000}/1000) və Xəzərdədir (${r('Xəzər').disabled_per1000}/1000). Bu rayonlar həm də ən zəif nəqliyyatlı rayonlardır.`},
+      {t:'Sosial-iqtisadi', src:'OSM · WorldPop', m:['poi_km2','office_per1000','mix_index'],
+       var:`Mərkəzi rayonlarda qarışıq istifadə yüksəkdir: Nəsimi, Yasamal, Nərimanov və Nizamidə indeks ${r('Nəsimi').mix_index}-dir.`,
+       yox:`Rayonlar üzrə gəlir, əmək haqqı və mənzil qiyməti açıq data kimi yoxdur. DSK bunları yalnız “Bakı şəhəri – cəmi” üzrə verir.`,
+       dq:`Ofislər Nərimanovda (${r('Nərimanov').office_per1000}/1000), turizm Səbaildə (${r('Səbail').tourism_beds} mehmanxana) toplanıb. Obyekt sıxlığı Nəsimidə ${fmtN(r('Nəsimi').poi_km2)}/km², Qaradağda isə ${fmtN(r('Qaradağ').poi_km2)}/km²-dir.`},
+      {t:'Topoqrafiya', src:'SRTM 30 m', m:['elev_mean','steep_pct','g:slope'],
+       var:`Mərkəzi Nərimanov və Nizami düzənlikdir: orta meyl ${r('Nərimanov').slope_mean}% və ${r('Nizami').slope_mean}%. Piyada və velosiped üçün ən uyğun relyef buradadır.`,
+       yox:`Səbailin ${r('Səbail').steep_pct}%-i dikdir (meyl > 15%). Amfiteatr relyefi yuxarı məhəllələri sahildən ayırır.`,
+       dq:`Hündürlük ${r('Pirallahı').elev_min} m-dən (sahil, dəniz səviyyəsindən aşağı) ${r('Qaradağ').elev_max} m-ə qədər dəyişir. Yasamalın orta hündürlüyü ${r('Yasamal').elev_mean} m-dir. Universal dizayn üçün yamaclar əsas maneədir.`},
+      {t:'Küçə şəbəkəsi', src:'OSM, 77 min yol', m:['intersections_km2','deadend_pct','major_share'],
+       var:`Mərkəzdə şəbəkə sıx və bağlıdır: Nəsimidə ${r('Nəsimi').intersections_km2} kəsişmə/km², dalan küçə cəmi ${r('Nəsimi').deadend_pct}%.`,
+       yox:`Qəsəbələrdə şəbəkə qırıqdır: dalan küçə payı Sabunçuda ${r('Sabunçu').deadend_pct}%, Səbaildə ${r('Səbail').deadend_pct}%, Binəqədidə ${r('Binəqədi').deadend_pct}%.`,
+       dq:`Magistral payı Səbaildə ${r('Səbail').major_share}%, Yasamalda ${r('Yasamal').major_share}%-dir. Mərkəzi rayonlar avtomobil tranziti ilə bölünüb, bu da piyada indeksinin aşağı olmasının əsas səbəbidir.`},
+      {t:'Nəqliyyat', src:'BakuBus · Metro · WorldPop', m:['transit500_pct','metro_ride','bus_stops_km2'],
+       var:`Əhalinin ${C.transit500_pct}%-i avtobus dayanacağına və ya metroya 500 m məsafədə yaşayır. Bu, SDG 11.2.1 üzrə yüksək göstəricidir. Metro gündə ${fmt(C.metro_ride_total)} sərnişin daşıyır.`,
+       yox:`${C.no_metro_rayons.length} rayonda metro yoxdur: ${C.no_metro_rayons.join(', ')}. Orada ${fmt(C.pop_no_metro)} nəfər yaşayır.`,
+       dq:`Əlçatanlıq Pirallahıda ${r('Pirallahı').transit500_pct}%, Qaradağda ${r('Qaradağ').transit500_pct}%-dir. Ən yüklü metro Nizami rayonundadır (${fmt(r('Nizami').metro_ride)}/gün), amma piyada indeksi orada cəmi ${r('Nizami').walk_score}-dir.`},
+      {t:'İqlim və yaşıllıq', src:'Landsat 8, 30.08.2025', m:['lst_mean','green_pct','g:lst'],
+       var:`Mərkəz periferiyadan sərindir: səth temperaturu Xətaidə ${r('Xətai').lst_mean}°C, Nəsimidə ${r('Nəsimi').lst_mean}°C. Suvarılan parklar və kölgə işləyir. Bu, “tərs istilik adası” effektidir.`,
+       yox:`Əhaliyə görə orta yaşıl örtük cəmi ${C.green_pct_popw}%-dir. Səth temperaturu ${C.lst_popw}°C-yə çatır, piyada üçün yay günü çətindir.`,
+       dq:`Ən isti rayon Qaradağdır (${r('Qaradağ').lst_mean}°C, 90-cı persentil ${r('Qaradağ').lst_p90}°C), sonra Pirallahı (${r('Pirallahı').lst_mean}°C). Çılpaq səhra səthi və sənaye zonaları burada istini artırır.`},
+      {t:'Risk', src:'SRTM · ədəbiyyat', m:['below_m20_pct','steep_pct'],
+       var:`Mərkəzi Nərimanov, Nizami və Yasamal həm alçaq sahil zonasından, həm də dik yamaclardan kənardadır.`,
+       yox:`Daşqın, sürüşmə və seysmik risk xəritələri açıq data kimi yoxdur. Bakı yüksək seysmik zonadadır, amma məkan datası mövcud deyil.`,
+       dq:`Pirallahının ${r('Pirallahı').below_m20_pct}%-i, Səbailin ${r('Səbail').below_m20_pct}%-i, Xətainin ${r('Xətai').below_m20_pct}%-i −20 m-dən aşağıdadır, Xəzər səviyyəsinə yaxın. Səbailin dik yamacları (Bayıl) sürüşmə riski daşıyır.`},
+      {t:'Tarixi-mədəni', src:'OSM', m:['heritage','culture'],
+       var:`İrs Səbaildə toplanıb: ${r('Səbail').heritage} tarixi və ${r('Səbail').culture} mədəniyyət obyekti var, İçərişəhər UNESCO siyahısındadır.`,
+       yox:`Periferiyada mədəni infrastruktur zəifdir: Qaradağda ${r('Qaradağ').culture}, Pirallahıda ${r('Pirallahı').culture} obyekt var.`,
+       dq:`Abşeron qəsəbələrindəki qalalar (Mərdəkan, Ramana, Nardaran) ayrı-ayrı nişanələrdir, bir marşrutla birləşmir. Lynch-in “nişanə” anlayışı baxımından istifadə olunmamış imkandır.`},
+    ];
+    document.getElementById('themes').innerHTML = T.map(t => `<article class="theme"><header><h3>${t.t}</h3><span class="src">${t.src}</span></header><ul><li class="var"><b>Var</b><span>${t.var}</span></li><li class="yox"><b>Yoxdur</b><span>${t.yox}</span></li><li class="dq"><b>Diqqət</b><span>${t.dq}</span></li></ul><div class="mbtns">${t.m.map(k => `<button class="cbtn" type="button" data-bm="${k}">${BMETA[k].label}</button>`).join('')}</div></article>`).join('');
+    document.querySelectorAll('[data-bm]').forEach(b => b.addEventListener('click', () => { bmetric = b.dataset.bm; document.getElementById('bmetric').value = bmetric; drawBaku(); document.getElementById('baki').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); }));
+
+    // müqayisə cədvəli
+    const COLS = [['pop','Əhali'],['density','Sıxlıq'],['metro_ride','Metro/gün'],['transit500_pct','500 m %'],['intersections_km2','Kəsişmə/km²'],['deadend_pct','Dalan %'],['poi_km2','Obyekt/km²'],['lst_mean','Səth °C'],['green_pct','Yaşıl %'],['steep_pct','Dik %'],['below_m20_pct','Alçaq %'],['disabled_per1000','Əlil/1000'],['walk_score','Piyada']];
+    let sortK = 'pop', dir = -1;
+    const tbl = document.getElementById('rtable');
+    const draw = () => {
+      const max = {}; COLS.forEach(([k]) => max[k] = Math.max(...R.map(x => x[k] ?? 0)) || 1);
+      const rows = [...R].sort((a,b) => dir * ((a[sortK] ?? -1e9) - (b[sortK] ?? -1e9)));
+      tbl.innerHTML = `<thead><tr><th>Rayon</th>${COLS.map(([k,l]) => `<th style="cursor:pointer" data-k="${k}">${l}${k === sortK ? (dir < 0 ? ' ↓' : ' ↑') : ''}</th>`).join('')}</tr></thead><tbody>${rows.map(x => `<tr><td>${x.rayon}</td>${COLS.map(([k]) => `<td class="n"><i style="width:${Math.max(0, 100 * (x[k] ?? 0) / max[k])}%"></i><span>${fmtN(x[k])}</span></td>`).join('')}</tr>`).join('')}</tbody>`;
+      tbl.querySelectorAll('th[data-k]').forEach(th => th.addEventListener('click', () => { if (sortK === th.dataset.k) dir = -dir; else { sortK = th.dataset.k; dir = -1; } draw(); }));
+    };
+    draw();
+    document.getElementById('gaps').innerHTML = [
+      'Yaş strukturu: WorldPop rayonlar üzrə fərq vermir, yalnız şəhər üzrə istifadə olunub.',
+      'Binalar: OSM-də Bakının binaları çox natamamdır (məs. Səbaildə 0). Bina sıxlığı ölçülməyib.',
+      'Gəlir və mənzil: DSK yalnız “Bakı şəhəri – cəmi” verir. Rayon səviyyəsində sosial-iqtisadi data yoxdur.',
+      'Əhali WorldPop 2020-dir, əlillik isə DSK 2026. İl fərqi nisbətləri bir qədər təhrif edə bilər.',
+      'Səth temperaturu bir yay gününə aiddir (30.08.2025, 11:00 civarı). Çoxillik ortalama deyil.',
+      'Seysmik, daşqın və qəza datası açıq deyil. Risk mövzusu proksilərlə qiymətləndirilib.',
+    ].map(t => `<div>${t}</div>`).join('');
+
+    // SWOT
+    const nm = C.no_metro_rayons;
+    const SW = [
+      ['s','Güclü tərəflər','S',[
+        `Nəqliyyat əhatəsi: əhalinin <b>${C.transit500_pct}%</b>-i dayanacağa 500 m məsafədədir. Metro gündə <b>${fmt(C.metro_ride_total)}</b> sərnişin daşıyır.`,
+        `Sıx və qarışıq mərkəz: Nəsimidə <b>${fmt(r('Nəsimi').density)}</b> nəfər/km², <b>${r('Nəsimi').intersections_km2}</b> kəsişmə/km², dalan küçə cəmi <b>${r('Nəsimi').deadend_pct}%</b>. Bu, Jacobs və Gehl üçün ideal toxumadır.`,
+        `Mərkəz sərindir: suvarılan parklar və ağaclar səth temperaturunu periferiyaya görə <b>${(r('Qaradağ').lst_mean - r('Nəsimi').lst_mean).toFixed(1)}°C</b> aşağı saxlayır.`,
+        `Güclü irs və nişanələr: Səbaildə <b>${r('Səbail').heritage}</b> tarixi obyekt, UNESCO İçərişəhər, Dənizkənarı bulvar.`,
+        `Açıq data ekosistemi (opendata.az: metro, BakuBus, velosiped) və 2025–2028 AI Strategiyası.`]],
+      ['w','Zəif tərəflər','W',[
+        `<b>${nm.length}</b> rayonda metro yoxdur (${nm.join(', ')}), orada <b>${fmt(C.pop_no_metro)}</b> nəfər yaşayır.`,
+        `Periferiyada nəqliyyat əlçatanlığı aşağıdır: Pirallahıda <b>${r('Pirallahı').transit500_pct}%</b>, Qaradağda <b>${r('Qaradağ').transit500_pct}%</b>.`,
+        `Qəsəbələrdə şəbəkə qırıqdır: dalan küçə payı <b>${r('Sabunçu').deadend_pct}%</b> (Sabunçu), <b>${r('Suraxanı').deadend_pct}%</b> (Suraxanı).`,
+        `Mərkəzdə magistral hökmrandır: Səbaildə yolların <b>${r('Səbail').major_share}%</b>-i magistraldır. Mərkəzi zonada piyada indeksi orta hesabla <b>${summary.mean_score}</b>/100-dür.`,
+        `Yaşıl örtük azdır (<b>${C.green_pct_popw}%</b>). Səbailin <b>${r('Səbail').steep_pct}%</b>-i dik yamacdır, əlçatanlığı çətinləşdirir.`,
+        `Sintez: <b>${fmt(data.synthS.hot_pop)}</b> nəfər statistik qaynar nöqtələrdə yaşayır. <b>${fmt(data.synthS.overlap_pop.slice(4).reduce((a,b) => a+b, 0))}</b> nəfərin hücrəsində 4 və daha çox problem üst-üstə düşür.`]],
+      ['o','İmkanlar','O',[
+        `2026 “Şəhərsalma və Memarlıq İli” və Milli AI Strategiyası siyasi dəstək yaradır.`,
+        `Metro genişlənir: <b>${summary.metro_building}</b> stansiya tikilir. Hər birinin ətrafında piyada yönümlü TOD planlamaq mümkündür.`,
+        `Mərkəzin sərinlik modelini (suvarılan yaşıllıq və kölgə) Qaradağ və Pirallahı kimi isti periferiyaya köçürmək olar.`,
+        `Sahil xətti: Xəzər, Pirallahı və Abşeron çimərlikləri bulvar modelinin davamı ola bilər.`,
+        `Düz relyefli Nərimanov və Nizami (meyl <b>${r('Nərimanov').slope_mean}%</b>) velosiped şəbəkəsi üçün ən uyğun pilot zonadır.`,
+        `Prioritet zonalardan biri olan Keşlə (Xətai) tikilməkdə olan metro stansiyalarının yanındadır. Stansiya açılmamış piyada-yönümlü TOD planlamaq üçün nadir fürsətdir.`]],
+      ['t','Təhdidlər','T',[
+        `Seysmik risk: Bakı yüksək seysmik zonadadır, açıq məkan datası yoxdur.`,
+        `Alçaq sahil: Pirallahının <b>${r('Pirallahı').below_m20_pct}%</b>-i, Səbailin <b>${r('Səbail').below_m20_pct}%</b>-i Xəzər səviyyəsinə yaxındır. Dəniz səviyyəsinin dəyişməsi və leysan daşqınları burada risk yaradır.`,
+        `İstilik artır: yay günü səth temperaturu Qaradağda <b>${r('Qaradağ').lst_p90}°C</b>-yə çatır (90-cı persentil). İqlim dəyişməsi piyada həyatını məhdudlaşdırır.`,
+        `Avtomobil asılılığı və tranzit tıxacları piyadalaşdırmaya qarşı ictimai müqavimət yarada bilər.`,
+        `Data boşluqları (binalar, gəlir, qəza, yaş) yanlış qərar riskini artırır.`]],
+    ];
+    document.getElementById('swot-grid').innerHTML = SW.map(([c,h,l,items]) => `<div class="swq ${c}"><h3>${h}<span>${l}</span></h3><ul>${items.map(i => `<li>${i}</li>`).join('')}</ul></div>`).join('');
+  }
+
+
+  // ---------- Sintez ----------
+  const TYPE_INFO_BY = {};
+  const TYPE_INFO = [
+    {code:'nucleus', name:'Kompakt şəhər nüvəsi', d:'Sıx, qarışıq istifadəli və nəqliyyatla yaxşı təmin olunmuş toxuma. Əsas problem magistralların hökmranlığı və kölgə çatışmazlığıdır.', rx:'Seul və Barselona: yerüstü keçid, magistralın sakitləşdirilməsi, superblok, kölgəli dəhlizlər.'},
+    {code:'suburb', name:'Abşeron qəsəbələri', d:'Az sıx, alçaqmərtəbəli qəsəbə toxuması. Küçələrin üçdə biri dalandır, dayanacağa orta məsafə 500 m-dən çoxdur.', rx:'15 dəqiqəlik şəhər: dalan küçələri birləşdirmək, məktəb yolları, qəsəbə mərkəzi və BakuBus tezliyi.'},
+    {code:'slope', name:'Dik yamac məhəllələri', d:'Amfiteatr relyefinin yuxarı hissəsi (Badamdar, Bibiheybət). Meyl 16%-dən çoxdur, dalan küçələr çoxdur. Sahilə enmək çətindir.', rx:'Medellin modeli: açıq eskalator, lift və pilləkən dəhlizləri, universal dizayn, sürüşmə monitorinqi.'},
+    {code:'periphery', name:'Təcrid olunmuş periferiya', d:'Sənaye və neft mədənləri arasında qalmış yaşayış yerləri. Dayanacaq uzaqdır, xidmət demək olar ki yoxdur, şəbəkə qırıqdır.', rx:'Əsas xidmətlər: nəqliyyat xətti, kiçik xidmət mərkəzi, yaşıllaşdırma və istilik sığınacaqları.'},
+  ];
+  TYPE_INFO.forEach(t => TYPE_INFO_BY[t.code] = t);
+  const tinfo = i => { const t = data.synthS.types[i]; return TYPE_INFO_BY[t && t.code] || {name: 'Tip ' + (i + 1), d: '', rx: ''}; };
+  let smap = null, slay = null, smode = 'overlap', srend = null;
+  function initSynth(){
+    if (smap || !data.synth) return;
+    srend = L.canvas({padding:0.3});
+    smap = L.map('smap', {preferCanvas:true, zoomSnap:0.5, minZoom:9, maxZoom:15}).fitBounds([[40.2,49.5],[40.6,50.4]]);
+    smap.attributionControl.setPrefix(false).addAttribution('© OpenStreetMap · WorldPop · Landsat · SRTM');
+    L.geoJSON(data.baku, {style: () => ({color: css('--ink-3'), weight:1, fill:false, opacity:.6}), interactive:false}).addTo(smap);
+    const S = data.synthS;
+    const sel = document.getElementById('smode');
+    sel.innerHTML = `<option value="overlap">Üst-üstə düşən problem sayı</option><option value="gi">Qaynar nöqtələr (Getis-Ord Gi*)</option><option value="type">Məhəllə tipləri</option><option value="need">Ehtiyac indeksi</option><optgroup label="Problem qatları">${Object.entries(S.layers).map(([k,v]) => `<option value="p_${k}">${v}</option>`).join('')}</optgroup>`;
+    sel.value = smode;
+    sel.addEventListener('change', () => { smode = sel.value; drawSynth(); });
+    drawSynth(); renderSynthText();
+  }
+  function sStyle(p){
+    if (smode === 'overlap') { const o = p.overlap; const c = o <= 1 ? css('--panel-2') : o === 2 ? css('--g1') : o === 3 ? css('--g2') : o === 4 ? css('--g3') : css('--g4'); return c; }
+    if (smode === 'gi') { const g = p.gi_cls; return g >= 3 ? divColor(-1) : g === 2 ? divColor(-.7) : g === 1 ? divColor(-.4) : g <= -3 ? divColor(1) : g === -2 ? divColor(.7) : g === -1 ? divColor(.4) : css('--d-mid'); }
+    if (smode === 'type') return css('--t' + p.type);
+    const v = smode === 'need' ? (p.need - 20) * 2 : p[smode];
+    return css(RAMP[scoreBin(Math.max(0, Math.min(100, v)))]);
+  }
+  function drawSynth(){
+    if (slay) smap.removeLayer(slay);
+    const S = data.synthS;
+    slay = L.geoJSON(data.synth, {style: f => ({renderer: srend, stroke:false, fillColor: sStyle(f.properties), fillOpacity:.85}),
+      onEachFeature: (f,l) => l.on('click', () => { const p = f.properties;
+        document.getElementById('sinfo').innerHTML = `<h4>${p.place} · ${p.rayon || '–'}</h4><dl><dt>Əhali</dt><dd>${fmt(p.pop)}</dd><dt>Tip</dt><dd>${tinfo(p.type).name}</dd><dt>Üst-üstə problem</dt><dd>${p.overlap} / 8</dd><dt>Ehtiyac indeksi</dt><dd>${p.need}</dd><dt>Gi* z</dt><dd>${p.gi}</dd><dt>Dayanacağa</dt><dd>${fmt(p.transit_m)} m</dd><dt>Dalan küçə</dt><dd>${p.deadend ?? '–'}%</dd><dt>Səth temp.</dt><dd>${p.lst} °C</dd></dl><h4 style="margin-top:10px">Problem qatları (0–100)</h4><dl>${Object.entries(S.layers).map(([k,v]) => `<dt>${v}</dt><dd>${p['p_' + k]}</dd>`).join('')}</dl>`; })}).addTo(smap);
+    const lg = document.getElementById('slegend'), tt = document.getElementById('slegend-title');
+    const sw = (c, t) => `<div style="display:flex;align-items:center;gap:8px;font-size:13px;padding:2px 0"><span class="sw" style="background:${c}"></span>${t}</div>`;
+    if (smode === 'overlap') { tt.textContent = 'Ən pis üçdə birlikdə olan qat sayı'; lg.innerHTML = [[css('--panel-2'),'0–1'],[css('--g1'),'2'],[css('--g2'),'3'],[css('--g3'),'4'],[css('--g4'),'5 və çox']].map(([c,t]) => sw(c,t)).join('') + `<p class="note" style="margin-top:6px;font-size:12px">${fmt(S.overlap_pop.slice(4).reduce((a,b) => a+b, 0))} nəfər 4 və daha çox problemin üst-üstə düşdüyü hücrələrdə yaşayır.</p>`; }
+    else if (smode === 'gi') { tt.textContent = 'Getis-Ord Gi* (ehtiyac indeksi üzrə)'; lg.innerHTML = [[divColor(-1),'Qaynar nöqtə, 99%'],[divColor(-.7),'Qaynar nöqtə, 95%'],[divColor(-.4),'Qaynar nöqtə, 90%'],[css('--d-mid'),'Əhəmiyyətsiz'],[divColor(.4),'Soyuq nöqtə, 90%'],[divColor(.7),'Soyuq nöqtə, 95%'],[divColor(1),'Soyuq nöqtə, 99%']].map(([c,t]) => sw(c,t)).join(''); }
+    else if (smode === 'type') { tt.textContent = `Məhəllə tipləri (k-means, k = ${S.k})`; lg.innerHTML = S.types.map((t,i) => sw(css('--t' + i), `${tinfo(i).name} · ${fmt(t.pop)} nəfər`)).join(''); }
+    else { tt.textContent = smode === 'need' ? 'Ehtiyac indeksi' : S.layers[smode.slice(2)] + ' (faiz rank)'; lg.innerHTML = `<div class="legend-ramp">${RAMP.map(v => `<i style="background:${css(v)}"></i>`).join('')}</div><div class="legend-scale"><span>aşağı</span><span>yüksək</span></div>`; }
+  }
+  function renderSynthText(){
+    const S = data.synthS;
+    document.getElementById('types-note').textContent = `Dəyişənlər: sıxlıq, obyektlər, kəsişmələr, dalan küçə payı, səth temperaturu, NDVI, meyl, dayanacağa məsafə, magistral uzunluğu (standartlaşdırılıb). k = 4–7 arasında ən yüksək silhouette (${S.silhouette[S.k]}) seçilib. Bu mülayim ayrılma deməkdir: tiplər arasında keçid zonaları var.`;
+    document.getElementById('types').innerHTML = S.types.map((t,i) => { const T = tinfo(i);
+      return `<article class="type"><header><i style="background:${css('--t' + i)}"></i><h3>${T.name}</h3></header>
+      <div class="kpis"><div><b>${fmt(t.pop)}</b>əhali</div><div><b>${fmt(t.mean.density)}</b>nəfər/km²</div><div><b>${fmt(t.mean.transit_m)} m</b>dayanacağa</div><div><b>${t.mean.hot_share}%</b>qaynar nöqtə</div>
+      <div><b>${t.mean.deadend}%</b>dalan küçə</div><div><b>${t.mean.slope}%</b>meyl</div><div><b>${t.mean.lst}°C</b>səth</div><div><b>${t.mean.need}</b>ehtiyac</div></div>
+      <p>${T.d} Nümunələr: ${t.places.slice(0,4).map(p => p[0]).join(', ')}.</p><p class="rx"><em>Müdaxilə</em>${T.rx}</p></article>`; }).join('');
+    document.getElementById('zones').innerHTML = S.zones.slice(0,10).map(z => `<button class="zone" type="button" data-lat="${z.lat}" data-lon="${z.lon}"><span class="rk">${z.rank}</span><b class="nm">${z.place} <span style="font-weight:400;color:var(--ink-3);font-size:13px">· ${z.rayons.map(r => r[0]).join(', ')}</span></b><span class="pp">${fmt(z.pop)} nəfər</span><span class="ly">${z.top_layers.map(l => `${l[0]} ${l[1]}`).join(' · ')}</span></button>`).join('');
+    document.querySelectorAll('.zone').forEach(b => b.addEventListener('click', () => { smap.flyTo([+b.dataset.lat, +b.dataset.lon], 13, {duration:.8}); document.getElementById('sintez').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); }));
+    const cmax = Math.max(...S.top_combos.map(c => c.pop));
+    document.getElementById('combos').innerHTML = S.top_combos.map(c => `<div class="bar-row" style="grid-template-columns:minmax(0,1.6fr) 1fr 70px;cursor:default"><span style="font-size:12px;white-space:normal">${c.layers.join(' + ')}</span><span class="bar-track"><i style="width:${100 * c.pop / cmax}%;background:var(--g3)"></i></span><span class="bval">${fmt(c.pop)}</span></div>`).join('');
+    document.getElementById('s-ray').innerHTML = `<thead><tr><th>Rayon</th><th>Ehtiyac</th><th>Qaynar nöqtədə əhali</th><th>4+ problem</th><th>Soyuq nöqtədə</th></tr></thead><tbody>${S.rayons.filter(r => r.rayon !== '—').map(r => `<tr><td>${r.rayon}</td><td class="n">${r.need}</td><td class="n">${r.hot_pct}%</td><td class="n">${r.overlap4_pct}%</td><td class="n">${r.cold_pct}%</td></tr>`).join('')}</tbody>`;
+  }
+
+  // ---------- 29 anlayış ----------
+  const CL = {jacobs:'Küçə canlılığı (Jacobs)', lynch:'Oxunaqlılıq (Lynch)', gehl:'İnsan miqyası (Gehl)', whyte:'Müşahidə (Whyte)', min15:'15 dəqiqəlik şəhər', tod:'TOD', compact:'Kompakt şəhər', complete:'Tam küçələr', pedbike:'Piyada və velo prioriteti', universal:'Universal dizayn', child:'Uşaq dostu', placemaking:'Placemaking', cpted:'CPTED', healthy:'Sağlam şəhər', visionzero:'Vision Zero', green:'Yaşıl infrastruktur', heat:'İstilik adası (sərinlik)', resilience:'Dayanıqlıq (proksi)', score:'Piyada indeksi', demand:'Tələb'};
+  const CONCEPTS = [
+    ['A. Nəzəri əsaslar'],
+    [1,'Küçə canlılığı və qarışıq istifadə (Jacobs)','jacobs','375 m-də 9 xidmət növünün qarışıqlığı (Shannon entropiyası) × obyekt sıxlığı','M8'],
+    [2,'Oxunaqlılıq (Lynch)','lynch','Nişanələr (tarixi abidə, muzey, attraksion), piyada yolları, sahil kənarı','M5'],
+    [3,'İnsan miqyası (Gehl)','gehl','Magistral yolun azlığı, zebra sıxlığı, piyada küçəsi','M2'],
+    [4,'Müşahidəyə əsaslanan təhlil (Whyte)','whyte','Proksi: metro sərnişin axınının yaxınlığı. Real müşahidə sahə formasından gəlir','M1'],
+    ['B. Planlaşdırma konsepsiyaları'],
+    [5,'15 dəqiqəlik şəhər','min15','7 gündəlik xidmət 1 km-də: ərzaq, aptek, təhsil, səhiyyə, park, nəqliyyat, kafe','M8'],
+    [6,'Yeni urbanizm','_nu','Jacobs, Gehl və kompaktlıq göstəricilərinin ortası','M5'],
+    [7,'Nəqliyyatyönümlü inkişaf (TOD)','tod','Metro çıxışına 800 m yaxınlıq × qarışıq istifadə','M1'],
+    [8,'Kompakt şəhər, ağıllı böyümə','compact','375 m-də xidmət obyektlərinin sıxlığı','M8'],
+    [9,'Tam küçələr','complete','Magistralda keçid tezliyi, işıqforlu keçid payı, velosiped zolağı (yalnız magistralı olan hücrələr)','M2'],
+    [10,'Piyada və velosiped prioriteti','pedbike','Piyada küçəsi və velozolaq uzunluğu, magistral yükü','M5'],
+    ['C. Sosial və inklüziv yanaşmalar'],
+    [11,'Universal dizayn və əlçatanlıq','universal','İşıqforlu keçid payı, əlil arabası ilə əlçatan obyektlər, yeraltı keçid cəriməsi','M2 · M3'],
+    [12,'Gender və uşaq dostu şəhər','child','400 m-də oyun meydançası, işıqforlu keçid, magistral. Gender datası yoxdur','M2'],
+    [13,'İştirakçı planlaşdırma','_na','Vətəndaş müraciətləri açıq data kimi yoxdur. Sahə forması və M6 bu boşluğu doldurur','M6'],
+    [14,'Placemaking','placemaking','“Üçüncü məkanlar” (kafe, oyun meydançası), yaşıllıq, piyada küçəsi','M6'],
+    [15,'Taktiki urbanizm','_tact','Tələbin yüksək, indeksin aşağı olduğu hücrələr: boya, müvəqqəti keçid, pop-up meydan üçün namizədlər','M8'],
+    [16,'Sosial ədalət və əlçatan mənzil','_eq','Piyada indeksinin mərkəzdən periferiyaya paylanması (Gini). Mənzil qiyməti datası yoxdur','M8'],
+    ['D. Təhlükəsizlik və sağlamlıq'],
+    [17,'CPTED','cpted','Aktiv fasad (mağaza, kafe), işıqlandırılan yol, yeraltı keçid cəriməsi','M3'],
+    [18,'Sağlam şəhər (WHO)','healthy','Yaşıllıq payı, piyada küçəsi, idman və oyun meydançaları','M4'],
+    [19,'Vision Zero','visionzero','Magistralda işıqforlu keçid payı, keçidsiz uzun hissələr. Qəza datası yoxdur','M2'],
+    ['E. Ekoloji davamlılıq'],
+    [20,'Yaşıl və mavi infrastruktur','green','Hücrədə park sahəsinin payı','M4'],
+    [21,'İstilik adasının azaldılması','heat','Proksi: yaşıllığın azlığı və asfalt magistral. Peyk istilik datası pilotda','M4'],
+    [22,'Dayanıqlı şəhər','resilience','Zəif proksi: yeraltı keçid (su yığılır), örtülü səth. Daşqın və seysmik data yoxdur','M7'],
+    [23,'Enerji səmərəliliyi, dairəvi iqtisadiyyat','_na','Yalnız şəhər səviyyəsində Azərişıq datası var, məkan datası yoxdur','—'],
+    ['F. Rəqəmsal yanaşmalar'],
+    [24,'Ağıllı şəhər','_sys','3 açıq mənbə (OSM, opendata.az, peyk) və 8 AI modulu bir platformada','M1–M8'],
+    [25,'Rəqəmsal əkiz','_sys','M5 ssenari simulyatoru: xəritədəki Seul ssenarisi ilk demodur','M5'],
+    [26,'GIS və məkan analitikası','_sys','808 hücrə, 20-dən çox GeoJSON qatı, bu səhifənin özü','—'],
+    ['G. Beynəlxalq çərçivələr'],
+    [27,'BMT SDG 11','_sdg','11.2.1: nəqliyyata 500 m əlçatanlıq. 11.7.1: 300 m-də açıq yaşıl məkan','—'],
+    [28,'BMT-Habitat Yeni Şəhər Gündəliyi','_sys','Kompakt, inklüziv, iştirakçı inkişaf: 5, 8, 11, 13 nömrəli göstəricilərlə ölçülür','—'],
+    [29,'Leipzig Xartiyası (Aİ)','_sys','İnteqrasiyalı, məkana əsaslanan, iştirakçı yanaşma: bu platformanın metodologiyası','—'],
+  ];
+  function lvlOf(v){ return v == null ? 'na' : v >= 60 ? 'hi' : v >= 40 ? 'md' : 'lo'; }
+  function renderConcepts(){
+    const C = data.concepts; if (!C) return;
+    const st = C.stats, m = k => st[k] && st[k].mean;
+    const val = row => {
+      const k = row[2];
+      if (k === '_nu') { const v = (m('jacobs') + m('gehl') + m('compact')) / 3; return [v, v.toFixed(0)]; }
+      if (k === '_na') return [null, '—'];
+      if (k === '_sys') return ['sys', 'platforma'];
+      if (k === '_tact') return ['sys', `${summary.cells_gap_high} hücrə`];
+      if (k === '_eq') return [null, `Gini ${st.equity.gini}`];
+      if (k === '_sdg') return ['sys', `${st.sdg_transit.share}% · ${st.green.park300_share}%`];
+      if (k === 'min15') return [m(k), `${m(k).toFixed(0)} · tam: ${st.min15.full_share}%`];
+      return [m(k), m(k).toFixed(0)];
+    };
+    document.querySelector('#concept-table tbody').innerHTML = CONCEPTS.map(row => {
+      if (row.length === 1) return `<tr class="cat-group"><td colspan="7">${row[0]}</td></tr>`;
+      const [v, txt] = val(row), lv = v === 'sys' ? null : lvlOf(v);
+      const mapBtn = CL[row[2]] ? `<button class="cbtn" type="button" data-concept="${row[2]}">Xəritədə</button>` : '';
+      return `<tr><td class="n">${row[0]}</td><td>${row[1]}</td><td style="font-size:13px;color:var(--ink-2)">${row[3]}</td><td class="n">${txt}</td><td>${lv ? `<span class="lvl ${lv}"></span>` : '<span style="font-size:12px;color:var(--ink-3)">sistem səviyyəsi</span>'}</td><td style="font-family:var(--ff-mono);font-size:12px">${row[4]}</td><td>${mapBtn}</td></tr>`;
+    }).join('');
+    document.querySelectorAll('[data-concept]').forEach(b => b.addEventListener('click', () => setConcept(b.dataset.concept, true)));
+
+    // nəticələr
+    const sc = C.station_corr, rings = st.equity.rings;
+    const pair = (a,b) => { const i = C.keys.indexOf(a), j = C.keys.indexOf(b); return C.matrix[i][j]; };
+    const F = [
+      {tags:['5 · 15 dəqiqə','3 · Gehl','11 · Universal'], h:'15 dəqiqəlik şəhər artıq var, amma ora piyada rahat çatmır', big:`${st.min15.full_share}%`,
+       p:`Hücrələrin ${st.min15.full_share}%-ində 7 gündəlik xidmətin hamısı 1 km radiusdadır. Buna baxmayaraq orta insan miqyası balı ${m('gehl').toFixed(0)}, universal dizayn balı ${m('universal').toFixed(0)}-dir. Bakının problemi məsafə deyil, keçidin keyfiyyətidir: yeni xidmət tikmək yox, mövcud olanlara gedən yolu düzəltmək lazımdır.`},
+      {tags:['7 · TOD','19 · Vision Zero','4 · Whyte'], h:'Ən yüklü stansiyalar piyada üçün ən təhlükəlisidir', big:`ρ = ${sc.visionzero}`,
+       p:`Stansiyanın sərnişin sayı TOD göstəricisi ilə müsbət (ρ = ${sc.tod}), Vision Zero göstəricisi ilə isə mənfi əlaqədədir (ρ = ${sc.visionzero}). İnsan miqyası ilə əlaqə yoxdur (ρ = ${sc.gehl}). Bakıda TOD var, amma piyada təhlükəsizliyi olmadan qurulub. Ən çox insan ən təhlükəli magistrallardan keçir.`},
+      {tags:['20 · Yaşıl','18 · Sağlam','5 · 15 dəqiqə'], h:'Parklar tələbin olduğu yerdə deyil', big:`ρ = ${pair('green','demand')}`,
+       p:`Yaşıllıq payı ilə tələb (məktəb, xəstəxana, nəqliyyat sıxlığı) arasında heç bir əlaqə yoxdur (ρ = ${pair('green','demand')}). Halbuki hücrələrin ${st.green.park300_share}%-ində 300 m-də park var. Yaşıl infrastruktur insanların gündəlik olduğu yerlərə yox, ayrı zonalara toplanıb. M4 modulu ağac əkinini tələb xəritəsinə görə sıralayır.`},
+      {tags:['16 · Sosial ədalət','27 · SDG 11','29 · Leipzig'], h:'Mərkəz və periferiya arasında piyada bərabərsizliyi', big:`${rings[0].mean} → ${rings[3].mean}`,
+       p:`Fəvvarələr meydanından 1.5 km radiusda orta indeks ${rings[0].mean}-dir, 4.5 km-dən uzaqda ${rings[3].mean}. Gini əmsalı ${st.equity.gini}-dir. Piyada rahatlığı turist mərkəzində toplanıb. Leipzig Xartiyasının “ədalətli şəhər” prinsipi pilotların periferiyada aparılmasını tələb edir.`},
+      {tags:['1 · Jacobs','8 · Kompakt','14 · Placemaking'], h:'Qarışıq istifadə olan yerdə ictimai həyat da var', big:`ρ = ${pair('compact','placemaking')}`,
+       p:`Kompaktlıq placemaking ilə (ρ = ${pair('compact','placemaking')}), qarışıq istifadə 15 dəqiqəlik əlçatanlıqla (ρ = ${pair('jacobs','min15')}) güclü bağlıdır. Jacobs-un tezisi Bakıda təsdiqlənir. Taktiki urbanizm üçün ən yaxşı yerlər sıx, amma piyada infrastrukturu zəif olan ${summary.cells_gap_high} hücrədir.`},
+      {tags:['17 · CPTED','3 · Gehl','9 · Tam küçələr'], h:'Bir müdaxilə dörd anlayışa xidmət edir', big:`ρ = ${pair('gehl','cpted')}`,
+       p:`İnsan miqyası CPTED ilə (ρ = ${pair('gehl','cpted')}), tam küçələr qarışıq istifadə ilə (ρ = ${pair('jacobs','complete')}) bağlıdır. Yeraltı keçidi işıqforlu yerüstü keçidlə əvəz etmək eyni anda Tam küçələr, Universal dizayn, Uşaq dostu şəhər və Vision Zero göstəricilərini qaldırır. Seul ssenarisi məhz buna görə prioritetdir.`},
+    ];
+    document.getElementById('findings').innerHTML = F.map(f => `<div class="finding"><div class="tags">${f.tags.map(t => `<span>${t}</span>`).join('')}</div><span class="big">${f.big}</span><h3>${f.h}</h3><p>${f.p}</p></div>`).join('');
+
+    // stansiya korrelasiyası: diverging bar
+    const sk = Object.keys(sc);
+    document.getElementById('st-corr').innerHTML = sk.map(k => { const v = sc[k] ?? 0, w = Math.abs(v) * 50;
+      return `<div class="bar-row" style="cursor:default"><span class="bname">${CL[k]}</span><span class="bar-track" style="background:var(--panel-2)"><i style="left:${v >= 0 ? 50 : 50 - w}%;width:${w}%;background:${v >= 0 ? 'var(--d-pos)' : 'var(--d-neg)'};border-radius:${v >= 0 ? '0 4px 4px 0' : '4px 0 0 4px'}"></i><u style="left:50%"></u></span><span class="bval">${v.toFixed(2)}</span></div>`; }).join('');
+    drawHeat();
+  }
+  function divColor(v){
+    const neg = css('--d-neg'), mid = css('--d-mid'), pos = css('--d-pos');
+    const hex = h => h.match(/\w\w/g).map(x => parseInt(x,16));
+    const mix = (a,b,t) => { const A = hex(a), B = hex(b); return '#' + A.map((x,i) => Math.round(x + (B[i]-x)*t).toString(16).padStart(2,'0')).join(''); };
+    return v >= 0 ? mix(mid, pos, Math.min(1, v)) : mix(mid, neg, Math.min(1, -v));
+  }
+  function drawHeat(){
+    const C = data.concepts, host = document.getElementById('heat'); if (!C) return;
+    const K = C.keys, n = K.length, cell = 26, L = 150, T = 150;
+    const shared = new Set(C.shared_pairs.map(p => p.join('|')));
+    let g = '';
+    K.forEach((k,i) => {
+      g += `<text x="${L - 6}" y="${T + i*cell + cell/2 + 3}" text-anchor="end">${CL[k]}</text>`;
+      g += `<text transform="translate(${L + i*cell + cell/2 + 3},${T - 6}) rotate(-60)">${CL[k]}</text>`;
+      K.forEach((k2,j) => { const v = C.matrix[i][j]; const sh = i !== j && shared.has([k,k2].sort().join('|'));
+        g += `<rect class="c" x="${L + j*cell}" y="${T + i*cell}" width="${cell}" height="${cell}" fill="${v == null ? css('--panel-2') : i === j ? css('--line') : divColor(v)}" data-i="${i}" data-j="${j}"/>`;
+        if (sh) g += `<circle cx="${L + j*cell + cell/2}" cy="${T + i*cell + cell/2}" r="2.2" fill="${css('--ink-2')}" pointer-events="none"/>`; });
+    });
+    const W = L + n*cell + 10, H = T + n*cell + 10;
+    let svg = host.querySelector('svg');
+    if (!svg) { host.insertAdjacentHTML('afterbegin', `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Anlayış göstəriciləri arasında Spearman korrelasiya matrisi"></svg>`); svg = host.querySelector('svg'); }
+    svg.innerHTML = g;
+    const tip = document.getElementById('heat-tip');
+    svg.querySelectorAll('rect.c').forEach(r => {
+      r.addEventListener('mouseenter', () => { const i = +r.dataset.i, j = +r.dataset.j, v = C.matrix[i][j];
+        if (i === j) return; const sh = shared.has([K[i],K[j]].sort().join('|'));
+        tip.innerHTML = `<strong>${CL[K[i]]} × ${CL[K[j]]}</strong><br>ρ = <b>${v == null ? '–' : v}</b>${sh ? '<br>ortaq komponent, ehtiyatla oxuyun' : ''}`;
+        tip.hidden = false; const b = svg.getBoundingClientRect(), k = b.width / W;
+        tip.style.left = Math.min(b.width - 220, (L + j*cell + cell) * k + 8) + 'px'; tip.style.top = ((T + i*cell) * k) + 'px'; });
+      r.addEventListener('mouseleave', () => tip.hidden = true);
+    });
+  }
+  function setConcept(key, scroll){
+    const sel = document.getElementById('concept-sel');
+    sel.value = 'c:' + key; sel.dispatchEvent(new Event('change'));
+    if (scroll) document.getElementById('xerite').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+  }
+
+  // şəkil böyütmə
+  const lb = document.getElementById('lb');
+  document.addEventListener('click', e => {
+    const t = e.target.closest('img[data-full]');
+    if (!t) return;
+    document.getElementById('lb-img').src = t.dataset.full;
+    document.getElementById('lb-img').alt = t.alt;
+    document.getElementById('lb-cap').textContent = t.dataset.cap || '';
+    if (lb.showModal) lb.showModal(); else lb.setAttribute('open','');
+  });
+  document.getElementById('lb-close').addEventListener('click', () => lb.close ? lb.close() : lb.removeAttribute('open'));
+  lb.addEventListener('click', e => { if (e.target === lb) lb.close(); });
+
+  // sahə yoxlaması: db "field_checks" kolleksiyası, şəkil assets-də
+  const POINTS = [];
+  const ptLabel = id => (POINTS.find(p => p.id === id) || {}).label || id;
+  const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function fillPoints(){
+    const sel = document.getElementById('fc-point');
+    if (sel.options.length || !data.underpasses) return;
+    data.underpasses.features.filter(f => f.properties.candidate).sort((a,b) => a.properties.rank - b.properties.rank)
+      .forEach(f => { const p = f.properties; POINTS.push({id:'U' + String(p.rank).padStart(2,'0'), label:`#${p.rank} yeraltı keçid · ${p.road || p.metro}`}); });
+    [['P-genclik','Pilot: Gənclik'],['P-20yanvar','Pilot: 20 Yanvar'],['P-insaatcilar','Pilot: İnşaatçılar pr.']].forEach(([id,label]) => POINTS.push({id,label}));
+    sel.innerHTML = POINTS.map(p => `<option value="${p.id}">${esc(p.label)}</option>`).join('');
+  }
+  (async () => {
+    const status = document.getElementById('fc-status');
+    const form = document.getElementById('fc-form');
+    const list = document.getElementById('fc-list');
+    const setStatus = (msg, cls) => { status.textContent = msg; status.className = 'status' + (cls ? ' ' + cls : ''); };
+    const waitData = () => new Promise(r => { const t = setInterval(() => { if (data.underpasses) { clearInterval(t); r(); } }, 100); });
+    await waitData(); fillPoints();
+    const use = n => (window.claude && window.claude.use) ? window.claude.use(n).catch(() => null) : Promise.resolve(null);
+    const [db, user, assets] = await Promise.all([use('db'), use('user'), use('assets')]);
+    if (!db && window.ADDIM_PUBLIC) {
+      // Netlify versiyası: cavablar Netlify Forms-a göndərilir, siyahı komanda panelində görünür
+      document.getElementById('fc-list').innerHTML = '<p class="empty">Cavablar Netlify Forms-da toplanır və komandanın panelində görünür.</p>';
+      form.addEventListener('submit', async e => {
+        e.preventDefault();
+        const btn = document.getElementById('fc-submit');
+        btn.disabled = true; setStatus('Göndərilir…');
+        try {
+          const res = await fetch('/', {method: 'POST', body: new FormData(form)});
+          if (!res.ok) throw new Error(res.status);
+          ['fc-zebra','fc-ped-under','fc-ped-over','fc-note','fc-photo','fc-works','fc-lift','fc-signal'].forEach(id => document.getElementById(id).value = '');
+          setStatus('Göndərildi', 'ok');
+        } catch (err) { setStatus('Göndərilmədi. İnterneti yoxlayıb yenidən cəhd edin.', 'err'); }
+        finally { btn.disabled = false; }
+      });
+      return;
+    }
+    if (!db) {
+      document.getElementById('fc-empty').textContent = 'Yoxlamaları görmək və əlavə etmək üçün artifaktı claude.ai-da daxil olaraq açın.';
+      form.querySelectorAll('input,select,textarea,button').forEach(el => el.disabled = true);
+      return;
+    }
+    if (!assets) document.getElementById('fc-photo').closest('label').hidden = true;
+    const col = db.collection('field_checks');
+    const loadTimer = setTimeout(() => { document.getElementById('fc-empty').textContent = 'Data gecikir. Bir az sonra yenidən baxın.'; }, 10000);
+    let profiles = {};
+    col.orderBy('at', 'desc').onSnapshot(async snap => {
+      clearTimeout(loadTimer);
+      const rows = snap.docs.map(d => ({id: d.id, ...d.data()}));
+      document.getElementById('fc-total').textContent = rows.length ? `(${rows.length})` : '';
+      const counts = {};
+      rows.forEach(r => counts[r.point] = (counts[r.point] || 0) + 1);
+      document.querySelectorAll('.fc-count').forEach(el => { const n = counts[el.dataset.pt]; el.textContent = n ? `✓ ${n} yoxlama` : 'yoxlanmayıb'; });
+      if (!rows.length) { list.innerHTML = '<p class="empty">Hələ yoxlama yoxdur. İlk nöqtəni siz yoxlayın.</p>'; return; }
+      const ids = [...new Set(rows.map(r => r.by).filter(Boolean))];
+      try { profiles = user ? await user.profiles(ids) : {}; } catch (e) { profiles = {}; }
+      list.innerHTML = rows.map(r => {
+        const who = (profiles[r.by] && profiles[r.by].name) || 'Komanda üzvü';
+        const vals = [r.works && `keçid: ${r.works}`, r.lift && `əlçatanlıq: ${r.lift}`, r.zebra_m != null && r.zebra_m !== '' && `zebra: ${r.zebra_m} m`, r.signal && `svetofor: ${r.signal}`,
+          r.ped_under != null && r.ped_under !== '' && `yeraltı: ${r.ped_under} nəfər`, r.ped_over != null && r.ped_over !== '' && `üstdən: ${r.ped_over} nəfər`].filter(Boolean).map(esc).join(' · ');
+        const img = r.photo ? `<img src="/_blob/${esc(r.photo)}" data-full="/_blob/${esc(r.photo)}" data-cap="${esc(ptLabel(r.point))}" alt="Sahə şəkli">` : '';
+        return `<div class="check">${img}<b>${esc(ptLabel(r.point))}</b><span class="meta">${esc((r.at || '').slice(0,16).replace('T',' '))}</span><span class="meta">${esc(who)}</span><span class="vals">${vals || '—'}${r.note ? '<br>' + esc(r.note) : ''}</span></div>`;
+      }).join('');
+    }, err => { clearTimeout(loadTimer); list.innerHTML = `<p class="empty">Yoxlamalar oxunmadı (${esc(err.code)}).</p>`; });
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const btn = document.getElementById('fc-submit');
+      btn.disabled = true; setStatus('Yadda saxlanılır…');
+      const num = id => { const v = document.getElementById(id).value; return v === '' ? null : Number(v); };
+      try {
+        let photo = null;
+        const file = document.getElementById('fc-photo').files[0];
+        if (file && assets) { setStatus('Şəkil yüklənir…'); photo = (await assets.upload(file)).id; }
+        const me = user && user.id ? await user.id() : null;
+        await col.add({
+          point: document.getElementById('fc-point').value,
+          works: document.getElementById('fc-works').value || null,
+          lift: document.getElementById('fc-lift').value || null,
+          zebra_m: num('fc-zebra'), signal: document.getElementById('fc-signal').value || null,
+          ped_under: num('fc-ped-under'), ped_over: num('fc-ped-over'),
+          note: document.getElementById('fc-note').value.trim().slice(0, 1000) || null,
+          photo, by: me, at: new Date().toISOString(),
+        });
+        ['fc-zebra','fc-ped-under','fc-ped-over','fc-note','fc-photo'].forEach(id => document.getElementById(id).value = '');
+        ['fc-works','fc-lift','fc-signal'].forEach(id => document.getElementById(id).value = '');
+        setStatus('Yadda saxlanıldı', 'ok');
+      } catch (err) {
+        const code = err && err.code;
+        setStatus(code === 'permission_denied' || code === 'not_granted' ? 'Göndərmək üçün icazəniz yoxdur. Artifakt sahibindən redaktə və ya şərh icazəsi istəyin.' : `Yadda saxlanmadı (${code || 'xəta'}). Yenidən cəhd edin.`, 'err');
+      } finally { btn.disabled = false; }
+    });
+  })();
+
+  // kopyala
+  const cp = document.getElementById('copy-pitch');
+  cp.addEventListener('click', () => {
+    const txt = document.getElementById('pitch-text').textContent;
+    const ok = () => { const c = document.getElementById('copied'); c.hidden = false; setTimeout(() => c.hidden = true, 2000); };
+    const fallback = () => { const r = document.createRange(); r.selectNodeContents(document.getElementById('pitch-text')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+    try { navigator.clipboard.writeText(txt).then(ok, fallback); } catch(e) { fallback(); }
+  });
+})();
+</script>
